@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:usafl/components/profile_text_box.dart';
-import 'package:usafl/constants.dart';
 import 'package:usafl/views/home_screen.dart';
+import 'package:usafl/components/custom_app_bar.dart';
 
 class ProfileScreen extends StatelessWidget {
   ProfileScreen({required this.userName, required this.userBiz, required this.userState, required this.userReq, required this.userHired, required this.userStart, required this.userEnd, required this.userHours,});
@@ -19,43 +19,21 @@ class ProfileScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       drawerEnableOpenDragGesture: false,
-      appBar: AppBar(
-        toolbarHeight: 85.0,
-        automaticallyImplyLeading: false,
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
-            Builder(
-              builder: (context) => GestureDetector(
-                onTap: () {
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(85.0),
+        child: Builder(
+          builder: (context) {
+            return customAppBar(
+                iconL: Icons.home,
+                onPressedL: () {
                   Navigator.pushReplacement(
-                      context, MaterialPageRoute(builder: (context) => HomeScreen()));
+                    context, MaterialPageRoute(builder: (context) => HomeScreen()));
                 },
-                child: const Icon(
-                  Icons.home,
-                  color: Colors.white,
-                  size: 45.0,
-                ),
-              ),
-            ),
-            GestureDetector(
-              onTap: null,
-              child: const Image(
-                image: AssetImage('assets/images/USAFL Logo White.png'),
-                height: 65.0,
-              ),
-            ),
-            GestureDetector(
-              onTap: null,
-              child: const Icon(
-                Icons.help,
-                color: Colors.white,
-                size: 45.0,
-              ),
-            ),
-          ],
+                iconR: Icons.help,
+                onPressedR: () {null;},
+            );
+          }
         ),
-        centerTitle: true,
       ),
       body: SingleChildScrollView(
         child: Padding(

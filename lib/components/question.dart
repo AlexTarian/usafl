@@ -5,13 +5,15 @@ class Question {
   late String optionB;
   late String optionC;
   late String optionD;
+  late String explanation;
 
-  Question({q, a, oA, oB, oC, oD}) {
+  Question({q, a, oA, oB, oC, oD, exp}) {
     questionText = q;
     questionAnswer = a;
     optionA = oA;
     optionB = oB;
     optionC = oC;
     optionD = oD;
+    explanation = exp;
   }
 }

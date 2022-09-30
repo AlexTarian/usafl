@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:usafl/views/settings_screen.dart';
 import 'package:usafl/views/quiz_screen.dart';
+import 'package:usafl/main.dart';
 
 class NavDrawer extends StatelessWidget {
+
   @override
   Widget build(BuildContext context) {
     return Drawer(
       child: ListView(
         padding: EdgeInsets.zero,
         children: <Widget>[
-          SizedBox(
+          const SizedBox(
             height: 117.0,
             child: DrawerHeader(
               child: Center(
@@ -23,137 +26,133 @@ class NavDrawer extends StatelessWidget {
             ),
           ),
           ListTile(
-            leading: Icon(
+            iconColor: Theme.of(context).primaryColor,
+            leading: const Icon(
               Icons.list_alt,
-              color: Color(0xFF233271),
             ),
             title: Text('Applications',
               style: TextStyle(
-                color: Color(0xFF233271),
                 fontSize: 20.0,
               ),
             ),
             onTap: () => {},
           ),
           ListTile(
-            leading: Icon(
+            iconColor: Theme.of(context).primaryColor,
+            leading: const Icon(
               Icons.settings,
-              color: Color(0xFF233271),
             ),
             title: Text('Settings',
               style: TextStyle(
-                color: Color(0xFF233271),
-                fontSize: 20.0,
-              ),
-            ),
-            onTap: () => {},
-          ),
-          ListTile(
-            leading: Icon(
-              Icons.info,
-              color: Color(0xFF233271),
-            ),
-            title: Text('Test Your H-2A Knowledge',
-              style: TextStyle(
-                color: Color(0xFF233271),
                 fontSize: 20.0,
               ),
             ),
             onTap: () {
-            Navigator.push(context,
-            MaterialPageRoute(builder: (context) => (QuizScreen())));
+              Navigator.of(context).pop();
+              Navigator.pushReplacement(context,
+                  MaterialPageRoute(builder: (context) => (SettingsScreen())));
             },
           ),
-          SizedBox(height: 25.0),
+          ListTile(
+            iconColor: Theme.of(context).primaryColor,
+            leading: const Icon(
+              Icons.info,
+            ),
+            title: Text('Test Your H-2A Knowledge',
+              style: TextStyle(
+                fontSize: 20.0,
+              ),
+            ),
+            onTap: () {
+              Navigator.of(context).pop();
+              Navigator.push(context,
+                MaterialPageRoute(builder: (context) => (QuizScreen())));
+            },
+          ),
+          const SizedBox(height: 25.0),
           Padding(
-            padding: const EdgeInsets.only(left: 15.0),
+            padding: EdgeInsets.only(left: 15.0),
             child: Text('Compliance Checklists',
             style: TextStyle(
-              color: Color(0xFF233271),
+              color: Theme.of(context).primaryColor,
               fontSize: 20.0,
               fontWeight: FontWeight.w700,
             )
             ),
           ),
           ListTile(
-            leading: Icon(
+            iconColor: Theme.of(context).primaryColor,
+            leading: const Icon(
               Icons.verified_user,
-              color: Color(0xFF233271),
             ),
             title: Text(
               'Housing',
               style: TextStyle(
-                color: Color(0xFF233271),
                 fontSize: 20.0,
               ),
             ),
             onTap: () => {},
           ),
           ListTile(
-            leading: Icon(
+            iconColor: Theme.of(context).primaryColor,
+            leading: const Icon(
               Icons.verified_user,
-              color: Color(0xFF233271),
             ),
             title: Text(
               'Worker Arrival',
               style: TextStyle(
-                color: Color(0xFF233271),
                 fontSize: 20.0,
               ),
             ),
             onTap: () => {},
           ),
           ListTile(
-            leading: Icon(
+            iconColor: Theme.of(context).primaryColor,
+            leading: const Icon(
               Icons.verified_user,
-              color: Color(0xFF233271),
             ),
             title: Text(
               'Paying Workers',
               style: TextStyle(
-                color: Color(0xFF233271),
                 fontSize: 20.0,
               ),
             ),
             onTap: () => {},
           ),
           ListTile(
-            leading: Icon(
+            iconColor: Theme.of(context).primaryColor,
+            leading: const Icon(
               Icons.verified_user,
-              color: Color(0xFF233271),
             ),
             title: Text(
               'Worker Departure',
               style: TextStyle(
-                color: Color(0xFF233271),
                 fontSize: 20.0,
               ),
             ),
             onTap: () => {},
           ),
           ListTile(
-            leading: Icon(
+            iconColor: Theme.of(context).primaryColor,
+            leading: const Icon(
               Icons.verified_user,
-              color: Color(0xFF233271),
             ),
             title: Text(
               'Audit Prep',
               style: TextStyle(
-                color: Color(0xFF233271),
                 fontSize: 20.0,
               ),
             ),
             onTap: () => {},
           ),
           ListTile(
-            leading: Icon(
+            iconColor: Theme.of(context).primaryColor,
+            leading: const Icon(
               Icons.verified_user,
-              color: Color(0xFF233271),
             ),
             title: Text(
               'Miscellaneous',
               style: TextStyle(
-                color: Color(0xFF233271),
                 fontSize: 20.0,
               ),
             ),

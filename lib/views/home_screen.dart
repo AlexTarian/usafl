@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:usafl/components/custom_app_bar.dart';
 import 'package:usafl/components/nav_menu.dart';
 import 'package:usafl/views/profile_screen.dart';
 
@@ -12,6 +13,7 @@ class HomeScreen extends StatefulWidget {
   late String userStart;
   late String userEnd;
   late String userHours;
+  //late bool aesthetic;
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -44,52 +46,31 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       drawer: NavDrawer(),
       drawerEnableOpenDragGesture: false,
-      appBar: AppBar(
-        toolbarHeight: 85.0,
-        automaticallyImplyLeading: false,
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
-            Builder(
-              builder: (context) => GestureDetector(
-                onTap: () => Scaffold.of(context).openDrawer(),
-                child: const Icon(
-                  Icons.menu,
-                  color: Colors.white,
-                  size: 45.0,
-                ),
-              ),
-            ),
-            GestureDetector(
-              onTap: null,
-              child: const Image(
-                image: AssetImage('assets/images/USAFL Logo White.png'),
-                height: 65.0,
-              ),
-            ),
-            GestureDetector(
-              onTap: () {
-                Navigator.pushReplacement(context,
-                    MaterialPageRoute(builder: (context) => (ProfileScreen(
-                        userName: widget.userName,
-                        userBiz: widget.userBiz,
-                        userState: widget.userState,
-                        userReq: widget.userReq,
-                        userHired: widget.userHired,
-                        userStart: widget.userStart,
-                        userEnd: widget.userEnd,
-                        userHours: widget.userHours
-                    ))));
-              },
-              child: Icon(
-                Icons.person_outline_rounded,
-                color: Colors.white,
-                size: 45.0,
-              ),
-            ),
-          ],
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(85.0),
+        child: Builder(
+          builder: (context) {
+            return customAppBar(
+              iconL: Icons.menu,
+              onPressedL: () => Scaffold.of(context).openDrawer(),
+                iconR: Icons.person_outline_rounded,
+                onPressedR: () {
+                  Navigator.pushReplacement(context,
+                    MaterialPageRoute(builder: (context) =>
+                    (ProfileScreen(
+                      userName: widget.userName,
+                      userBiz: widget.userBiz,
+                      userState: widget.userState,
+                      userReq: widget.userReq,
+                      userHired: widget.userHired,
+                      userStart: widget.userStart,
+                      userEnd: widget.userEnd,
+                      userHours: widget.userHours
+                  ))));
+                }
+              );
+          }
         ),
-        centerTitle: true,
       ),
       body: const Center(
           child: Text(
@@ -99,3 +80,5 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 }
+
+

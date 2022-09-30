@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:usafl/constants.dart';
 import 'package:usafl/quiz_engine.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
-// import 'package:usafl/constants.dart';
 import 'package:usafl/views/home_screen.dart';
+import 'package:usafl/components/custom_app_bar.dart';
 
 QuizEngine quizEngine = QuizEngine();
 
@@ -13,136 +13,229 @@ class QuizScreen extends StatefulWidget {
 }
 
 class _QuizScreenState extends State<QuizScreen> {
-  List<Icon> scoreKeeper = [];
+  int correct = 0;
+  int incorrect = 0;
+  int remaining = quizEngine.questionBank.length;
+  var snackBar = const SnackBar(
+    content: Text('Correct!',
+    style: TextStyle(fontSize: 20.0),
+    textAlign: TextAlign.center,),
+    backgroundColor: Colors.green,
+    duration: Duration(milliseconds: 500),
+  );
+
+  void checkIsFinished() {
+    int score = ((correct / (correct + incorrect)) * 100).toInt();
+    if (quizEngine.isFinished() == false) {
+      quizEngine.nextQuestion();
+    } else {
+      Alert(
+        context: context,
+        title: correct >= 16 ? 'Good Job!' : 'Try Again?',
+        desc: 'You answered $correct questions correctly for a score of $score%',
+        buttons: [
+          DialogButton(
+            color: usaflBlue,
+            child: const Text('Home',
+              style: TextStyle(color: Colors.white, fontSize: 20.0),
+            ),
+            onPressed: () {
+              quizEngine.reset();
+              Navigator.pushReplacement(
+                  context, MaterialPageRoute(builder: (context) => HomeScreen()));
+              setState(() {
+                correct = 0;
+                incorrect = 0;
+                remaining = quizEngine.questionBank.length;
+              });
+            },
+          ),
+          DialogButton(
+            color: usaflBlue,
+            child: const Text('Try Again',
+              style: TextStyle(color: Colors.white, fontSize: 20.0),
+            ),
+            onPressed: () {
+              quizEngine.reset();
+              Navigator.pop(context);
+              setState(() {
+                correct = 0;
+                incorrect = 0;
+                remaining = quizEngine.questionBank.length;
+              });
+            },
+          ),
+        ],
+      ).show();
+    }
+  }
 
   void checkAnswer(String userPickedAnswer) {
     String correctAnswer = quizEngine.getCorrectAnswer();
 
-    setState(() {
-
-      if (quizEngine.isFinished() == true) {
-
-        Alert(
-          context: context,
-          title: 'Finished!',
-          desc: 'You\'ve reached the end of the quiz.',
-        ).show();
-
-        quizEngine.reset();
-
-        scoreKeeper = [];
-      }
-
-      else {
-        if (userPickedAnswer == correctAnswer) {
-          scoreKeeper.add(Icon(
-            Icons.check,
-            color: Colors.green,
-          ));
-        } else {
-          scoreKeeper.add(Icon(
-            Icons.close,
-            color: Colors.red,
-          ));
-        }
-        quizEngine.nextQuestion();
-      }
-    });
+    if (userPickedAnswer == correctAnswer) {
+      setState(() {
+        correct++;
+        remaining--;
+      });
+      checkIsFinished();
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    } else {
+      setState(() {
+        incorrect++;
+        remaining--;
+      });
+      checkIsFinished();
+      Alert(
+        context: context,
+        style: AlertStyle(
+          isCloseButton: false,
+          titleStyle: TextStyle(
+            color: Theme.of(context).primaryColor,
+          ),
+          descStyle: TextStyle(
+            color: themeTextColor,
+          ),
+        ),
+        title: 'Oops...',
+        desc: quizEngine.getExplanation(),
+        buttons: [
+          DialogButton(
+            color: Theme.of(context).primaryColor,
+            child: const Text('Next',
+              style: TextStyle(color: Colors.white, fontSize: 20.0),
+            ),
+            onPressed: () => Navigator.pop(context),
+          ),
+        ],
+      ).show();
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        toolbarHeight: 85.0,
-        automaticallyImplyLeading: false,
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
-            Builder(
-              builder: (context) => GestureDetector(
-                onTap: () {
-                  Navigator.pushReplacement(
-                      context, MaterialPageRoute(builder: (context) => HomeScreen()));
-                },
-                child: const Icon(
-                  Icons.home,
-                  color: Colors.white,
-                  size: 45.0,
-                ),
-              ),
-            ),
-            GestureDetector(
-              onTap: null,
-              child: const Image(
-                image: AssetImage('assets/images/USAFL Logo White.png'),
-                height: 65.0,
-              ),
-            ),
-            GestureDetector(
-              onTap: null,
-              child: const Icon(
-                Icons.help,
-                color: Colors.white,
-                size: 45.0,
-              ),
-            ),
-          ],
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(85.0),
+        child: Builder(
+          builder: (context) {
+            return customAppBar(
+              iconL: Icons.home,
+              onPressedL: () {
+                Navigator.pop(context);
+                quizEngine.reset();
+              },
+              iconR: Icons.help,
+              onPressedR: () {null;},
+            );
+          }
         ),
-        centerTitle: true,
       ),
       body: SafeArea(
-        minimum: EdgeInsets.all(20.0),
+        minimum: const EdgeInsets.all(30.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
-            SizedBox(height: 5.0),
-            Center(
-              child: Text(
-                quizEngine.getQuestionText(),
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 30.0,
-                  color: usaflBlue,
-                ),
+            SingleChildScrollView(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: <Widget>[
+                  const SizedBox(height: 20.0),
+                  Text('QUESTION ${quizEngine.questionNumber + 1}',
+                    style: TextStyle(
+                      color: Theme.of(context).primaryColor,
+                      fontSize: 30.0,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                  const SizedBox(height: 20.0),
+                  Text(
+                    quizEngine.getQuestionText(),
+                    style: const TextStyle(
+                      fontSize: 30.0,
+                    ),
+                  ),
+                  const SizedBox(height: 40.0),
+                  Row(
+                    children: <Widget>[
+                      const Text('A:  ',
+                      style: TextStyle(
+                        fontSize: 20.0,
+                        fontWeight: FontWeight.w700,
+                      ),
+                      ),
+                      Flexible(
+                        child: Text(
+                          quizEngine.getQuestionOptionA(),
+                          style: const TextStyle(
+                            fontSize: 20.0,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 15.0),
+                  Row(
+                    children: <Widget>[
+                      const Text('B:  ',
+                        style: TextStyle(
+                          fontSize: 20.0,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                      Flexible(
+                        child: Text(
+                          quizEngine.getQuestionOptionB(),
+                          style: const TextStyle(
+                            fontSize: 20.0,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 15.0),
+                  Row(
+                    children: <Widget>[
+                      const Text('C:  ',
+                        style: TextStyle(
+                          fontSize: 20.0,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                      Flexible(
+                        child: Text(
+                          quizEngine.getQuestionOptionC(),
+                          style: const TextStyle(
+                            fontSize: 20.0,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 15.0),
+                  Row(
+                    children: <Widget>[
+                      const Text('D:  ',
+                        style: TextStyle(
+                          fontSize: 20.0,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                      Flexible(
+                        child: Text(
+                          quizEngine.getQuestionOptionD(),
+                          style: const TextStyle(
+                            fontSize: 20.0,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
               ),
             ),
             Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Text(
-                  quizEngine.getQuestionOptionA(),
-                  style: TextStyle(
-                    fontSize: 20.0,
-                    color: usaflBlue,
-                  ),
-                ),
-                Text(
-                  quizEngine.getQuestionOptionB(),
-                  style: TextStyle(
-                    fontSize: 20.0,
-                    color: usaflBlue,
-                  ),
-                ),
-                Text(
-                  quizEngine.getQuestionOptionC(),
-                  style: TextStyle(
-                    fontSize: 20.0,
-                    color: usaflBlue,
-                  ),
-                ),
-                Text(
-                  quizEngine.getQuestionOptionD(),
-                  style: TextStyle(
-                    fontSize: 20.0,
-                    color: usaflBlue,
-                  ),
-                ),
-              ],
-            ),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.end,
               children: <Widget>[
                 Row(
                   children: [
@@ -152,10 +245,10 @@ class _QuizScreenState extends State<QuizScreen> {
                           width: double.infinity,
                           height: 45.0,
                           decoration: BoxDecoration(
-                            color: usaflBlue,
+                            color: Theme.of(context).primaryColor,
                             borderRadius: BorderRadius.circular(10.0),
                           ),
-                          child: Center(
+                          child: const Center(
                             child: Text('A',
                               style: TextStyle(
                                 color: Colors.white,
@@ -165,7 +258,6 @@ class _QuizScreenState extends State<QuizScreen> {
                           ),
                         ),
                         onPressed: () {
-                          //The user picked true.
                           checkAnswer('A');
                         },
                       ),
@@ -176,10 +268,10 @@ class _QuizScreenState extends State<QuizScreen> {
                           width: double.infinity,
                           height: 45.0,
                           decoration: BoxDecoration(
-                            color: usaflBlue,
+                            color: Theme.of(context).primaryColor,
                             borderRadius: BorderRadius.circular(10.0),
                           ),
-                          child: Center(
+                          child: const Center(
                             child: Text('B',
                               style: TextStyle(
                                 color: Colors.white,
@@ -189,7 +281,6 @@ class _QuizScreenState extends State<QuizScreen> {
                           ),
                         ),
                         onPressed: () {
-                          //The user picked true.
                           checkAnswer('B');
                         },
                       ),
@@ -204,10 +295,10 @@ class _QuizScreenState extends State<QuizScreen> {
                           width: double.infinity,
                           height: 45.0,
                           decoration: BoxDecoration(
-                            color: usaflBlue,
+                            color: Theme.of(context).primaryColor,
                             borderRadius: BorderRadius.circular(10.0),
                           ),
-                          child: Center(
+                          child: const Center(
                             child: Text('C',
                               style: TextStyle(
                                 color: Colors.white,
@@ -217,7 +308,6 @@ class _QuizScreenState extends State<QuizScreen> {
                           ),
                         ),
                         onPressed: () {
-                          //The user picked true.
                           checkAnswer('C');
                         },
                       ),
@@ -228,10 +318,10 @@ class _QuizScreenState extends State<QuizScreen> {
                           width: double.infinity,
                           height: 45.0,
                           decoration: BoxDecoration(
-                            color: usaflBlue,
+                            color: Theme.of(context).primaryColor,
                             borderRadius: BorderRadius.circular(10.0),
                           ),
-                          child: Center(
+                          child: const Center(
                             child: Text('D',
                               style: TextStyle(
                                 color: Colors.white,
@@ -241,17 +331,18 @@ class _QuizScreenState extends State<QuizScreen> {
                           ),
                         ),
                         onPressed: () {
-                          //The user picked true.
                           checkAnswer('D');
                         },
                       ),
                     ),
                   ],
                 ),
-                SizedBox(height: 20.0),
-                Row(
-                  children: scoreKeeper,
-                )
+                const SizedBox(height: 20.0),
+                Text('Correct: $correct | Incorrect: $incorrect | Remaining: $remaining',
+                style: const TextStyle(
+                  fontSize: 18.0,
+                ),
+                ),
               ],
             ),
           ],
@@ -260,3 +351,43 @@ class _QuizScreenState extends State<QuizScreen> {
     );
   }
 }
+
+// AppBar(
+// toolbarHeight: 85.0,
+// automaticallyImplyLeading: false,
+// title: Row(
+// mainAxisAlignment: MainAxisAlignment.spaceBetween,
+// children: <Widget>[
+// Builder(
+// builder: (context) => GestureDetector(
+// onTap: () {
+// Navigator.pop(context);
+//
+// quizEngine.reset();
+// },
+// child: const Icon(
+// Icons.home,
+// color: Colors.white,
+// size: 45.0,
+// ),
+// ),
+// ),
+// GestureDetector(
+// onTap: null,
+// child: const Image(
+// image: AssetImage('assets/images/USAFL Logo White.png'),
+// height: 65.0,
+// ),
+// ),
+// GestureDetector(
+// onTap: null,
+// child: const Icon(
+// Icons.help,
+// color: Colors.white,
+// size: 45.0,
+// ),
+// ),
+// ],
+// ),
+// centerTitle: true,
+// ),
