@@ -1,9 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:usafl/constants.dart';
+import 'package:usafl/views/application_selection_screen.dart';
+import 'package:usafl/views/checklist_selection_screen.dart';
+import 'package:usafl/views/home_screen.dart';
+import 'package:usafl/views/todo_list_screen.dart';
 import 'package:usafl/views/settings_screen.dart';
 import 'package:usafl/views/quiz_screen.dart';
-import 'package:usafl/main.dart';
+import 'package:usafl/views/about_screen.dart';
+
 
 class NavDrawer extends StatelessWidget {
+  const NavDrawer({super.key});
+
 
   @override
   Widget build(BuildContext context) {
@@ -11,38 +19,113 @@ class NavDrawer extends StatelessWidget {
       child: ListView(
         padding: EdgeInsets.zero,
         children: <Widget>[
-          const SizedBox(
+          SizedBox(
             height: 117.0,
             child: DrawerHeader(
-              child: Center(
+              decoration: BoxDecoration(
+                color: themeColor,
+              ),
+              child: const Center(
                 child: Text(
                   'Main Menu',
                   style: TextStyle(color: Colors.white, fontSize: 25),
                 ),
               ),
-              decoration: BoxDecoration(
-                color: Color(0xFF5b9bd5),
-              ),
             ),
           ),
           ListTile(
-            iconColor: Theme.of(context).primaryColor,
-            leading: const Icon(
-              Icons.list_alt,
+            iconColor: themeColor,
+            leading: Icon(
+              Icons.home,
+              color: Theme.of(context).primaryColor,
             ),
-            title: Text('Applications',
+            title: const Text('Dashboard',
               style: TextStyle(
                 fontSize: 20.0,
               ),
             ),
-            onTap: () => {},
+            onTap: () {
+              Navigator.of(context).pop();
+              Navigator.pushReplacement(context,
+                  MaterialPageRoute(builder: (context) => (HomeScreen())));
+            },
           ),
           ListTile(
-            iconColor: Theme.of(context).primaryColor,
-            leading: const Icon(
-              Icons.settings,
+            iconColor: themeColor,
+            leading: Icon(
+              Icons.list_alt,
+              color: Theme.of(context).primaryColor,
             ),
-            title: Text('Settings',
+            title: const Text('Applications',
+              style: TextStyle(
+                fontSize: 20.0,
+              ),
+            ),
+            onTap: () {
+              Navigator.of(context).pop();
+              Navigator.pushReplacement(context,
+                  MaterialPageRoute(builder: (context) => (ApplicationScreen())));
+            },
+          ),
+          ListTile(
+            iconColor: themeColor,
+            leading: Icon(
+              Icons.verified_user,
+              color: Theme.of(context).primaryColor,
+            ),
+            title: const Text('Compliance Checklists',
+              style: TextStyle(
+                fontSize: 20.0,
+              ),
+            ),
+            onTap: () {
+              Navigator.of(context).pop();
+              Navigator.pushReplacement(context,
+                  MaterialPageRoute(builder: (context) => (ChecklistScreen())));
+            },
+          ),
+          ListTile(
+            iconColor: themeColor,
+            leading: Icon(
+              Icons.list,
+              color: Theme.of(context).primaryColor,
+            ),
+            title: const Text('To-Do List',
+              style: TextStyle(
+                fontSize: 20.0,
+              ),
+            ),
+            onTap: () {
+              Navigator.of(context).pop();
+              Navigator.pushReplacement(context,
+                  MaterialPageRoute(builder: (context) => (ToDoListScreen())));
+            },
+          ),
+          ListTile(
+            iconColor: themeColor,
+            leading: Icon(
+              Icons.question_mark,
+              color: Theme.of(context).primaryColor,
+            ),
+            title: const Text('Test Your H-2A Knowledge',
+              style: TextStyle(
+                fontSize: 20.0,
+              ),
+            ),
+            onTap: () {
+              quizEngine.questionNumber = 0;
+              Navigator.of(context).pop();
+              Navigator.push(context,
+                MaterialPageRoute(builder: (context) => (QuizScreen())));
+            },
+          ),
+          ListTile(
+            iconColor: themeColor,
+            leading: Icon(
+              Icons.settings,
+              color: Theme.of(context).primaryColor,
+            ),
+            title: const Text('Settings',
               style: TextStyle(
                 fontSize: 20.0,
               ),
@@ -54,109 +137,21 @@ class NavDrawer extends StatelessWidget {
             },
           ),
           ListTile(
-            iconColor: Theme.of(context).primaryColor,
-            leading: const Icon(
+            iconColor: themeColor,
+            leading: Icon(
               Icons.info,
+              color: Theme.of(context).primaryColor,
             ),
-            title: Text('Test Your H-2A Knowledge',
+            title: const Text('About This App',
               style: TextStyle(
                 fontSize: 20.0,
               ),
             ),
             onTap: () {
               Navigator.of(context).pop();
-              Navigator.push(context,
-                MaterialPageRoute(builder: (context) => (QuizScreen())));
+              Navigator.pushReplacement(context,
+                  MaterialPageRoute(builder: (context) => (AboutScreen())));
             },
-          ),
-          const SizedBox(height: 25.0),
-          Padding(
-            padding: EdgeInsets.only(left: 15.0),
-            child: Text('Compliance Checklists',
-            style: TextStyle(
-              color: Theme.of(context).primaryColor,
-              fontSize: 20.0,
-              fontWeight: FontWeight.w700,
-            )
-            ),
-          ),
-          ListTile(
-            iconColor: Theme.of(context).primaryColor,
-            leading: const Icon(
-              Icons.verified_user,
-            ),
-            title: Text(
-              'Housing',
-              style: TextStyle(
-                fontSize: 20.0,
-              ),
-            ),
-            onTap: () => {},
-          ),
-          ListTile(
-            iconColor: Theme.of(context).primaryColor,
-            leading: const Icon(
-              Icons.verified_user,
-            ),
-            title: Text(
-              'Worker Arrival',
-              style: TextStyle(
-                fontSize: 20.0,
-              ),
-            ),
-            onTap: () => {},
-          ),
-          ListTile(
-            iconColor: Theme.of(context).primaryColor,
-            leading: const Icon(
-              Icons.verified_user,
-            ),
-            title: Text(
-              'Paying Workers',
-              style: TextStyle(
-                fontSize: 20.0,
-              ),
-            ),
-            onTap: () => {},
-          ),
-          ListTile(
-            iconColor: Theme.of(context).primaryColor,
-            leading: const Icon(
-              Icons.verified_user,
-            ),
-            title: Text(
-              'Worker Departure',
-              style: TextStyle(
-                fontSize: 20.0,
-              ),
-            ),
-            onTap: () => {},
-          ),
-          ListTile(
-            iconColor: Theme.of(context).primaryColor,
-            leading: const Icon(
-              Icons.verified_user,
-            ),
-            title: Text(
-              'Audit Prep',
-              style: TextStyle(
-                fontSize: 20.0,
-              ),
-            ),
-            onTap: () => {},
-          ),
-          ListTile(
-            iconColor: Theme.of(context).primaryColor,
-            leading: const Icon(
-              Icons.verified_user,
-            ),
-            title: Text(
-              'Miscellaneous',
-              style: TextStyle(
-                fontSize: 20.0,
-              ),
-            ),
-            onTap: () => {},
           ),
         ],
       ),

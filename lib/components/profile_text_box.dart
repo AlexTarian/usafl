@@ -26,11 +26,11 @@ class _ProfileTextBoxState extends State<ProfileTextBox> {
           child: TextField(
             controller: widget.controller,
             decoration: InputDecoration(
-              border: const OutlineInputBorder(),
+              border: OutlineInputBorder(),
               hintText: widget.hintText,
-              focusedBorder: const OutlineInputBorder(
+              focusedBorder: OutlineInputBorder(
                 borderSide: BorderSide(
-                    color: usaflAccent,
+                    color: Theme.of(context).primaryColor,
                     width: 4.0
                 ),
               ),
@@ -64,8 +64,9 @@ class _ProfileTextBoxState extends State<ProfileTextBox> {
               ),
             );
           },
-          child: const Icon(
-              Icons.help
+          child: Icon(
+              Icons.help,
+              color: Theme.of(context).primaryColor,
           ),
         ),
       ],

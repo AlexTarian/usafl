@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:usafl/constants.dart';
-import 'package:usafl/quiz_engine.dart';
+import 'package:usafl/services/quiz_engine.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:usafl/views/home_screen.dart';
 import 'package:usafl/components/custom_app_bar.dart';
+import 'package:usafl/components/nav_menu.dart';
 
 QuizEngine quizEngine = QuizEngine();
 
@@ -93,9 +94,6 @@ class _QuizScreenState extends State<QuizScreen> {
           titleStyle: TextStyle(
             color: Theme.of(context).primaryColor,
           ),
-          descStyle: TextStyle(
-            color: themeTextColor,
-          ),
         ),
         title: 'Oops...',
         desc: quizEngine.getExplanation(),
@@ -115,237 +113,250 @@ class _QuizScreenState extends State<QuizScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: NavDrawer(),
+      drawerEnableOpenDragGesture: false,
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(85.0),
         child: Builder(
           builder: (context) {
             return customAppBar(
-              iconL: Icons.home,
-              onPressedL: () {
-                Navigator.pop(context);
-                quizEngine.reset();
-              },
               iconR: Icons.help,
               onPressedR: () {null;},
             );
           }
         ),
       ),
-      body: SafeArea(
-        minimum: const EdgeInsets.all(30.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
-            SingleChildScrollView(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: <Widget>[
-                  const SizedBox(height: 20.0),
-                  Text('QUESTION ${quizEngine.questionNumber + 1}',
-                    style: TextStyle(
-                      color: Theme.of(context).primaryColor,
-                      fontSize: 30.0,
-                      fontWeight: FontWeight.w700,
-                    ),
-                  ),
-                  const SizedBox(height: 20.0),
-                  Text(
-                    quizEngine.getQuestionText(),
-                    style: const TextStyle(
-                      fontSize: 30.0,
-                    ),
-                  ),
-                  const SizedBox(height: 40.0),
-                  Row(
-                    children: <Widget>[
-                      const Text('A:  ',
-                      style: TextStyle(
-                        fontSize: 20.0,
-                        fontWeight: FontWeight.w700,
-                      ),
-                      ),
-                      Flexible(
-                        child: Text(
-                          quizEngine.getQuestionOptionA(),
-                          style: const TextStyle(
-                            fontSize: 20.0,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 15.0),
-                  Row(
-                    children: <Widget>[
-                      const Text('B:  ',
-                        style: TextStyle(
-                          fontSize: 20.0,
-                          fontWeight: FontWeight.w700,
-                        ),
-                      ),
-                      Flexible(
-                        child: Text(
-                          quizEngine.getQuestionOptionB(),
-                          style: const TextStyle(
-                            fontSize: 20.0,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 15.0),
-                  Row(
-                    children: <Widget>[
-                      const Text('C:  ',
-                        style: TextStyle(
-                          fontSize: 20.0,
-                          fontWeight: FontWeight.w700,
-                        ),
-                      ),
-                      Flexible(
-                        child: Text(
-                          quizEngine.getQuestionOptionC(),
-                          style: const TextStyle(
-                            fontSize: 20.0,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 15.0),
-                  Row(
-                    children: <Widget>[
-                      const Text('D:  ',
-                        style: TextStyle(
-                          fontSize: 20.0,
-                          fontWeight: FontWeight.w700,
-                        ),
-                      ),
-                      Flexible(
-                        child: Text(
-                          quizEngine.getQuestionOptionD(),
-                          style: const TextStyle(
-                            fontSize: 20.0,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
+      body: Center(
+        child: Container(
+          height: double.infinity,
+          decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [
+                  Theme.of(context).scaffoldBackgroundColor,
+                  Theme.of(context).primaryColorLight,
+                  Theme.of(context).primaryColorDark,
                 ],
-              ),
-            ),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.end,
+              )
+          ),
+          child: SafeArea(
+            minimum: const EdgeInsets.all(30.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
-                Row(
-                  children: [
-                    Expanded(
-                      child: TextButton(
-                        child: Container(
-                          width: double.infinity,
-                          height: 45.0,
-                          decoration: BoxDecoration(
-                            color: Theme.of(context).primaryColor,
-                            borderRadius: BorderRadius.circular(10.0),
+                SingleChildScrollView(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: <Widget>[
+                      const SizedBox(height: 20.0),
+                      Text('QUESTION ${quizEngine.questionNumber + 1}',
+                        style: TextStyle(
+                          color: Theme.of(context).primaryColor,
+                          fontSize: 30.0,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                      const SizedBox(height: 20.0),
+                      Text(
+                        quizEngine.getQuestionText(),
+                        style: const TextStyle(
+                          fontSize: 30.0,
+                        ),
+                      ),
+                      const SizedBox(height: 40.0),
+                      Row(
+                        children: <Widget>[
+                          const Text('A:  ',
+                          style: TextStyle(
+                            fontSize: 20.0,
+                            fontWeight: FontWeight.w700,
                           ),
-                          child: const Center(
-                            child: Text('A',
-                              style: TextStyle(
-                                color: Colors.white,
+                          ),
+                          Flexible(
+                            child: Text(
+                              quizEngine.getQuestionOptionA(),
+                              style: const TextStyle(
                                 fontSize: 20.0,
                               ),
                             ),
                           ),
-                        ),
-                        onPressed: () {
-                          checkAnswer('A');
-                        },
+                        ],
                       ),
+                      const SizedBox(height: 15.0),
+                      Row(
+                        children: <Widget>[
+                          const Text('B:  ',
+                            style: TextStyle(
+                              fontSize: 20.0,
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
+                          Flexible(
+                            child: Text(
+                              quizEngine.getQuestionOptionB(),
+                              style: const TextStyle(
+                                fontSize: 20.0,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 15.0),
+                      Row(
+                        children: <Widget>[
+                          const Text('C:  ',
+                            style: TextStyle(
+                              fontSize: 20.0,
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
+                          Flexible(
+                            child: Text(
+                              quizEngine.getQuestionOptionC(),
+                              style: const TextStyle(
+                                fontSize: 20.0,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 15.0),
+                      Row(
+                        children: <Widget>[
+                          const Text('D:  ',
+                            style: TextStyle(
+                              fontSize: 20.0,
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
+                          Flexible(
+                            child: Text(
+                              quizEngine.getQuestionOptionD(),
+                              style: const TextStyle(
+                                fontSize: 20.0,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: <Widget>[
+                    Row(
+                      children: [
+                        Expanded(
+                          child: TextButton(
+                            child: Container(
+                              width: double.infinity,
+                              height: 45.0,
+                              decoration: BoxDecoration(
+                                color: Theme.of(context).primaryColor,
+                                borderRadius: BorderRadius.circular(10.0),
+                              ),
+                              child: const Center(
+                                child: Text('A',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 20.0,
+                                  ),
+                                ),
+                              ),
+                            ),
+                            onPressed: () {
+                              checkAnswer('A');
+                            },
+                          ),
+                        ),
+                        Expanded(
+                          child: TextButton(
+                            child: Container(
+                              width: double.infinity,
+                              height: 45.0,
+                              decoration: BoxDecoration(
+                                color: Theme.of(context).primaryColor,
+                                borderRadius: BorderRadius.circular(10.0),
+                              ),
+                              child: const Center(
+                                child: Text('B',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 20.0,
+                                  ),
+                                ),
+                              ),
+                            ),
+                            onPressed: () {
+                              checkAnswer('B');
+                            },
+                          ),
+                        ),
+                      ],
                     ),
-                    Expanded(
-                      child: TextButton(
-                        child: Container(
-                          width: double.infinity,
-                          height: 45.0,
-                          decoration: BoxDecoration(
-                            color: Theme.of(context).primaryColor,
-                            borderRadius: BorderRadius.circular(10.0),
-                          ),
-                          child: const Center(
-                            child: Text('B',
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 20.0,
+                    Row(
+                      children: [
+                        Expanded(
+                          child: TextButton(
+                            child: Container(
+                              width: double.infinity,
+                              height: 45.0,
+                              decoration: BoxDecoration(
+                                color: Theme.of(context).primaryColor,
+                                borderRadius: BorderRadius.circular(10.0),
+                              ),
+                              child: const Center(
+                                child: Text('C',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 20.0,
+                                  ),
+                                ),
                               ),
                             ),
+                            onPressed: () {
+                              checkAnswer('C');
+                            },
                           ),
                         ),
-                        onPressed: () {
-                          checkAnswer('B');
-                        },
-                      ),
+                        Expanded(
+                          child: TextButton(
+                            child: Container(
+                              width: double.infinity,
+                              height: 45.0,
+                              decoration: BoxDecoration(
+                                color: Theme.of(context).primaryColor,
+                                borderRadius: BorderRadius.circular(10.0),
+                              ),
+                              child: const Center(
+                                child: Text('D',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 20.0,
+                                  ),
+                                ),
+                              ),
+                            ),
+                            onPressed: () {
+                              checkAnswer('D');
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 20.0),
+                    Text('Correct: $correct | Incorrect: $incorrect | Remaining: $remaining',
+                    style: const TextStyle(
+                      fontSize: 14.0,
+                    ),
                     ),
                   ],
-                ),
-                Row(
-                  children: [
-                    Expanded(
-                      child: TextButton(
-                        child: Container(
-                          width: double.infinity,
-                          height: 45.0,
-                          decoration: BoxDecoration(
-                            color: Theme.of(context).primaryColor,
-                            borderRadius: BorderRadius.circular(10.0),
-                          ),
-                          child: const Center(
-                            child: Text('C',
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 20.0,
-                              ),
-                            ),
-                          ),
-                        ),
-                        onPressed: () {
-                          checkAnswer('C');
-                        },
-                      ),
-                    ),
-                    Expanded(
-                      child: TextButton(
-                        child: Container(
-                          width: double.infinity,
-                          height: 45.0,
-                          decoration: BoxDecoration(
-                            color: Theme.of(context).primaryColor,
-                            borderRadius: BorderRadius.circular(10.0),
-                          ),
-                          child: const Center(
-                            child: Text('D',
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 20.0,
-                              ),
-                            ),
-                          ),
-                        ),
-                        onPressed: () {
-                          checkAnswer('D');
-                        },
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 20.0),
-                Text('Correct: $correct | Incorrect: $incorrect | Remaining: $remaining',
-                style: const TextStyle(
-                  fontSize: 18.0,
-                ),
                 ),
               ],
             ),
-          ],
+          ),
         ),
       ),
     );

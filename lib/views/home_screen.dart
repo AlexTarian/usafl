@@ -51,8 +51,6 @@ class _HomeScreenState extends State<HomeScreen> {
         child: Builder(
           builder: (context) {
             return customAppBar(
-              iconL: Icons.menu,
-              onPressedL: () => Scaffold.of(context).openDrawer(),
                 iconR: Icons.person_outline_rounded,
                 onPressedR: () {
                   Navigator.pushReplacement(context,
@@ -72,11 +70,27 @@ class _HomeScreenState extends State<HomeScreen> {
           }
         ),
       ),
-      body: const Center(
-          child: Text(
-        "Home page",
-        textScaleFactor: 2,
-      )),
+      body: Center(
+        child: Container(
+          height: double.infinity,
+          decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [
+                  Theme.of(context).scaffoldBackgroundColor,
+                  Theme.of(context).primaryColorLight,
+                  Theme.of(context).primaryColorDark,
+                ],
+              )
+          ),
+          child: Center(
+              child: Text(
+            "Home page",
+            textScaleFactor: 2,
+          )),
+        ),
+      ),
     );
   }
 }

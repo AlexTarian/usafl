@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:usafl/constants.dart';
 import 'package:usafl/views/splash_screen.dart';
+import 'package:usafl/services/sql_helper.dart';
 
 late SharedPreferences prefs;
 String userName = '';
@@ -17,6 +18,7 @@ bool isLightMode = true;
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   prefs = await SharedPreferences.getInstance();
+  SQLHelper.initializeDB();
   getSharedPrefs(prefs);
   runApp(MyApp());
 }
@@ -55,7 +57,7 @@ class _MyAppState extends State<MyApp> {
         return MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Splash Screen',
-        theme: ThemeData(primarySwatch: customPrimaryColor, primaryColor: usaflBlue, primaryColorLight: Colors.white),
+        theme: lightTheme,
         darkTheme: MyApp.aestheticMode ? aestheticTheme : darkTheme,
         themeMode: currentMode,
         home: SplashScreen(

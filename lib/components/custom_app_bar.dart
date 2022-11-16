@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:usafl/components/nav_menu.dart';
 
 class customAppBar extends StatelessWidget {
   customAppBar({
-    required this.iconL,
-    required this.onPressedL,
+    //required this.iconL,
+    //required this.onPressedL,
     required this.iconR,
     required this.onPressedR,
   });
 
-  final IconData iconL;
-  final VoidCallback onPressedL;
+  //final IconData iconL;
+  //final VoidCallback onPressedL;
   final IconData iconR;
   final VoidCallback onPressedR;
 
@@ -23,10 +24,9 @@ class customAppBar extends StatelessWidget {
         children: <Widget>[
           Builder(
             builder: (context) => GestureDetector(
-              onTap: onPressedL,
-              child: Icon(
-                iconL,
-                color: Theme.of(context).primaryColorLight,
+              onTap: () => Scaffold.of(context).openDrawer(),
+              child: Icon(Icons.menu,
+                color: Colors.white,
                 size: 45.0,
               ),
             ),
@@ -42,7 +42,7 @@ class customAppBar extends StatelessWidget {
             onTap: onPressedR,
             child: Icon(
               iconR,
-              color: Theme.of(context).primaryColorLight,
+              color: Colors.white,
               size: 45.0,
             ),
           ),
