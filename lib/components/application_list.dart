@@ -3,6 +3,7 @@ import 'package:intl/intl.dart';
 import 'package:flutter/services.dart';
 import 'package:usafl/components/aewr_list.dart';
 import 'package:usafl/components/custom_input_formatter.dart';
+import 'package:usafl/components/duties_list.dart';
 
 PageController pController = PageController();
 
@@ -30,7 +31,8 @@ class _ApplicationFormState extends State<ApplicationForm> {
   TextEditingController email = TextEditingController();
   TextEditingController fein = TextEditingController();
   TextEditingController workersReq = TextEditingController();
-  bool needType = true;
+  bool needType = false;
+  bool wageType = false;
   TextEditingController startDateInput = TextEditingController();
   TextEditingController endDateInput = TextEditingController();
   DateTime start = DateTime.now();
@@ -55,25 +57,23 @@ class _ApplicationFormState extends State<ApplicationForm> {
   TextEditingController phaseOut = TextEditingController(text: 'PM');
   TextEditingController paySchedule = TextEditingController(text: 'Select Frequency');
   TextEditingController payDay = TextEditingController(text: 'Select Pay Day');
+  TextEditingController jobDescription = TextEditingController(text: 'Job Duties include: ');
+  TextEditingController jobDescriptionEditor = TextEditingController();
+  int tasks = 0;
+  int aeoTasks = 0;
+  int genTasks = 0;
+  int livTasks = 0;
+  int mecTasks = 0;
+  int winTasks = 0;
   bool toggleAlt = false;
-  List<String> payScheduleList = <String>['Weekly', 'Bi-Weekly', 'Twice per Month'];
-  String dropdownValue = 'Weekly';
-  List<String> payDayList = [
-    '1st & 15th',
-    'Sunday',
-    'Monday',
-    'Tuesday',
-    'Wednesday',
-    'Thursday',
-    'Friday',
-    'Saturday'
-  ];
+  List<bool> _isChecked = [];
 
   @override
   void initState() {
     startDateInput.text = "";
     endDateInput.text = ""; //set the initial value of text field
     super.initState();
+    _isChecked = List<bool>.filled(DutiesList().checklist.length, false);
   }
 
   DateTime now = DateTime.now();
@@ -157,7 +157,9 @@ class _ApplicationFormState extends State<ApplicationForm> {
                           child: Container(
                             padding: const EdgeInsets.all(5.0),
                             decoration: BoxDecoration(
-                              border: Border.all(width: 2, color: Theme.of(context).primaryColor),
+                              border: Border.all(
+                                  width: 2,
+                                  color: Theme.of(context).primaryColor),
                             ),
                             child: DropdownButton<String>(
                               isExpanded: true,
@@ -171,13 +173,19 @@ class _ApplicationFormState extends State<ApplicationForm> {
                               onChanged: (String? newValue) {
                                 setState(() {
                                   state.text = newValue!;
-                                  aewr = double.parse(AewrList().stateAewrList[newValue]!);
-                                  wageRate.text = AewrList().stateAewrList[newValue]!;
-                                  enteredWage = double.parse(AewrList().stateAewrList[newValue]!);
+                                  aewr = double.parse(
+                                      AewrList().stateAewrList[newValue]!);
+                                  wageRate.text =
+                                      AewrList().stateAewrList[newValue]!;
+                                  enteredWage = double.parse(
+                                      AewrList().stateAewrList[newValue]!);
                                 });
                               },
-                              items: AewrList().stateAewrList.keys
-                                  .map<DropdownMenuItem<String>>((String value) {
+                              items: AewrList()
+                                  .stateAewrList
+                                  .keys
+                                  .map<DropdownMenuItem<String>>(
+                                      (String value) {
                                 return DropdownMenuItem<String>(
                                   value: value,
                                   child: Text(value),
@@ -234,7 +242,7 @@ class _ApplicationFormState extends State<ApplicationForm> {
                     const SizedBox(height: 20.0),
                     ApplicationTextField(
                         label: 'Workers Requested', controller: workersReq),
-                    const SizedBox(height: 40.0),
+                    const SizedBox(height: 25.0),
                     Text(
                       'Type of Need',
                       style: TextStyle(
@@ -249,9 +257,11 @@ class _ApplicationFormState extends State<ApplicationForm> {
                           flex: 1,
                           child: GestureDetector(
                             child: Text(
-                              'One-Time Only',
+                              'Annual',
                               style: TextStyle(
-                                color: needType ? Colors.white24 : Theme.of(context).primaryColor,
+                                color: needType
+                                    ? Colors.white24
+                                    : Theme.of(context).primaryColor,
                                 fontSize: 18.0,
                                 fontWeight: FontWeight.w700,
                               ),
@@ -264,22 +274,24 @@ class _ApplicationFormState extends State<ApplicationForm> {
                           ),
                         ),
                         Switch(
-                            activeColor: Theme.of(context).primaryColor,
-                            inactiveThumbColor: Theme.of(context).primaryColor,
-                            value: needType,
-                            onChanged: (typeSelected) {
-                              setState(() {
-                                needType = typeSelected;
-                              });
-                            },
+                          activeColor: Theme.of(context).primaryColor,
+                          inactiveThumbColor: Theme.of(context).primaryColor,
+                          value: needType,
+                          onChanged: (typeSelected) {
+                            setState(() {
+                              needType = typeSelected;
+                            });
+                          },
                         ),
                         Flexible(
                           flex: 1,
                           child: GestureDetector(
                             child: Text(
-                              'Recurring Annually',
+                              'One-Time Only',
                               style: TextStyle(
-                                color: needType ? Theme.of(context).primaryColor : Colors.white24,
+                                color: needType
+                                    ? Theme.of(context).primaryColor
+                                    : Colors.white24,
                                 fontSize: 18.0,
                                 fontWeight: FontWeight.w700,
                               ),
@@ -293,7 +305,7 @@ class _ApplicationFormState extends State<ApplicationForm> {
                         ),
                       ],
                     ),
-                    const SizedBox(height: 30.0),
+                    const SizedBox(height: 25.0),
                     Text(
                       'Period of Need',
                       style: TextStyle(
@@ -307,7 +319,7 @@ class _ApplicationFormState extends State<ApplicationForm> {
                           color: Theme.of(context).primaryColor,
                           fontSize: 16.0),
                     ),
-                    const SizedBox(height: 15.0),
+                    const SizedBox(height: 10.0),
                     Row(
                       children: <Widget>[
                         Flexible(
@@ -331,9 +343,15 @@ class _ApplicationFormState extends State<ApplicationForm> {
                               FocusScope.of(context).requestFocus(FocusNode());
                               DateTime? pickedDate = await showDatePicker(
                                 context: context,
-                                firstDate: DateTime.now().add(const Duration(days: 50)),
-                                lastDate: DateTime.now().add(const Duration(days: 730)),
-                                initialDate: start.isAfter(DateTime.now().add(const Duration(days: 50))) ? start : DateTime.now().add(const Duration(days: 50)),
+                                firstDate: DateTime.now()
+                                    .add(const Duration(days: 50)),
+                                lastDate: DateTime.now()
+                                    .add(const Duration(days: 730)),
+                                initialDate: start.isAfter(DateTime.now()
+                                        .add(const Duration(days: 50)))
+                                    ? start
+                                    : DateTime.now()
+                                        .add(const Duration(days: 50)),
                               );
                               if (pickedDate != null) {
                                 String formattedDate =
@@ -374,9 +392,18 @@ class _ApplicationFormState extends State<ApplicationForm> {
                               FocusScope.of(context).requestFocus(FocusNode());
                               DateTime? pickedDate = await showDatePicker(
                                 context: context,
-                                firstDate: start.isAfter(DateTime.now()) ? start.add(const Duration(days: 1)) : DateTime.now().add(const Duration(days: 51)),
-                                lastDate: DateTime.now().add(const Duration(days: 730)),
-                                initialDate: start.isAfter(DateTime.now()) ? (end.isAfter(start) ? end : start.add(const Duration(days: 1))) : DateTime.now().add(const Duration(days: 51)),
+                                firstDate: start.isAfter(DateTime.now())
+                                    ? start.add(const Duration(days: 1))
+                                    : DateTime.now()
+                                        .add(const Duration(days: 51)),
+                                lastDate: DateTime.now()
+                                    .add(const Duration(days: 730)),
+                                initialDate: start.isAfter(DateTime.now())
+                                    ? (end.isAfter(start)
+                                        ? end
+                                        : start.add(const Duration(days: 1)))
+                                    : DateTime.now()
+                                        .add(const Duration(days: 51)),
                               );
 
                               if (pickedDate != null) {
@@ -393,7 +420,7 @@ class _ApplicationFormState extends State<ApplicationForm> {
                         ),
                       ],
                     ),
-                    const SizedBox(height: 15.0),
+                    const SizedBox(height: 10.0),
                     Visibility(
                       visible: start.isAfter(end) ? true : false,
                       child: const Text(
@@ -405,7 +432,8 @@ class _ApplicationFormState extends State<ApplicationForm> {
                       ),
                     ),
                     Visibility(
-                      visible: end.isAfter(DateTime(start.year, start.month + 10, start.day)),
+                      visible: end.isAfter(
+                          DateTime(start.year, start.month + 10, start.day)),
                       child: const Text(
                         'Warning: The Period of Need cannot be longer than 10 months.',
                         style: TextStyle(
@@ -414,33 +442,133 @@ class _ApplicationFormState extends State<ApplicationForm> {
                             fontWeight: FontWeight.w700),
                       ),
                     ),
-                    const SizedBox(height: 25.0),
+                    const SizedBox(height: 15.0),
                     Text(
-                      'Hourly Wage Offered (USD)',
+                      'Wage Type',
                       style: TextStyle(
                           color: Theme.of(context).primaryColor,
                           fontSize: 20.0,
                           fontWeight: FontWeight.w700),
                     ),
-                    Text(
-                      '(Pre-filled amount is your state\'s minimum.)',
-                      style: TextStyle(
-                          color: Theme.of(context).primaryColor,
-                          fontSize: 16.0),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        Flexible(
+                          flex: 1,
+                          child: GestureDetector(
+                            child: Text(
+                              'Hourly',
+                              style: TextStyle(
+                                color: wageType
+                                    ? Colors.white24
+                                    : Theme.of(context).primaryColor,
+                                fontSize: 18.0,
+                                fontWeight: FontWeight.w700,
+                              ),
+                            ),
+                            onTap: () {
+                              setState(() {
+                                wageType = false;
+                              });
+                            },
+                          ),
+                        ),
+                        Switch(
+                          activeColor: Theme.of(context).primaryColor,
+                          inactiveThumbColor: Theme.of(context).primaryColor,
+                          value: wageType,
+                          onChanged: (typeSelected) {
+                            setState(() {
+                              wageType = typeSelected;
+                            });
+                          },
+                        ),
+                        Flexible(
+                          flex: 1,
+                          child: GestureDetector(
+                            child: Text(
+                              'Piece Rate',
+                              style: TextStyle(
+                                color: wageType
+                                    ? Theme.of(context).primaryColor
+                                    : Colors.white24,
+                                fontSize: 18.0,
+                                fontWeight: FontWeight.w700,
+                              ),
+                            ),
+                            onTap: () {
+                              setState(() {
+                                wageType = true;
+                              });
+                            },
+                          ),
+                        ),
+                      ],
                     ),
-                    const SizedBox(height: 15.0),
-                    ApplicationTextField(
-                        label: 'Wage Rate', controller: wageRate,keyboard: TextInputType.number,
-                      format: <TextInputFormatter>[
-                      CustomMinValueDoubleFormatter(minInputValue: 00.00),
-                    ],
-                      onChanged: (value) {
+                    SizedBox(height: 25.0),
+                    Visibility(
+                      visible: !wageType,
+                      child: Text(
+                        'Hourly Wage Offered (USD)',
+                        style: TextStyle(
+                            color: Theme.of(context).primaryColor,
+                            fontSize: 20.0,
+                            fontWeight: FontWeight.w700),
+                      ),
+                    ),
+                    Visibility(
+                      visible: !wageType,
+                      child: Text(
+                        '(Pre-filled amount is your state\'s minimum.)',
+                        style: TextStyle(
+                            color: Theme.of(context).primaryColor,
+                            fontSize: 16.0),
+                      ),
+                    ),
+                    Visibility(
+                      visible: wageType,
+                      child: Text(
+                        'Piece Rate Amount & Details',
+                        style: TextStyle(
+                            color: Theme.of(context).primaryColor,
+                            fontSize: 20.0,
+                            fontWeight: FontWeight.w700),
+                      ),
+                    ),
+                    const SizedBox(height: 10.0),
+                    Visibility(
+                      visible: !wageType,
+                      child: ApplicationTextField(
+                        label: 'Wage Rate',
+                        controller: wageRate,
+                        keyboard: TextInputType.number,
+                        format: <TextInputFormatter>[
+                          CustomMinValueDoubleFormatter(minInputValue: 00.00),
+                        ],
+                        onChanged: (value) {
                           setState(() {
                             enteredWage = double.parse(value!);
                           });
-                      },
+                        },
+                      ),
                     ),
-                    const SizedBox(height: 15.0),
+                    Visibility(
+                      visible: wageType,
+                      child: ApplicationTextField(
+                        label: 'Piece Rate',
+                        controller: wageRate,
+                        keyboard: TextInputType.number,
+                        format: <TextInputFormatter>[
+                          CustomMinValueDoubleFormatter(minInputValue: 00.00),
+                        ],
+                        onChanged: (value) {
+                          setState(() {
+                            enteredWage = double.parse(value!);
+                          });
+                        },
+                      ),
+                    ),
+                    const SizedBox(height: 10.0),
                     Visibility(
                       visible: enteredWage < aewr,
                       child: Text(
@@ -451,14 +579,15 @@ class _ApplicationFormState extends State<ApplicationForm> {
                             fontWeight: FontWeight.w700),
                       ),
                     ),
-                    const SizedBox(height: 30.0),
+                    const SizedBox(height: 15.0),
                     ApplicationSwitch(
-                      label: 'Will the job require workers to be on-call 24 hours a day, 7 days a week?',
+                      label:
+                          'Will the job require workers to be on-call 24 hours a day, 7 days a week?',
                       toggle: alwaysOnCall,
                       onChanged: (value) {
-                          setState(() {
-                            alwaysOnCall = value;
-                          });
+                        setState(() {
+                          alwaysOnCall = value;
+                        });
                       },
                     ),
                     const SizedBox(height: 500.0),
@@ -691,12 +820,12 @@ class _ApplicationFormState extends State<ApplicationForm> {
                     ),
                     Visibility(
                       visible: (int.parse(sun.text) != 0 &&
-                          int.parse(mon.text) != 0 &&
-                          int.parse(tue.text) != 0 &&
-                          int.parse(wed.text) != 0 &&
-                          int.parse(thu.text) != 0 &&
-                          int.parse(fri.text) != 0 &&
-                          int.parse(sat.text) != 0)
+                              int.parse(mon.text) != 0 &&
+                              int.parse(tue.text) != 0 &&
+                              int.parse(wed.text) != 0 &&
+                              int.parse(thu.text) != 0 &&
+                              int.parse(fri.text) != 0 &&
+                              int.parse(sat.text) != 0)
                           ? true
                           : false,
                       child: const Text(
@@ -712,12 +841,12 @@ class _ApplicationFormState extends State<ApplicationForm> {
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: <Widget>[
                         Expanded(
-                          child: Text('Expected Clock In:',
+                          child: Text(
+                            'Expected Clock In:',
                             style: TextStyle(
-                              color: Theme.of(context).primaryColor,
-                              fontSize: 18.0,
-                              fontWeight: FontWeight.w700
-                            ),
+                                color: Theme.of(context).primaryColor,
+                                fontSize: 18.0,
+                                fontWeight: FontWeight.w700),
                           ),
                         ),
                         const SizedBox(width: 10.0),
@@ -754,35 +883,40 @@ class _ApplicationFormState extends State<ApplicationForm> {
                             )),
                         const SizedBox(width: 10.0),
                         Flexible(
-                            flex: 1,
-                            child: Container(
-                              padding: const EdgeInsets.all(5.0),
-                              decoration: BoxDecoration(
-                                border: Border.all(width: 2, color: Theme.of(context).primaryColor),
+                          flex: 1,
+                          child: Container(
+                            padding: const EdgeInsets.all(5.0),
+                            decoration: BoxDecoration(
+                              border: Border.all(
+                                  width: 2,
+                                  color: Theme.of(context).primaryColor),
+                            ),
+                            child: DropdownButton<String>(
+                              isExpanded: true,
+                              value: phaseIn.text,
+                              elevation: 16,
+                              underline: Container(
+                                width: double.infinity,
+                                height: 2,
+                                color: Colors.transparent,
                               ),
-                              child: DropdownButton<String>(
-                                isExpanded: true,
-                                value: phaseIn.text,
-                                elevation: 16,
-                                underline: Container(
-                                  width: double.infinity,
-                                  height: 2,
-                                  color: Colors.transparent,
-                                ),
-                                onChanged: (String? newValue) {
-                                  setState(() {
-                                    phaseIn.text = newValue!;
-                                  });
-                                },
-                                items: <String>['AM','PM']
-                                    .map<DropdownMenuItem<String>>((String value) {
-                                  return DropdownMenuItem<String>(
-                                    value: value,
-                                    child: Text(value),
-                                  );
-                                }).toList(),
-                              ),
-                            ),),
+                              onChanged: (String? newValue) {
+                                setState(() {
+                                  phaseIn.text = newValue!;
+                                });
+                              },
+                              items: <String>[
+                                'AM',
+                                'PM'
+                              ].map<DropdownMenuItem<String>>((String value) {
+                                return DropdownMenuItem<String>(
+                                  value: value,
+                                  child: Text(value),
+                                );
+                              }).toList(),
+                            ),
+                          ),
+                        ),
                       ],
                     ),
                     const SizedBox(height: 10.0),
@@ -790,12 +924,12 @@ class _ApplicationFormState extends State<ApplicationForm> {
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: <Widget>[
                         Expanded(
-                          child: Text('Expected Clock Out:',
+                          child: Text(
+                            'Expected Clock Out:',
                             style: TextStyle(
                                 color: Theme.of(context).primaryColor,
                                 fontSize: 18.0,
-                                fontWeight: FontWeight.w700
-                            ),
+                                fontWeight: FontWeight.w700),
                           ),
                         ),
                         const SizedBox(width: 10.0),
@@ -836,7 +970,9 @@ class _ApplicationFormState extends State<ApplicationForm> {
                           child: Container(
                             padding: const EdgeInsets.all(5.0),
                             decoration: BoxDecoration(
-                              border: Border.all(width: 2, color: Theme.of(context).primaryColor),
+                              border: Border.all(
+                                  width: 2,
+                                  color: Theme.of(context).primaryColor),
                             ),
                             child: DropdownButton<String>(
                               isExpanded: true,
@@ -852,15 +988,18 @@ class _ApplicationFormState extends State<ApplicationForm> {
                                   phaseOut.text = newValue!;
                                 });
                               },
-                              items: <String>['AM','PM']
-                                  .map<DropdownMenuItem<String>>((String value) {
+                              items: <String>[
+                                'AM',
+                                'PM'
+                              ].map<DropdownMenuItem<String>>((String value) {
                                 return DropdownMenuItem<String>(
                                   value: value,
                                   child: Text(value),
                                 );
                               }).toList(),
                             ),
-                          ),),
+                          ),
+                        ),
                       ],
                     ),
                     const SizedBox(height: 40.0),
@@ -878,7 +1017,9 @@ class _ApplicationFormState extends State<ApplicationForm> {
                           child: Container(
                             padding: const EdgeInsets.all(5.0),
                             decoration: BoxDecoration(
-                              border: Border.all(width: 2, color: Theme.of(context).primaryColor),
+                              border: Border.all(
+                                  width: 2,
+                                  color: Theme.of(context).primaryColor),
                             ),
                             child: DropdownButton<String>(
                               isExpanded: true,
@@ -894,8 +1035,12 @@ class _ApplicationFormState extends State<ApplicationForm> {
                                   paySchedule.text = newValue!;
                                 });
                               },
-                              items: <String>['Select Frequency', 'Weekly', 'Bi-Weekly', 'Twice per Month']
-                                  .map<DropdownMenuItem<String>>((String value) {
+                              items: <String>[
+                                'Select Frequency',
+                                'Weekly',
+                                'Bi-Weekly',
+                                'Twice per Month'
+                              ].map<DropdownMenuItem<String>>((String value) {
                                 return DropdownMenuItem<String>(
                                   value: value,
                                   child: Text(value),
@@ -911,7 +1056,9 @@ class _ApplicationFormState extends State<ApplicationForm> {
                             child: Container(
                               padding: const EdgeInsets.all(5.0),
                               decoration: BoxDecoration(
-                                border: Border.all(width: 2, color: Theme.of(context).primaryColor),
+                                border: Border.all(
+                                    width: 2,
+                                    color: Theme.of(context).primaryColor),
                               ),
                               child: DropdownButton<String>(
                                 isExpanded: true,
@@ -936,8 +1083,7 @@ class _ApplicationFormState extends State<ApplicationForm> {
                                   'Thursday',
                                   'Friday',
                                   'Saturday'
-                                ]
-                                    .map<DropdownMenuItem<String>>((String value) {
+                                ].map<DropdownMenuItem<String>>((String value) {
                                   return DropdownMenuItem<String>(
                                     value: value,
                                     child: Text(value),
@@ -953,137 +1099,202 @@ class _ApplicationFormState extends State<ApplicationForm> {
                   ],
                 ),
               ),
+              ListView.separated(
+                physics: const BouncingScrollPhysics(),
+                separatorBuilder: (context, index) =>
+                    const SizedBox(height: 10),
+                itemCount: DutiesList().checklist.length,
+                itemBuilder: (BuildContext context, int index) {
+                  //return StatefulBuilder(
+                  //builder: (context, setState) {
+                  return Container(
+                    decoration: BoxDecoration(
+                      //borderRadius: const BorderRadius.all(Radius.circular(10)),
+                      border: Border(
+                        top: BorderSide(
+                            width: 2, color: Theme.of(context).primaryColor),
+                      ),
+                    ),
+                    child: CheckboxListTile(
+                      title: Text(
+                        DutiesList().checklist[index].item,
+                        style: const TextStyle(fontSize: 18.0),
+                      ),
+                      secondary: Icon(DutiesList().checklist[index].picture,
+                          color: Theme.of(context).primaryColor),
+                      value: _isChecked[index],
+                      activeColor: Theme.of(context).primaryColor,
+                      onChanged: (value) {
+                        String category =
+                            DutiesList().checklist[index].category;
+                        setState(() {
+                          _isChecked[index] = value!;
+
+                          if (value) {
+                            tasks++;
+                            jobDescription.text =
+                                '${jobDescription.text.replaceRange(jobDescription.text.length-1,jobDescription.text.length,tasks == 1 ? '' : ';')} ${DutiesList().checklist[index].item}.';
+                            if (category == 'Equipment') {
+                              aeoTasks++;
+                            } else if (category == 'General') {
+                              genTasks++;
+                            } else if (category == 'Livestock') {
+                              livTasks++;
+                            } else if (category == 'Mechanical') {
+                              mecTasks++;
+                            } else if (category == 'Winter') {
+                              winTasks++;
+                            }
+                          } else {
+                            tasks--;
+                            jobDescription.text = jobDescription.text
+                                .replaceAll(
+                                    '${DutiesList().checklist[index].item}; ',
+                                    '')
+                                .replaceAll(
+                                    '${DutiesList().checklist[index].item}.',
+                                    '');
+                            if (category == 'Equipment') {
+                              aeoTasks--;
+                            } else if (category == 'General') {
+                              genTasks--;
+                            } else if (category == 'Livestock') {
+                              livTasks--;
+                            } else if (category == 'Mechanical') {
+                              mecTasks--;
+                            } else if (category == 'Winter') {
+                              winTasks--;
+                            }
+                          }
+                        });
+                        // },
+                        // );
+                      },
+                    ),
+                  );
+                },
+              ),
+              SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    const SizedBox(height: 20.0),
+                    SizedBox(
+                      height: (MediaQuery.of(context).size.height)*.6,
+                      child: ApplicationTextField(
+                        label: 'Job Duties (Tap to Edit)',
+                        controller: jobDescription,
+                        expands: true,
+                      ),
+                    ),
+                    const SizedBox(height: 20.0),
+                    const SizedBox(height: 500.0),
+                  ],
+                ),
+              ),
               SingleChildScrollView(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     const SizedBox(height: 40.0),
                     ApplicationSwitch(
-                      label: 'Have you used the H-2A Program Before?',
+                      label: 'Have you used the H-2A Program before?',
                       toggle: toggleAlt,
-                      onChanged: (value) {
-
-                      },
+                      onChanged: (value) {},
                     ),
                     ApplicationSwitch(
-                        label: 'Workers Already Selected',
+                      label: 'Have you already selected Workers?',
                       toggle: toggleAlt,
-                      onChanged: (value) {
-
-                      },
+                      onChanged: (value) {},
                     ),
                     ApplicationSwitch(
-                        label: 'Are you willing to train workers?',
+                      label: 'Are you willing to train workers?',
                       toggle: toggleAlt,
-                      onChanged: (value) {
-
-                      },
+                      onChanged: (value) {},
                     ),
                     ApplicationSwitch(
-                        label: 'Are you willing to hire workers who smoke?',
+                      label: 'Are you willing to hire workers who smoke?',
                       toggle: toggleAlt,
-                      onChanged: (value) {
-
-                      },
+                      onChanged: (value) {},
                     ),
                     ApplicationSwitch(
-                        label:
-                            'Are you willing to accommodate worker family members?',
+                      label:
+                          'Are you willing to accommodate worker family members?',
                       toggle: toggleAlt,
-                      onChanged: (value) {
-
-                      },
+                      onChanged: (value) {},
                     ),
                     ApplicationSwitch(
-                        label: 'Driver\'s License',
+                      label:
+                      'Will workers be paid a piece rate?',
                       toggle: toggleAlt,
-                      onChanged: (value) {
-
-                      },
+                      onChanged: (value) {},
+                    ),
+                    ApplicationSwitch(
+                      label: 'Driver\'s License',
+                      toggle: toggleAlt,
+                      onChanged: (value) {},
                     ),
                     ApplicationSwitch(
                       label: 'CDL',
                       toggle: toggleAlt,
-                      onChanged: (value) {
-
-                      },
+                      onChanged: (value) {},
                     ),
                     ApplicationSwitch(
-                        label: 'Driving Requirements',
+                      label: 'Driving Requirements',
                       toggle: toggleAlt,
-                      onChanged: (value) {
-
-                      },
+                      onChanged: (value) {},
                     ),
                     ApplicationSwitch(
-                        label: 'Extensive Pushing/Pulling',
+                      label: 'Extensive Pushing/Pulling',
                       toggle: toggleAlt,
-                      onChanged: (value) {
-
-                      },
+                      onChanged: (value) {},
                     ),
                     ApplicationSwitch(
-                        label: 'Extensive Sitting',
+                      label: 'Extensive Sitting',
                       toggle: toggleAlt,
-                      onChanged: (value) {
-
-                      },
+                      onChanged: (value) {},
                     ),
                     ApplicationSwitch(
-                        label: 'Extensive Walking',
+                      label: 'Extensive Walking',
                       toggle: toggleAlt,
-                      onChanged: (value) {
-
-                      },
+                      onChanged: (value) {},
                     ),
                     ApplicationSwitch(
-                        label: 'Exposure to Extreme Temperatures',
+                      label: 'Exposure to Extreme Temperatures',
                       toggle: toggleAlt,
-                      onChanged: (value) {
-
-                      },
+                      onChanged: (value) {},
                     ),
                     ApplicationSwitch(
-                        label: 'Frequent Stooping',
+                      label: 'Frequent Stooping',
                       toggle: toggleAlt,
-                      onChanged: (value) {
-
-                      },
+                      onChanged: (value) {},
                     ),
                     ApplicationSwitch(
-                        label: 'Repetitive Movements',
+                      label: 'Repetitive Movements',
                       toggle: toggleAlt,
-                      onChanged: (value) {
-
-                      },
+                      onChanged: (value) {},
                     ),
                     ApplicationSwitch(
-                        label: 'Lifting Requirement',
+                      label: 'Lifting Requirement',
                       toggle: toggleAlt,
-                      onChanged: (value) {
-
-                      },
+                      onChanged: (value) {},
                     ),
                     ApplicationSwitch(
-                        label: 'Previous Experience Preferred',
+                      label: 'Previous Experience Preferred',
                       toggle: toggleAlt,
-                      onChanged: (value) {
-
-                      },
+                      onChanged: (value) {},
                     ),
                     ApplicationSwitch(
-                        label: 'Will you be conducting drug-screenings?',
+                      label: 'Will you be conducting drug-screenings?',
                       toggle: toggleAlt,
-                      onChanged: (value) {
-
-                      },
+                      onChanged: (value) {},
                     ),
                     ApplicationSwitch(
-                        label:'Will you be conducting criminal background checks?',
+                      label:
+                          'Will you be conducting criminal background checks?',
                       toggle: toggleAlt,
-                      onChanged: (value) {
-
-                      },
+                      onChanged: (value) {},
                     ),
                     const SizedBox(height: 40.0),
                     const SizedBox(height: 500.0),
@@ -1099,7 +1310,11 @@ class _ApplicationFormState extends State<ApplicationForm> {
 }
 
 class ApplicationSwitch extends StatefulWidget {
-  ApplicationSwitch({super.key, required this.label, required this.toggle, required this.onChanged});
+  const ApplicationSwitch(
+      {super.key,
+      required this.label,
+      required this.toggle,
+      required this.onChanged});
 
   final String label;
   final bool toggle;
@@ -1110,7 +1325,6 @@ class ApplicationSwitch extends StatefulWidget {
 }
 
 class _ApplicationSwitchState extends State<ApplicationSwitch> {
-
   @override
   Widget build(BuildContext context) {
     return SwitchListTile(
@@ -1134,7 +1348,8 @@ class ApplicationTextField extends StatelessWidget {
       this.readOnly = false,
       this.onTap,
       this.onChanged,
-      this.format});
+      this.format,
+      this.expands = false});
 
   final String label;
   final TextEditingController? controller;
@@ -1144,15 +1359,19 @@ class ApplicationTextField extends StatelessWidget {
   final VoidCallback? onTap;
   final void Function(String?)? onChanged;
   final List<TextInputFormatter>? format;
+  final bool expands;
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      expands: expands,
+      maxLines: expands ? null : 1,
       controller: controller,
       initialValue: initial,
       readOnly: readOnly,
       keyboardType: keyboard,
       onChanged: onChanged,
+      textAlignVertical: TextAlignVertical.top,
       style: const TextStyle(fontSize: 20.0),
       decoration: InputDecoration(
         labelText: label,
@@ -1179,4 +1398,41 @@ class ApplicationTextField extends StatelessWidget {
   }
 }
 
-
+// Text(
+// 'Job Duties Breakdown',
+// style: TextStyle(
+// color: Theme.of(context).primaryColor,
+// fontSize: 20.0,
+// fontWeight: FontWeight.w700),
+// ),
+// const SizedBox(height: 20.0),
+// IconBoxButton(
+// icon: Icons.agriculture,
+// text: 'Equipment (${((aeoTasks / tasks) * 100)}%)',
+// progress: aeoTasks / tasks,
+// ),
+// const SizedBox(height: 10.0),
+// IconBoxButton(
+// icon: Icons.eco,
+// text: 'General (${((genTasks / tasks) * 100)}%)',
+// progress: genTasks / tasks,
+// ),
+// const SizedBox(height: 10.0),
+// IconBoxButton(
+// icon: Icons.egg,
+// text: 'Livestock (${((livTasks / tasks) * 100)}%)',
+// progress: livTasks / tasks,
+// ),
+// const SizedBox(height: 10.0),
+// IconBoxButton(
+// icon: Icons.construction,
+// text: 'Mechanical (${((mecTasks / tasks) * 100)}%)',
+// progress: mecTasks / tasks,
+// ),
+// const SizedBox(height: 10.0),
+// IconBoxButton(
+// icon: Icons.ac_unit,
+// text: 'Winter (${((winTasks / tasks) * 100)}%)',
+// progress: winTasks / tasks,
+// ),
+// const SizedBox(height: 20.0),
