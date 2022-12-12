@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:usafl/components/custom_app_bar.dart';
 import 'package:usafl/components/nav_menu.dart';
-import 'package:usafl/components/icon_box_button.dart';
 import 'package:usafl/views/application_viewer_screen.dart';
 
 class ApplicationScreen extends StatefulWidget {
@@ -61,7 +60,7 @@ class _ApplicationScreenState extends State<ApplicationScreen> {
                       ),
                     ),
                   ),
-                  SizedBox(height: 10.0),
+                  const SizedBox(height: 10.0),
                   TextButton(
                     child: Container(
                       width: double.infinity,
@@ -82,7 +81,7 @@ class _ApplicationScreenState extends State<ApplicationScreen> {
                     ),
                     onPressed: () {
                       Navigator.pushReplacement(
-                          context, MaterialPageRoute(builder: (context) => ApplicationViewer()));
+                          context, MaterialPageRoute(builder: (context) => const ApplicationViewer()));
                     },
                   ),
                 ],

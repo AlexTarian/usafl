@@ -4,7 +4,7 @@ import 'package:usafl/components/custom_app_bar.dart';
 import 'package:usafl/components/nav_menu.dart';
 import 'package:usafl/components/application_list.dart';
 
-ApplicationForm appEngine = ApplicationForm();
+ApplicationForm appEngine = const ApplicationForm();
 late DateTime selectedDate;
 
 class ApplicationViewer extends StatefulWidget {
@@ -91,6 +91,9 @@ class _ApplicationViewerState extends State<ApplicationViewer> {
                   children: [
                     TextButton(
                       onPressed: () {
+                        setState(() {
+                          pageNum = 0;
+                        });
                         Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
@@ -114,7 +117,7 @@ class _ApplicationViewerState extends State<ApplicationViewer> {
                               Theme.of(context).primaryColor.withOpacity(0.5),
                               Colors.transparent
                             ],
-                            stops: <double>[0, 0],
+                            stops: <double>[ pageNum / pageTotal , pageNum / pageTotal],
                           ),
                           borderRadius:
                               const BorderRadius.all(Radius.circular(10)),
@@ -130,7 +133,7 @@ class _ApplicationViewerState extends State<ApplicationViewer> {
                     const SizedBox(height: 20.0),
                   ],
                 ),
-                Expanded(child: ApplicationForm()),
+                const Expanded(child: ApplicationForm()),
                 Column(
                   children: <Widget>[
                     const SizedBox(height: 20.0),
@@ -160,13 +163,14 @@ class _ApplicationViewerState extends State<ApplicationViewer> {
                               setState(() {
                                 pController.animateToPage(
                                     pController.page!.toInt() - 1,
-                                    duration: Duration(milliseconds: 500),
+                                    duration: const Duration(milliseconds: 500),
                                     curve: Curves.easeOut);
+                                pageNum > 0 ? pageNum-- : '';
                               });
                             },
                           ),
                         ),
-                        SizedBox(width: 10.0),
+                        const SizedBox(width: 10.0),
                         Flexible(
                           flex: 1,
                           child: TextButton(
@@ -191,8 +195,9 @@ class _ApplicationViewerState extends State<ApplicationViewer> {
                               setState(() {
                                 pController.animateToPage(
                                     pController.page!.toInt() + 1,
-                                    duration: Duration(milliseconds: 500),
+                                    duration: const Duration(milliseconds: 500),
                                     curve: Curves.easeOut);
+                                pageNum < pageTotal ? pageNum++ : '';
                               });
                             },
                           ),
