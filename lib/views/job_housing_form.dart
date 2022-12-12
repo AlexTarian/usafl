@@ -70,384 +70,426 @@ class _ApplicationHousingInfoState extends State<ApplicationHousingInfo> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.transparent,
       drawerEnableOpenDragGesture: false,
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            const SizedBox(height: 20.0),
-            TextButton(
-              child: Container(
-                width: double.infinity,
-                height: 45.0,
-                decoration: BoxDecoration(
-                  color: Theme.of(context).primaryColor,
-                  borderRadius: BorderRadius.circular(10.0),
-                ),
-                child: Center(
-                  child: Text(
-                    widget.primeHousingAddress.text == ''
-                        ? 'Add Primary Worker Housing'
-                        : 'Edit Primary Worker Housing',
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 24.0,
-                      fontWeight: FontWeight.w700,
-                    ),
-                  ),
-                ),
-              ),
-              onPressed: () {
-                if (widget.primeHousingAddress.text == '') {
-                  setState(() {
-                    widget.tempHousingStatus.text = 'Select Housing Status';
-                    widget.tempHousingType.text =
-                    'What kind of housing is this?';
-                    widget.tempHousingAddress.text = '';
-                    widget.tempHousingCity.text = '';
-                    widget.tempHousingState.text = widget.state.text;
-                    widget.tempHousingZip.text = '';
-                    widget.tempHousingCounty.text = '';
-                    widget.tempHousingUnits.text = '';
-                    widget.tempHousingBedrooms.text = '';
-                    widget.tempHousingBeds.text = '';
-                    widget.tempHousingOccupancy.text = '';
-                    widget.tempHousingKitchen.text = 'Select';
-                  });
-                } else {
-                  setState(() {
-                    widget.tempHousingStatus.text = widget.primeHousingStatus.text;
-                    widget.tempHousingType.text = widget.primeHousingType.text;
-                    widget.tempHousingAddress.text = widget.primeHousingAddress.text;
-                    widget.tempHousingCity.text = widget.primeHousingCity.text;
-                    widget.tempHousingState.text = widget.primeHousingState.text;
-                    widget.tempHousingZip.text = widget.primeHousingZip.text;
-                    widget.tempHousingCounty.text = widget.primeHousingCounty.text;
-                    widget.tempHousingUnits.text = widget.primeHousingUnits.text;
-                    widget.tempHousingBedrooms.text =
-                        widget.primeHousingBedrooms.text;
-                    widget.tempHousingBeds.text = widget.primeHousingBeds.text;
-                    widget.tempHousingOccupancy.text =
-                        widget.primeHousingOccupancy.text;
-                    widget.tempHousingKitchen.text = widget.primeHousingKitchen.text;
-                  });
-                }
-                Alert(
-                  context: context,
-                  image: HousingPicker(
-                    isPrime: true,
-                    status: widget.tempHousingStatus,
-                    type: widget.tempHousingType,
-                    address: widget.tempHousingAddress,
-                    city: widget.tempHousingCity,
-                    state: widget.tempHousingState,
-                    zip: widget.tempHousingZip,
-                    county: widget.tempHousingCounty,
-                    units: widget.tempHousingUnits,
-                    bedrooms: widget.tempHousingBedrooms,
-                    beds: widget.tempHousingBeds,
-                    occupancy: widget.tempHousingOccupancy,
-                    kitchen: widget.tempHousingKitchen,
-                  ),
-                  buttons: [
-                    DialogButton(
-                      color: usaflAccent,
-                      child: const Text(
-                        'Cancel',
-                        style: TextStyle(
-                            color: Colors.white, fontSize: 20.0),
-                      ),
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                    ),
-                    DialogButton(
-                      color: usaflAccent,
-                      child: const Text(
-                        'Save',
-                        style: TextStyle(
-                            color: Colors.white, fontSize: 20.0),
-                      ),
-                      onPressed: () {
-                        setState(() {
-                          widget.primeHousingStatus.text =
-                              widget.tempHousingStatus.text;
-                          widget.primeHousingType.text = widget.tempHousingType.text;
-                          widget.primeHousingAddress.text =
-                              widget.tempHousingAddress.text;
-                          widget.primeHousingCity.text = widget.tempHousingCity.text;
-                          widget.primeHousingState.text =
-                              widget.tempHousingState.text;
-                          widget.primeHousingZip.text = widget.tempHousingZip.text;
-                          widget.primeHousingCounty.text =
-                              widget.tempHousingCounty.text;
-                          widget.primeHousingUnits.text =
-                              widget.tempHousingUnits.text;
-                          widget.primeHousingBedrooms.text =
-                              widget.tempHousingBedrooms.text;
-                          widget.primeHousingBeds.text = widget.tempHousingBeds.text;
-                          widget.primeHousingOccupancy.text =
-                              widget.tempHousingOccupancy.text;
-                          widget.primeHousingKitchen.text =
-                              widget.tempHousingKitchen.text;
-                        });
-                        Navigator.pop(context);
-                      },
-                    ),
-                  ],
-                ).show();
-              },
-            ),
-            const SizedBox(height: 20.0),
-            Visibility(
-              visible: widget.primeHousingAddress.text != '',
-              child: Container(
-                decoration: BoxDecoration(
-                  borderRadius:
-                  const BorderRadius.all(Radius.circular(10)),
-                  border: Border.all(
-                      color: Theme.of(context).primaryColor, width: 2),
-                ),
-                child: ListTile(
-                  leading: const Icon(Icons.home),
-                  title: Text(
-                    '${widget.primeHousingAddress.text}\n${widget.primeHousingCity.text}, ${widget.primeHousingState.text} ${widget.primeHousingZip.text}',
-                    style: const TextStyle(fontSize: 20.0),
-                  ),
-                ),
-              ),
-            ),
-            const SizedBox(height: 20.0),
-            TextButton(
-              child: Container(
-                width: double.infinity,
-                height: 45.0,
-                decoration: BoxDecoration(
-                  color: Theme.of(context).primaryColor,
-                  borderRadius: BorderRadius.circular(10.0),
-                ),
-                child: const Center(
-                  child: Text(
-                    'Add Additional Worker Housing',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 24.0,
-                      fontWeight: FontWeight.w700,
-                    ),
-                  ),
-                ),
-              ),
-              onPressed: () {
-                setState(() {
-                  widget.tempHousingStatus.text = 'Select Housing Status';
-                  widget.tempHousingType.text =
-                  'What kind of housing is this?';
-                  widget.tempHousingAddress.text = '';
-                  widget.tempHousingCity.text = '';
-                  widget.tempHousingState.text = widget.state.text;
-                  widget.tempHousingZip.text = '';
-                  widget.tempHousingCounty.text = '';
-                  widget.tempHousingUnits.text = '';
-                  widget.tempHousingBeds.text = '';
-                  widget.tempHousingBedrooms.text = '';
-                  widget.tempHousingOccupancy.text = '';
-                  widget.tempHousingKitchen.text = 'Select';
-                });
-                Alert(
-                  context: context,
-                  image: HousingPicker(
-                    isPrime: false,
-                    status: widget.tempHousingStatus,
-                    type: widget.tempHousingType,
-                    address: widget.tempHousingAddress,
-                    city: widget.tempHousingCity,
-                    state: widget.tempHousingState,
-                    zip: widget.tempHousingZip,
-                    county: widget.tempHousingCounty,
-                    units: widget.tempHousingUnits,
-                    bedrooms: widget.tempHousingBedrooms,
-                    beds: widget.tempHousingBeds,
-                    occupancy: widget.tempHousingOccupancy,
-                    kitchen: widget.tempHousingKitchen,
-                  ),
-                  buttons: [
-                    DialogButton(
-                      color: usaflAccent,
-                      child: const Text(
-                        'Cancel',
-                        style: TextStyle(
-                            color: Colors.white, fontSize: 20.0),
-                      ),
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                    ),
-                    DialogButton(
-                      color: usaflAccent,
-                      child: const Text(
-                        'Save',
-                        style: TextStyle(
-                            color: Colors.white, fontSize: 20.0),
-                      ),
-                      onPressed: () {
-                        setState(() {
-                          widget.extraHousing.add(
-                            Housing(
-                              status: widget.tempHousingStatus.text,
-                              type: widget.tempHousingType.text,
-                              street: widget.tempHousingAddress.text,
-                              city: widget.tempHousingCity.text,
-                              state: widget.tempHousingState.text,
-                              zip: widget.tempHousingZip.text,
-                              county: widget.tempHousingCounty.text,
-                              units: widget.tempHousingUnits.text,
-                              bedrooms: widget.tempHousingBedrooms.text,
-                              beds: widget.tempHousingBeds.text,
-                              occupancy: widget.tempHousingOccupancy.text,
-                              kitchen: widget.tempHousingKitchen.text,
-                            ),
-                          );
-                        });
-                        Navigator.pop(context);
-                      },
-                    ),
-                  ],
-                ).show();
-              },
-            ),
-            const SizedBox(height: 20.0),
-            SizedBox(
-              width: MediaQuery.of(context).size.width,
-              height: 500.0,
-              child: ListView.builder(
-                itemCount: widget.extraHousing.length,
-                itemBuilder: (BuildContext context, int index) {
-                  return Padding(
-                    padding: const EdgeInsets.only(bottom: 10.0),
-                    child: Container(
-                      decoration: BoxDecoration(
-                        borderRadius:
-                        const BorderRadius.all(Radius.circular(10)),
-                        border: Border.all(
-                            color: Theme.of(context).primaryColor,
-                            width: 2),
-                      ),
-                      child: ListTile(
-                        title: Text(
-                          '${widget.extraHousing[index].housingStreet},\n${widget.extraHousing[index].housingCity}, ${widget.extraHousing[index].housingState} ${widget.extraHousing[index].housingZip}',
-                          style: const TextStyle(fontSize: 20.0),
-                        ),
-                        leading: widget.extraHousing[index].housingStatus ==
-                            'Employer-owned Housing'
-                            ? const Icon(Icons.home)
-                            : const Icon(Icons.home_outlined),
-                        onTap: () {
-                          setState(() {
-                            widget.tempHousingStatus.text =
-                                widget.extraHousing[index].housingStatus;
-                            widget.tempHousingType.text =
-                                widget.extraHousing[index].housingType;
-                            widget.tempHousingAddress.text =
-                                widget.extraHousing[index].housingStreet;
-                            widget.tempHousingCity.text =
-                                widget.extraHousing[index].housingCity;
-                            widget.tempHousingState.text =
-                                widget.extraHousing[index].housingState;
-                            widget.tempHousingZip.text =
-                                widget.extraHousing[index].housingZip;
-                            widget.tempHousingCounty.text =
-                                widget.extraHousing[index].housingCounty;
-                            widget.tempHousingUnits.text =
-                                widget.extraHousing[index].housingUnits;
-                            widget.tempHousingBedrooms.text =
-                                widget.extraHousing[index].housingBedrooms;
-                            widget.tempHousingBeds.text =
-                                widget.extraHousing[index].housingBeds;
-                            widget.tempHousingOccupancy.text =
-                                widget.extraHousing[index].housingOccupancy;
-                            widget.tempHousingKitchen.text =
-                                widget.extraHousing[index].housingKitchen;
-                          });
-                          Alert(
-                            context: context,
-                            image: HousingPicker(
-                              isPrime: false,
-                              status: widget.tempHousingStatus,
-                              type: widget.tempHousingType,
-                              address: widget.tempHousingAddress,
-                              city: widget.tempHousingCity,
-                              state: widget.tempHousingState,
-                              zip: widget.tempHousingZip,
-                              county: widget.tempHousingCounty,
-                              units: widget.tempHousingUnits,
-                              bedrooms: widget.tempHousingBedrooms,
-                              beds: widget.tempHousingBeds,
-                              occupancy: widget.tempHousingOccupancy,
-                              kitchen: widget.tempHousingKitchen,
-                            ),
-                            buttons: [
-                              DialogButton(
-                                color: usaflAccent,
-                                child: const Text(
-                                  'Delete',
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 20.0),
-                                ),
-                                onPressed: () {
-                                  setState(() {
-                                    widget.extraHousing.removeAt(index);
-                                  });
-                                  Navigator.pop(context);
-                                },
-                              ),
-                              DialogButton(
-                                color: usaflAccent,
-                                child: const Text(
-                                  'Save',
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 20.0),
-                                ),
-                                onPressed: () {
-                                  setState(() {
-                                    widget.extraHousing.removeAt(index);
-                                    widget.extraHousing.insert(
-                                      index,
-                                      Housing(
-                                        status: widget.tempHousingStatus.text,
-                                        type: widget.tempHousingType.text,
-                                        street: widget.tempHousingAddress.text,
-                                        city: widget.tempHousingCity.text,
-                                        state: widget.tempHousingState.text,
-                                        zip: widget.tempHousingZip.text,
-                                        county: widget.tempHousingCounty.text,
-                                        units: widget.tempHousingUnits.text,
-                                        bedrooms:
-                                        widget.tempHousingBedrooms.text,
-                                        beds: widget.tempHousingBeds.text,
-                                        occupancy:
-                                        widget.tempHousingOccupancy.text,
-                                        kitchen:
-                                        widget.tempHousingKitchen.text,
-                                      ),
-                                    );
-                                  });
-                                  Navigator.pop(context);
-                                },
-                              ),
-                            ],
-                          ).show();
-                        },
-                      ),
-                    ),
-                  );
-                },
-              ),
-            ),
-            const SizedBox(height: 500.0),
+      body: Container(
+        height: double.infinity,
+        decoration: BoxDecoration(
+            gradient: LinearGradient(
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+          colors: [
+            Theme.of(context).scaffoldBackgroundColor,
+            Theme.of(context).primaryColorLight,
+            Theme.of(context).primaryColorDark,
           ],
+        )),
+        child: SafeArea(
+          minimum: const EdgeInsets.all(15.0),
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                const SizedBox(height: 20.0),
+                TextButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  child: Row(
+                    children: const <Widget>[
+                      Icon(Icons.arrow_back, size: 30.0),
+                      SizedBox(width: 10.0),
+                      Text('Back', style: TextStyle(fontSize: 18.0)),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 20.0),
+                TextButton(
+                  child: Container(
+                    width: double.infinity,
+                    height: 45.0,
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).primaryColor,
+                      borderRadius: BorderRadius.circular(10.0),
+                    ),
+                    child: Center(
+                      child: Text(
+                        widget.primeHousingAddress.text == ''
+                            ? 'Add Primary Worker Housing'
+                            : 'Edit Primary Worker Housing',
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 24.0,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                    ),
+                  ),
+                  onPressed: () {
+                    if (widget.primeHousingAddress.text == '') {
+                      setState(() {
+                        widget.tempHousingStatus.text = 'Select Housing Status';
+                        widget.tempHousingType.text =
+                            'What kind of housing is this?';
+                        widget.tempHousingAddress.text = '';
+                        widget.tempHousingCity.text = '';
+                        widget.tempHousingState.text = widget.state.text;
+                        widget.tempHousingZip.text = '';
+                        widget.tempHousingCounty.text = '';
+                        widget.tempHousingUnits.text = '';
+                        widget.tempHousingBedrooms.text = '';
+                        widget.tempHousingBeds.text = '';
+                        widget.tempHousingOccupancy.text = '';
+                        widget.tempHousingKitchen.text = 'Select';
+                      });
+                    } else {
+                      setState(() {
+                        widget.tempHousingStatus.text =
+                            widget.primeHousingStatus.text;
+                        widget.tempHousingType.text =
+                            widget.primeHousingType.text;
+                        widget.tempHousingAddress.text =
+                            widget.primeHousingAddress.text;
+                        widget.tempHousingCity.text =
+                            widget.primeHousingCity.text;
+                        widget.tempHousingState.text =
+                            widget.primeHousingState.text;
+                        widget.tempHousingZip.text =
+                            widget.primeHousingZip.text;
+                        widget.tempHousingCounty.text =
+                            widget.primeHousingCounty.text;
+                        widget.tempHousingUnits.text =
+                            widget.primeHousingUnits.text;
+                        widget.tempHousingBedrooms.text =
+                            widget.primeHousingBedrooms.text;
+                        widget.tempHousingBeds.text =
+                            widget.primeHousingBeds.text;
+                        widget.tempHousingOccupancy.text =
+                            widget.primeHousingOccupancy.text;
+                        widget.tempHousingKitchen.text =
+                            widget.primeHousingKitchen.text;
+                      });
+                    }
+                    Alert(
+                      context: context,
+                      image: HousingPicker(
+                        isPrime: true,
+                        status: widget.tempHousingStatus,
+                        type: widget.tempHousingType,
+                        address: widget.tempHousingAddress,
+                        city: widget.tempHousingCity,
+                        state: widget.tempHousingState,
+                        zip: widget.tempHousingZip,
+                        county: widget.tempHousingCounty,
+                        units: widget.tempHousingUnits,
+                        bedrooms: widget.tempHousingBedrooms,
+                        beds: widget.tempHousingBeds,
+                        occupancy: widget.tempHousingOccupancy,
+                        kitchen: widget.tempHousingKitchen,
+                      ),
+                      buttons: [
+                        DialogButton(
+                          color: usaflAccent,
+                          child: const Text(
+                            'Cancel',
+                            style:
+                                TextStyle(color: Colors.white, fontSize: 20.0),
+                          ),
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                        ),
+                        DialogButton(
+                          color: usaflAccent,
+                          child: const Text(
+                            'Save',
+                            style:
+                                TextStyle(color: Colors.white, fontSize: 20.0),
+                          ),
+                          onPressed: () {
+                            setState(() {
+                              widget.primeHousingStatus.text =
+                                  widget.tempHousingStatus.text;
+                              widget.primeHousingType.text =
+                                  widget.tempHousingType.text;
+                              widget.primeHousingAddress.text =
+                                  widget.tempHousingAddress.text;
+                              widget.primeHousingCity.text =
+                                  widget.tempHousingCity.text;
+                              widget.primeHousingState.text =
+                                  widget.tempHousingState.text;
+                              widget.primeHousingZip.text =
+                                  widget.tempHousingZip.text;
+                              widget.primeHousingCounty.text =
+                                  widget.tempHousingCounty.text;
+                              widget.primeHousingUnits.text =
+                                  widget.tempHousingUnits.text;
+                              widget.primeHousingBedrooms.text =
+                                  widget.tempHousingBedrooms.text;
+                              widget.primeHousingBeds.text =
+                                  widget.tempHousingBeds.text;
+                              widget.primeHousingOccupancy.text =
+                                  widget.tempHousingOccupancy.text;
+                              widget.primeHousingKitchen.text =
+                                  widget.tempHousingKitchen.text;
+                            });
+                            Navigator.pop(context);
+                          },
+                        ),
+                      ],
+                    ).show();
+                  },
+                ),
+                const SizedBox(height: 20.0),
+                Visibility(
+                  visible: widget.primeHousingAddress.text != '',
+                  child: Container(
+                    decoration: BoxDecoration(
+                      borderRadius: const BorderRadius.all(Radius.circular(10)),
+                      border: Border.all(
+                          color: Theme.of(context).primaryColor, width: 2),
+                    ),
+                    child: ListTile(
+                      leading: const Icon(Icons.home),
+                      title: Text(
+                        '${widget.primeHousingAddress.text}\n${widget.primeHousingCity.text}, ${widget.primeHousingState.text} ${widget.primeHousingZip.text}',
+                        style: const TextStyle(fontSize: 20.0),
+                      ),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 20.0),
+                TextButton(
+                  child: Container(
+                    width: double.infinity,
+                    height: 45.0,
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).primaryColor,
+                      borderRadius: BorderRadius.circular(10.0),
+                    ),
+                    child: const Center(
+                      child: Text(
+                        'Add Additional Worker Housing',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 24.0,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                    ),
+                  ),
+                  onPressed: () {
+                    setState(() {
+                      widget.tempHousingStatus.text = 'Select Housing Status';
+                      widget.tempHousingType.text =
+                          'What kind of housing is this?';
+                      widget.tempHousingAddress.text = '';
+                      widget.tempHousingCity.text = '';
+                      widget.tempHousingState.text = widget.state.text;
+                      widget.tempHousingZip.text = '';
+                      widget.tempHousingCounty.text = '';
+                      widget.tempHousingUnits.text = '';
+                      widget.tempHousingBeds.text = '';
+                      widget.tempHousingBedrooms.text = '';
+                      widget.tempHousingOccupancy.text = '';
+                      widget.tempHousingKitchen.text = 'Select';
+                    });
+                    Alert(
+                      context: context,
+                      image: HousingPicker(
+                        isPrime: false,
+                        status: widget.tempHousingStatus,
+                        type: widget.tempHousingType,
+                        address: widget.tempHousingAddress,
+                        city: widget.tempHousingCity,
+                        state: widget.tempHousingState,
+                        zip: widget.tempHousingZip,
+                        county: widget.tempHousingCounty,
+                        units: widget.tempHousingUnits,
+                        bedrooms: widget.tempHousingBedrooms,
+                        beds: widget.tempHousingBeds,
+                        occupancy: widget.tempHousingOccupancy,
+                        kitchen: widget.tempHousingKitchen,
+                      ),
+                      buttons: [
+                        DialogButton(
+                          color: usaflAccent,
+                          child: const Text(
+                            'Cancel',
+                            style:
+                                TextStyle(color: Colors.white, fontSize: 20.0),
+                          ),
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                        ),
+                        DialogButton(
+                          color: usaflAccent,
+                          child: const Text(
+                            'Save',
+                            style:
+                                TextStyle(color: Colors.white, fontSize: 20.0),
+                          ),
+                          onPressed: () {
+                            setState(() {
+                              widget.extraHousing.add(
+                                Housing(
+                                  status: widget.tempHousingStatus.text,
+                                  type: widget.tempHousingType.text,
+                                  street: widget.tempHousingAddress.text,
+                                  city: widget.tempHousingCity.text,
+                                  state: widget.tempHousingState.text,
+                                  zip: widget.tempHousingZip.text,
+                                  county: widget.tempHousingCounty.text,
+                                  units: widget.tempHousingUnits.text,
+                                  bedrooms: widget.tempHousingBedrooms.text,
+                                  beds: widget.tempHousingBeds.text,
+                                  occupancy: widget.tempHousingOccupancy.text,
+                                  kitchen: widget.tempHousingKitchen.text,
+                                ),
+                              );
+                            });
+                            Navigator.pop(context);
+                          },
+                        ),
+                      ],
+                    ).show();
+                  },
+                ),
+                const SizedBox(height: 20.0),
+                SizedBox(
+                  width: MediaQuery.of(context).size.width,
+                  height: 500.0,
+                  child: ListView.builder(
+                    itemCount: widget.extraHousing.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return Padding(
+                        padding: const EdgeInsets.only(bottom: 10.0),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            borderRadius:
+                                const BorderRadius.all(Radius.circular(10)),
+                            border: Border.all(
+                                color: Theme.of(context).primaryColor,
+                                width: 2),
+                          ),
+                          child: ListTile(
+                            title: Text(
+                              '${widget.extraHousing[index].housingStreet},\n${widget.extraHousing[index].housingCity}, ${widget.extraHousing[index].housingState} ${widget.extraHousing[index].housingZip}',
+                              style: const TextStyle(fontSize: 20.0),
+                            ),
+                            leading: widget.extraHousing[index].housingStatus ==
+                                    'Employer-owned Housing'
+                                ? const Icon(Icons.home)
+                                : const Icon(Icons.home_outlined),
+                            onTap: () {
+                              setState(() {
+                                widget.tempHousingStatus.text =
+                                    widget.extraHousing[index].housingStatus;
+                                widget.tempHousingType.text =
+                                    widget.extraHousing[index].housingType;
+                                widget.tempHousingAddress.text =
+                                    widget.extraHousing[index].housingStreet;
+                                widget.tempHousingCity.text =
+                                    widget.extraHousing[index].housingCity;
+                                widget.tempHousingState.text =
+                                    widget.extraHousing[index].housingState;
+                                widget.tempHousingZip.text =
+                                    widget.extraHousing[index].housingZip;
+                                widget.tempHousingCounty.text =
+                                    widget.extraHousing[index].housingCounty;
+                                widget.tempHousingUnits.text =
+                                    widget.extraHousing[index].housingUnits;
+                                widget.tempHousingBedrooms.text =
+                                    widget.extraHousing[index].housingBedrooms;
+                                widget.tempHousingBeds.text =
+                                    widget.extraHousing[index].housingBeds;
+                                widget.tempHousingOccupancy.text =
+                                    widget.extraHousing[index].housingOccupancy;
+                                widget.tempHousingKitchen.text =
+                                    widget.extraHousing[index].housingKitchen;
+                              });
+                              Alert(
+                                context: context,
+                                image: HousingPicker(
+                                  isPrime: false,
+                                  status: widget.tempHousingStatus,
+                                  type: widget.tempHousingType,
+                                  address: widget.tempHousingAddress,
+                                  city: widget.tempHousingCity,
+                                  state: widget.tempHousingState,
+                                  zip: widget.tempHousingZip,
+                                  county: widget.tempHousingCounty,
+                                  units: widget.tempHousingUnits,
+                                  bedrooms: widget.tempHousingBedrooms,
+                                  beds: widget.tempHousingBeds,
+                                  occupancy: widget.tempHousingOccupancy,
+                                  kitchen: widget.tempHousingKitchen,
+                                ),
+                                buttons: [
+                                  DialogButton(
+                                    color: usaflAccent,
+                                    child: const Text(
+                                      'Delete',
+                                      style: TextStyle(
+                                          color: Colors.white, fontSize: 20.0),
+                                    ),
+                                    onPressed: () {
+                                      setState(() {
+                                        widget.extraHousing.removeAt(index);
+                                      });
+                                      Navigator.pop(context);
+                                    },
+                                  ),
+                                  DialogButton(
+                                    color: usaflAccent,
+                                    child: const Text(
+                                      'Save',
+                                      style: TextStyle(
+                                          color: Colors.white, fontSize: 20.0),
+                                    ),
+                                    onPressed: () {
+                                      setState(() {
+                                        widget.extraHousing.removeAt(index);
+                                        widget.extraHousing.insert(
+                                          index,
+                                          Housing(
+                                            status:
+                                                widget.tempHousingStatus.text,
+                                            type: widget.tempHousingType.text,
+                                            street:
+                                                widget.tempHousingAddress.text,
+                                            city: widget.tempHousingCity.text,
+                                            state: widget.tempHousingState.text,
+                                            zip: widget.tempHousingZip.text,
+                                            county:
+                                                widget.tempHousingCounty.text,
+                                            units: widget.tempHousingUnits.text,
+                                            bedrooms:
+                                                widget.tempHousingBedrooms.text,
+                                            beds: widget.tempHousingBeds.text,
+                                            occupancy: widget
+                                                .tempHousingOccupancy.text,
+                                            kitchen:
+                                                widget.tempHousingKitchen.text,
+                                          ),
+                                        );
+                                      });
+                                      Navigator.pop(context);
+                                    },
+                                  ),
+                                ],
+                              ).show();
+                            },
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+                const SizedBox(height: 500.0),
+              ],
+            ),
+          ),
         ),
       ),
     );

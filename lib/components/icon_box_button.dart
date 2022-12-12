@@ -1,14 +1,19 @@
 import 'package:flutter/material.dart';
 
 class IconBoxButton extends StatelessWidget {
-  IconBoxButton(
-      {required this.icon,
-      required this.text,
-      this.progress = 0.0});
+  IconBoxButton({
+    required this.icon,
+    required this.text,
+    this.progress = 0.0,
+    this.trailingIcon,
+    this.trailingColor,
+  });
 
   final IconData icon;
   final String text;
   final double progress;
+  final IconData? trailingIcon;
+  final Color? trailingColor;
 
   @override
   Widget build(BuildContext context) {
@@ -40,19 +45,31 @@ class IconBoxButton extends StatelessWidget {
           width: double.infinity,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.all(Radius.circular(10)),
-            border:
-                Border.all(color: Theme.of(context).primaryColor, width: 3),
+            border: Border.all(color: Theme.of(context).primaryColor, width: 3),
           ),
           child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
-              SizedBox(width: 75.0),
+              const SizedBox(width: 75.0),
               Flexible(
+                flex: 3,
                 child: Text(
                   text,
+                  textAlign: TextAlign.left,
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(
                     fontSize: 24.0,
-                    // fontWeight: FontWeight.w700
+                  ),
+                ),
+              ),
+              Flexible(
+                flex: 1,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                  child: Icon(
+                    trailingIcon,
+                    size: 30.0,
+                    color: trailingColor,
                   ),
                 ),
               ),

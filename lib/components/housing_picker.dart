@@ -52,14 +52,15 @@ class _HousingPickerState extends State<HousingPicker> {
             Container(
               padding: const EdgeInsets.all(5.0),
               decoration: BoxDecoration(
-                border: Border.all(
-                    width: 2, color: Theme.of(context).primaryColor),
+                border:
+                    Border.all(width: 2, color: Theme.of(context).primaryColor),
               ),
               child: DropdownButton<String>(
                 isExpanded: true,
                 value: widget.status.text,
                 elevation: 16,
-                style: TextStyle(fontSize: 20.0),
+                style: TextStyle(
+                    fontSize: 20.0, color: Theme.of(context).primaryColor),
                 underline: Container(
                   width: double.infinity,
                   height: 2,
@@ -95,7 +96,8 @@ class _HousingPickerState extends State<HousingPicker> {
                   isExpanded: true,
                   value: widget.type.text,
                   elevation: 16,
-                  style: TextStyle(fontSize: 20.0),
+                  style: TextStyle(
+                      fontSize: 20.0, color: Theme.of(context).primaryColor),
                   underline: Container(
                     width: double.infinity,
                     height: 2,
@@ -229,7 +231,9 @@ class _HousingPickerState extends State<HousingPicker> {
                       isExpanded: true,
                       value: widget.kitchen.text,
                       elevation: 16,
-                      style: TextStyle(fontSize: 20.0),
+                      style: TextStyle(
+                          fontSize: 20.0,
+                          color: Theme.of(context).primaryColor),
                       underline: Container(
                         width: double.infinity,
                         height: 2,

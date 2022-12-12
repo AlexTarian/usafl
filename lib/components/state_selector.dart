@@ -22,7 +22,7 @@ class _StateSelectorState extends State<StateSelector> {
       isExpanded: true,
       value: widget.state.text,
       elevation: 16,
-      style: const TextStyle(fontSize: 20.0),
+      style: TextStyle(fontSize: 20.0, color: Theme.of(context).primaryColor),
       underline: Container(
         width: double.infinity,
         height: 2,
@@ -37,13 +37,12 @@ class _StateSelectorState extends State<StateSelector> {
       items: AewrList()
           .stateAewrList
           .keys
-          .map<DropdownMenuItem<String>>(
-              (String value) {
-            return DropdownMenuItem<String>(
-              value: value,
-              child: Text(value),
-            );
-          }).toList(),
+          .map<DropdownMenuItem<String>>((String value) {
+        return DropdownMenuItem<String>(
+          value: value,
+          child: Text(value),
+        );
+      }).toList(),
     );
   }
 }

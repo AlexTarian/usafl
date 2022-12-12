@@ -66,9 +66,11 @@ class _ApplicationFormState extends State<ApplicationForm> {
   TextEditingController hourOut = TextEditingController(text: '05');
   TextEditingController minOut = TextEditingController(text: '00');
   TextEditingController phaseOut = TextEditingController(text: 'PM');
-  TextEditingController paySchedule = TextEditingController(text: 'Select Frequency');
+  TextEditingController paySchedule =
+      TextEditingController(text: 'Select Frequency');
   TextEditingController payDay = TextEditingController(text: 'Select Pay Day');
-  TextEditingController jobDescription = TextEditingController(text: 'Job Duties include: ');
+  TextEditingController jobDescription =
+      TextEditingController(text: 'Job Duties include: ');
   TextEditingController jobDescriptionEditor = TextEditingController();
   TextEditingController allTasks = TextEditingController();
   TextEditingController aeoTasks = TextEditingController();
@@ -142,7 +144,8 @@ class _ApplicationFormState extends State<ApplicationForm> {
   TextEditingController tempHousingBedrooms = TextEditingController();
   TextEditingController tempHousingBeds = TextEditingController();
   TextEditingController tempHousingOccupancy = TextEditingController();
-  TextEditingController tempHousingKitchen = TextEditingController(text: 'Select');
+  TextEditingController tempHousingKitchen =
+      TextEditingController(text: 'Select');
   TextEditingController prevH2aUse = TextEditingController(text: 'false');
   TextEditingController selectedWorkers = TextEditingController(text: 'false');
   TextEditingController willTrainWorkers = TextEditingController(text: 'false');
@@ -217,36 +220,34 @@ class _ApplicationFormState extends State<ApplicationForm> {
                 payDay: payDay,
               ),
               ApplicationDutiesInfo(
-                jobDescription: jobDescription,
-                jobDescriptionEditor: jobDescriptionEditor,
-                taskList: taskList,
-                allTasks: allTasks,
-                aeoTasks: aeoTasks,
-                genTasks: genTasks,
-                livTasks: livTasks,
-                mecTasks: mecTasks,
-                winTasks: winTasks
-              ),
+                  jobDescription: jobDescription,
+                  jobDescriptionEditor: jobDescriptionEditor,
+                  taskList: taskList,
+                  allTasks: allTasks,
+                  aeoTasks: aeoTasks,
+                  genTasks: genTasks,
+                  livTasks: livTasks,
+                  mecTasks: mecTasks,
+                  winTasks: winTasks),
               ApplicationRequirementInfo(
-                education: education,
-                experience: experience,
-                training: training,
-                drivingReq: drivingReq,
-                cdlReq: cdlReq,
-                certReq: certReq,
-                backgroundReq: backgroundReq,
-                screenReq: screenReq,
-                tempReq: tempReq,
-                pushReq: pushReq,
-                walkReq: walkReq,
-                stoopReq: stoopReq,
-                repReq: repReq,
-                liftReq: liftReq,
-                superReq: superReq,
-                pounds: pounds,
-                supervised: supervised,
-                otherReq: otherReq
-              ),
+                  education: education,
+                  experience: experience,
+                  training: training,
+                  drivingReq: drivingReq,
+                  cdlReq: cdlReq,
+                  certReq: certReq,
+                  backgroundReq: backgroundReq,
+                  screenReq: screenReq,
+                  tempReq: tempReq,
+                  pushReq: pushReq,
+                  walkReq: walkReq,
+                  stoopReq: stoopReq,
+                  repReq: repReq,
+                  liftReq: liftReq,
+                  superReq: superReq,
+                  pounds: pounds,
+                  supervised: supervised,
+                  otherReq: otherReq),
               ApplicationWorksiteInfo(
                 bizName: bizName,
                 state: state,
@@ -299,7 +300,14 @@ class _ApplicationFormState extends State<ApplicationForm> {
                 tempHousingKitchen: tempHousingKitchen,
                 extraHousing: extraHousing,
               ),
-              ApplicationMiscInfo(),
+              ApplicationMiscInfo(
+                prevH2aUse: prevH2aUse,
+                selectedWorkers: selectedWorkers,
+                willTrainWorkers: willTrainWorkers,
+                smokingOkay: smokingOkay,
+                familiesOkay: familiesOkay,
+                prevExpPref: prevExpPref,
+              ),
             ],
           ),
         ),

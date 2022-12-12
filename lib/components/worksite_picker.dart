@@ -4,24 +4,24 @@ import 'application_list.dart';
 import 'state_selector.dart';
 
 class WorksitePicker extends StatefulWidget {
-  const WorksitePicker(
-      {super.key,
-      required this.isPrime,
-      required this.empOwned,
-      required this.employer,
-      required this.address,
-      required this.city,
-      required this.state,
-      required this.zip,
-      required this.county,
-      required this.controllingBiz,
-      required this.start,
-      required this.end,
-      required this.tempStart,
-      required this.tempEnd,
-      required this.workersReq,
-      required this.tempWorkersReq,
-      });
+  const WorksitePicker({
+    super.key,
+    required this.isPrime,
+    required this.empOwned,
+    required this.employer,
+    required this.address,
+    required this.city,
+    required this.state,
+    required this.zip,
+    required this.county,
+    required this.controllingBiz,
+    required this.start,
+    required this.end,
+    required this.tempStart,
+    required this.tempEnd,
+    required this.workersReq,
+    required this.tempWorkersReq,
+  });
 
   final bool isPrime;
   final TextEditingController empOwned;
@@ -48,7 +48,9 @@ class _WorksitePickerState extends State<WorksitePicker> {
 
   @override
   void initState() {
-    widget.controllingBiz.text = widget.empOwned.text == 'Yes' ? widget.employer.text : widget.controllingBiz.text;
+    widget.controllingBiz.text = widget.empOwned.text == 'Yes'
+        ? widget.employer.text
+        : widget.controllingBiz.text;
     super.initState();
   }
 
@@ -60,14 +62,19 @@ class _WorksitePickerState extends State<WorksitePicker> {
       child: SingleChildScrollView(
         child: Column(
           children: <Widget>[
-            Text(widget.isPrime ? 'Primary Worksite' : 'Additional Worksite',
-              style: TextStyle(color: Theme.of(context).primaryColor, fontSize: 22.0, fontWeight: FontWeight.w700),
+            Text(
+              widget.isPrime ? 'Primary Worksite' : 'Additional Worksite',
+              style: TextStyle(
+                  color: Theme.of(context).primaryColor,
+                  fontSize: 22.0,
+                  fontWeight: FontWeight.w700),
               textAlign: TextAlign.center,
             ),
             //const SizedBox(height: 15.0),
             Visibility(
               visible: widget.isPrime,
-              child: const Text('(Must be owned or leased by your business)',
+              child: const Text(
+                '(Must be owned or leased by your business)',
                 style: TextStyle(color: Colors.red, fontSize: 18.0),
                 textAlign: TextAlign.center,
               ),
@@ -93,7 +100,9 @@ class _WorksitePickerState extends State<WorksitePicker> {
                         isExpanded: true,
                         value: widget.empOwned.text,
                         elevation: 16,
-                        style: const TextStyle(fontSize: 20.0),
+                        style: TextStyle(
+                            fontSize: 20.0,
+                            color: Theme.of(context).primaryColor),
                         underline: Container(
                           width: double.infinity,
                           height: 2,
@@ -102,7 +111,8 @@ class _WorksitePickerState extends State<WorksitePicker> {
                         onChanged: (String? newValue) {
                           setState(() {
                             widget.empOwned.text = newValue!;
-                            widget.controllingBiz.text = newValue == 'Yes' ? widget.employer.text : '';
+                            widget.controllingBiz.text =
+                                newValue == 'Yes' ? widget.employer.text : '';
                           });
                         },
                         items: ['Yes', 'No']
@@ -196,7 +206,8 @@ class _WorksitePickerState extends State<WorksitePicker> {
                         DateTime? pickedDate = await showDatePicker(
                           context: context,
                           firstDate: start,
-                          lastDate: DateTime.now().add(const Duration(days: 730)),
+                          lastDate:
+                              DateTime.now().add(const Duration(days: 730)),
                           initialDate: start,
                         );
                         if (pickedDate != null) {
@@ -213,7 +224,8 @@ class _WorksitePickerState extends State<WorksitePicker> {
                   const SizedBox(width: 5.0),
                   Text('-',
                       style: TextStyle(
-                          color: Theme.of(context).primaryColor, fontSize: 20.0)),
+                          color: Theme.of(context).primaryColor,
+                          fontSize: 20.0)),
                   const SizedBox(width: 5.0),
                   Flexible(
                     flex: 1,
@@ -237,7 +249,8 @@ class _WorksitePickerState extends State<WorksitePicker> {
                         DateTime? pickedDate = await showDatePicker(
                           context: context,
                           firstDate: start,
-                          lastDate: DateTime.now().add(const Duration(days: 730)),
+                          lastDate:
+                              DateTime.now().add(const Duration(days: 730)),
                           initialDate: end,
                         );
 
@@ -262,7 +275,8 @@ class _WorksitePickerState extends State<WorksitePicker> {
                 children: <Widget>[
                   const Flexible(
                     flex: 3,
-                    child: Text('How many H-2A workers will be working at this worksite?'),
+                    child: Text(
+                        'How many H-2A workers will be working at this worksite?'),
                   ),
                   Flexible(
                     flex: 1,
