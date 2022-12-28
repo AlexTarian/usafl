@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:usafl/components/custom_app_bar.dart';
-import 'package:usafl/components/housing_checklist.dart';
+import 'package:usafl/components/grounds_checklist.dart';
+import 'package:usafl/components/kitchen_checklist.dart';
 import 'package:usafl/components/bedroom_checklist.dart';
 import 'package:usafl/components/bathroom_checklist.dart';
+import 'package:usafl/components/misc_housing_checklist.dart';
+import 'package:usafl/components/misc_checklist.dart';
 import 'package:usafl/components/arrival_checklist.dart';
 import 'package:usafl/components/payment_checklist.dart';
 import 'package:usafl/components/departure_checklist.dart';
-import 'package:usafl/components/misc_checklist.dart';
 import 'package:usafl/components/audit_checklist.dart';
 import 'package:usafl/components/nav_menu.dart';
 import 'package:usafl/components/icon_box_button.dart';
@@ -122,14 +124,14 @@ class _ChecklistScreenState extends State<ChecklistScreen> {
                   GestureDetector(child: Visibility(visible: widget.isLevelOne ? false : true, child: IconBoxButton(icon: Icons.yard, text: 'Grounds')),
                     onTap: () {
                       Navigator.pushReplacement(context,
-                          MaterialPageRoute(builder: (context) => (ChecklistViewer(selectedChecklist: HousingChecklist()))));
+                          MaterialPageRoute(builder: (context) => (ChecklistViewer(selectedChecklist: GroundsChecklist()))));
                     },
                   ),
                   Visibility(visible: widget.isLevelOne ? false : true, child: const SizedBox(height: 10.0)),
                   GestureDetector(child: Visibility(visible: widget.isLevelOne ? false : true, child: IconBoxButton(icon: Icons.kitchen, text: 'Kitchen')),
                     onTap: () {
                       Navigator.pushReplacement(context,
-                          MaterialPageRoute(builder: (context) => (ChecklistViewer(selectedChecklist: HousingChecklist()))));
+                          MaterialPageRoute(builder: (context) => (ChecklistViewer(selectedChecklist: KitchenChecklist()))));
                     },
                   ),
                   Visibility(visible: widget.isLevelOne ? false : true, child: const SizedBox(height: 10.0)),
@@ -150,7 +152,7 @@ class _ChecklistScreenState extends State<ChecklistScreen> {
                   GestureDetector(child: Visibility(visible: widget.isLevelOne ? false : true, child: IconBoxButton(icon: Icons.house, text: 'Miscellaneous')),
                     onTap: () {
                       Navigator.pushReplacement(context,
-                          MaterialPageRoute(builder: (context) => (ChecklistViewer(selectedChecklist: HousingChecklist()))));
+                          MaterialPageRoute(builder: (context) => (ChecklistViewer(selectedChecklist: MiscHousingChecklist()))));
                     },
                   ),
                 ],

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:usafl/constants.dart';
+import 'package:usafl/views/application_viewer_screen.dart';
 import 'package:usafl/components/application_list.dart';
 import 'package:usafl/components/job_duties_picker.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
@@ -16,6 +17,7 @@ class ApplicationDutiesInfo extends StatefulWidget {
     required this.livTasks,
     required this.mecTasks,
     required this.winTasks,
+    required this.dutyCount,
   });
 
   final TextEditingController jobDescription;
@@ -27,12 +29,19 @@ class ApplicationDutiesInfo extends StatefulWidget {
   final TextEditingController livTasks;
   final TextEditingController mecTasks;
   final TextEditingController winTasks;
+  final TextEditingController dutyCount;
 
   @override
   State<ApplicationDutiesInfo> createState() => _ApplicationDutiesInfoState();
 }
 
 class _ApplicationDutiesInfoState extends State<ApplicationDutiesInfo> {
+
+  double countCompleted() {
+    int sum = (widget.jobDescription.text != 'Job Duties include: ' ? 1 : 0);
+    return sum/1;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -59,6 +68,9 @@ class _ApplicationDutiesInfoState extends State<ApplicationDutiesInfo> {
                 const SizedBox(height: 20.0),
                 TextButton(
                   onPressed: () {
+                    setState(() {
+                      widget.dutyCount.text = countCompleted().toString();
+                    });
                     Navigator.pop(context);
                   },
                   child: Row(
@@ -139,6 +151,32 @@ class _ApplicationDutiesInfoState extends State<ApplicationDutiesInfo> {
                     expands: true,
                   ),
                 ),
+                // const SizedBox(height: 30.0),
+                // TextButton(
+                //   child: Container(
+                //     width: double.infinity,
+                //     height: 45.0,
+                //     decoration: BoxDecoration(
+                //       color: Theme.of(context).primaryColor,
+                //       borderRadius: BorderRadius.circular(10.0),
+                //     ),
+                //     child: const Center(
+                //       child: Text('Save & Continue',
+                //         style: TextStyle(
+                //           color: Colors.white,
+                //           fontSize: 24.0,
+                //           fontWeight: FontWeight.w700,
+                //         ),
+                //       ),
+                //     ),
+                //   ),
+                //   onPressed: () {
+                //     setState(() {
+                //       widget.dutyCount.text = countCompleted().toString();
+                //     });
+                //     Navigator.pop(context);
+                //   },
+                // ),
                 const SizedBox(height: 500.0),
               ],
             ),

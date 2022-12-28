@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:usafl/views/application_viewer_screen.dart';
 import 'package:usafl/components/application_list.dart';
 
 class ApplicationRequirementInfo extends StatefulWidget {
@@ -22,6 +23,7 @@ class ApplicationRequirementInfo extends StatefulWidget {
     required this.pounds,
     required this.supervised,
     required this.otherReq,
+    required this.requirementCount,
   });
 
   final TextEditingController education;
@@ -42,6 +44,7 @@ class ApplicationRequirementInfo extends StatefulWidget {
   final TextEditingController pounds;
   final TextEditingController supervised;
   final TextEditingController otherReq;
+  final TextEditingController requirementCount;
 
   @override
   State<ApplicationRequirementInfo> createState() =>
@@ -80,6 +83,12 @@ class _ApplicationRequirementInfoState
     super.initState();
   }
 
+  double countCompleted() {
+    int sum = (widget.experience.text != '' ? 1 : 0) +
+        (widget.training.text != '' ? 1 : 0);
+    return sum/2;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -105,6 +114,9 @@ class _ApplicationRequirementInfoState
                 const SizedBox(height: 20.0),
                 TextButton(
                   onPressed: () {
+                    setState(() {
+                      widget.requirementCount.text = countCompleted().toString();
+                    });
                     Navigator.pop(context);
                   },
                   child: Row(
@@ -357,6 +369,32 @@ class _ApplicationRequirementInfoState
                   label: 'Other Requirements',
                   keyboard: TextInputType.number,
                   controller: widget.otherReq,
+                ),
+                const SizedBox(height: 30.0),
+                TextButton(
+                  child: Container(
+                    width: double.infinity,
+                    height: 45.0,
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).primaryColor,
+                      borderRadius: BorderRadius.circular(10.0),
+                    ),
+                    child: const Center(
+                      child: Text('Save & Continue',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 24.0,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                    ),
+                  ),
+                  onPressed: () {
+                    setState(() {
+                      widget.requirementCount.text = countCompleted().toString();
+                    });
+                    Navigator.pop(context);
+                  },
                 ),
                 const SizedBox(height: 500.0),
               ],

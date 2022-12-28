@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/services.dart';
+import 'package:usafl/views/application_viewer_screen.dart';
 import 'package:usafl/components/custom_input_formatter.dart';
 import 'package:usafl/components/application_list.dart';
 
@@ -32,6 +33,7 @@ class ApplicationJobInfo extends StatefulWidget {
     required this.phaseOut,
     required this.paySchedule,
     required this.payDay,
+    required this.detailCount,
   });
 
   final TextEditingController workersReq;
@@ -59,6 +61,7 @@ class ApplicationJobInfo extends StatefulWidget {
   final TextEditingController phaseOut;
   final TextEditingController paySchedule;
   final TextEditingController payDay;
+  final TextEditingController detailCount;
 
   @override
   State<ApplicationJobInfo> createState() => _ApplicationContactJobState();
@@ -67,6 +70,16 @@ class ApplicationJobInfo extends StatefulWidget {
 class _ApplicationContactJobState extends State<ApplicationJobInfo> {
   DateTime startAutomatic = DateTime.now();
   DateTime endAutomatic = DateTime.now().add(const Duration(days: 1));
+
+  double countCompleted() {
+    int sum = (widget.workersReq.text != '' ? 1 : 0) +
+        (widget.needType.text != 'Select' ? 1 : 0) +
+        (widget.startDateInput.text != '' ? 1 : 0) +
+        (widget.endDateInput.text != '' ? 1 : 0) +
+        (widget.wageRate.text != '' ? 1 : 0) +
+        (widget.paySchedule.text != 'Select Frequency' ? 1 : 0);
+    return sum/6;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -93,6 +106,9 @@ class _ApplicationContactJobState extends State<ApplicationJobInfo> {
                 const SizedBox(height: 20.0),
                 TextButton(
                   onPressed: () {
+                    setState(() {
+                      widget.detailCount.text = countCompleted().toString();
+                    });
                     Navigator.pop(context);
                   },
                   child: Row(
@@ -942,6 +958,32 @@ class _ApplicationContactJobState extends State<ApplicationJobInfo> {
                       ),
                     ),
                   ],
+                ),
+                const SizedBox(height: 30.0),
+                TextButton(
+                  child: Container(
+                    width: double.infinity,
+                    height: 45.0,
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).primaryColor,
+                      borderRadius: BorderRadius.circular(10.0),
+                    ),
+                    child: const Center(
+                      child: Text('Save & Continue',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 24.0,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                    ),
+                  ),
+                  onPressed: () {
+                    setState(() {
+                      widget.detailCount.text = countCompleted().toString();
+                    });
+                    Navigator.pop(context);
+                  },
                 ),
                 const SizedBox(height: 500.0),
               ],

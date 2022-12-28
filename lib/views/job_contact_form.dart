@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 //import 'package:usafl/components/custom_input_formatter.dart';
 import 'package:usafl/components/application_list.dart';
+import 'package:usafl/views/application_viewer_screen.dart';
 import 'package:usafl/components/aewr_list.dart';
 
 class ApplicationContactInfo extends StatefulWidget {
@@ -23,6 +24,7 @@ class ApplicationContactInfo extends StatefulWidget {
     required this.ext,
     required this.email,
     required this.fein,
+    required this.contactCount,
   });
 
   final TextEditingController bizName;
@@ -42,12 +44,29 @@ class ApplicationContactInfo extends StatefulWidget {
   final TextEditingController ext;
   final TextEditingController email;
   final TextEditingController fein;
+  final TextEditingController contactCount;
 
   @override
   State<ApplicationContactInfo> createState() => _ApplicationContactInfoState();
 }
 
 class _ApplicationContactInfoState extends State<ApplicationContactInfo> {
+
+  double countCompleted() {
+    int sum = (widget.bizName.text != '' ? 1 : 0) +
+        (widget.contactFirst.text != '' ? 1 : 0) +
+        (widget.contactLast.text != '' ? 1 : 0) +
+        (widget.contactTitle.text != '' ? 1 : 0) +
+        (widget.address1.text != '' ? 1 : 0) +
+        (widget.city.text != '' ? 1 : 0) +
+        (widget.state.text != 'State' ? 1 : 0) +
+        (widget.zip.text != '' ? 1 : 0) +
+        (widget.phone.text != '' ? 1 : 0) +
+        (widget.email.text != '' ? 1 : 0) +
+        (widget.fein.text != '' ? 1 : 0);
+    return sum/11;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -73,6 +92,9 @@ class _ApplicationContactInfoState extends State<ApplicationContactInfo> {
                 const SizedBox(height: 20.0),
                 TextButton(
                   onPressed: () {
+                    setState(() {
+                      widget.contactCount.text = countCompleted().toString();
+                    });
                     Navigator.pop(context);
                   },
                   child: Row(
@@ -208,6 +230,32 @@ class _ApplicationContactInfoState extends State<ApplicationContactInfo> {
                   label: 'FEIN from IRS',
                   controller: widget.fein,
                 ),
+                const SizedBox(height: 30.0),
+                TextButton(
+                  child: Container(
+                    width: double.infinity,
+                    height: 45.0,
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).primaryColor,
+                      borderRadius: BorderRadius.circular(10.0),
+                    ),
+                    child: const Center(
+                      child: Text('Save & Continue',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 24.0,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                    ),
+                  ),
+                  onPressed: () {
+                    setState(() {
+                      widget.contactCount.text = countCompleted().toString();
+                    });
+                    Navigator.pop(context);
+                  },
+                ),
                 const SizedBox(height: 500.0),
               ],
             ),
@@ -217,3 +265,5 @@ class _ApplicationContactInfoState extends State<ApplicationContactInfo> {
     );
   }
 }
+
+

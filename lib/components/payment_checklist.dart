@@ -6,9 +6,6 @@ class PaymentChecklist {
 
   final List<Item> checklist = [
     Item(c: 'Payment',
-        i: 'Placeholder',
-        v: false),
-    Item(c: 'Payment',
         i: 'Earnings records must note each workers\' first and last day of work.',
         v: false),
     Item(c: 'Payment',

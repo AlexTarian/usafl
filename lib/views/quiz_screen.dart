@@ -94,6 +94,10 @@ class _QuizScreenState extends State<QuizScreen> {
           titleStyle: TextStyle(
             color: Theme.of(context).primaryColor,
           ),
+          descStyle: TextStyle(
+            color: Theme.of(context).primaryColor,
+            fontSize: 20.0,
+          ),
         ),
         title: 'Oops...',
         desc: quizEngine.getExplanation(),

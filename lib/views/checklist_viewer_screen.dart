@@ -22,7 +22,7 @@ class _ChecklistViewerState extends State<ChecklistViewer> {
   late int remaining = widget.selectedChecklist.checklist.length;
   late double percent = (complete + incomplete)/remaining;
   double gradientStop = 0;
-  late bool isNotHousing = widget.selectedChecklist.getCategory() == 'Housing' || widget.selectedChecklist.getCategory() == 'Bedrooms' || widget.selectedChecklist.getCategory() == 'Bathrooms' ? false : true;
+  late bool isNotHousing = widget.selectedChecklist.getCategory() == 'Grounds' || widget.selectedChecklist.getCategory() == 'Kitchen' || widget.selectedChecklist.getCategory() == 'Bedrooms' || widget.selectedChecklist.getCategory() == 'Bathrooms' || widget.selectedChecklist.getCategory() == 'MiscHousing' ? false : true;
   late bool isComplete = false;
 
   void checkIsFinished() {

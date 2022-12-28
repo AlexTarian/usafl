@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:usafl/constants.dart';
 import 'package:intl/intl.dart';
+import 'package:usafl/views/application_viewer_screen.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:usafl/components/extra_worksite_list.dart';
 import 'package:usafl/components/worksite_picker.dart';
@@ -31,6 +32,7 @@ class ApplicationWorksiteInfo extends StatefulWidget {
     required this.tempEnd,
     required this.tempWorkersReq,
     required this.extraWorksites,
+    required this.worksiteCount,
   });
 
   final TextEditingController bizName;
@@ -55,6 +57,7 @@ class ApplicationWorksiteInfo extends StatefulWidget {
   final TextEditingController tempEnd;
   final TextEditingController tempWorkersReq;
   final List<Worksite> extraWorksites;
+  final TextEditingController worksiteCount;
 
   @override
   State<ApplicationWorksiteInfo> createState() =>
@@ -63,6 +66,15 @@ class ApplicationWorksiteInfo extends StatefulWidget {
 
 class _ApplicationWorksiteInfoState extends State<ApplicationWorksiteInfo> {
   bool isFLC = false;
+
+  double countCompleted() {
+    int sum = (widget.primeWorkAddress.text != '' ? 1 : 0) +
+        (widget.primeWorkCity.text != '' ? 1 : 0) +
+        (widget.primeWorkState.text != 'State' ? 1 : 0) +
+        (widget.primeWorkZip.text != '' ? 1 : 0) +
+        (widget.primeWorkCounty.text != '' ? 1 : 0);
+    return sum/5;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -89,6 +101,9 @@ class _ApplicationWorksiteInfoState extends State<ApplicationWorksiteInfo> {
                 const SizedBox(height: 20.0),
                 TextButton(
                   onPressed: () {
+                    setState(() {
+                      widget.worksiteCount.text = countCompleted().toString();
+                    });
                     Navigator.pop(context);
                   },
                   child: Row(
@@ -503,6 +518,32 @@ class _ApplicationWorksiteInfoState extends State<ApplicationWorksiteInfo> {
                     },
                   ),
                 ),
+                // const SizedBox(height: 30.0),
+                // TextButton(
+                //   child: Container(
+                //     width: double.infinity,
+                //     height: 45.0,
+                //     decoration: BoxDecoration(
+                //       color: Theme.of(context).primaryColor,
+                //       borderRadius: BorderRadius.circular(10.0),
+                //     ),
+                //     child: const Center(
+                //       child: Text('Save & Continue',
+                //         style: TextStyle(
+                //           color: Colors.white,
+                //           fontSize: 24.0,
+                //           fontWeight: FontWeight.w700,
+                //         ),
+                //       ),
+                //     ),
+                //   ),
+                //   onPressed: () {
+                //     setState(() {
+                //       widget.worksiteCount.text = countCompleted().toString();
+                //     });
+                //     Navigator.pop(context);
+                //   },
+                // ),
                 const SizedBox(height: 500.0),
               ],
             ),

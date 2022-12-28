@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:usafl/constants.dart';
 import 'package:usafl/views/application_selection_screen.dart';
 import 'package:usafl/components/custom_app_bar.dart';
 import 'package:usafl/components/nav_menu.dart';
@@ -14,6 +15,7 @@ import 'package:usafl/views/job_requirements_form.dart';
 import 'package:usafl/views/job_worksite_form.dart';
 import 'package:usafl/views/job_housing_form.dart';
 import 'package:usafl/views/job_misc_form.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 
 ApplicationForm appEngine = const ApplicationForm();
 late DateTime selectedDate;
@@ -151,17 +153,39 @@ class _ApplicationViewerState extends State<ApplicationViewer> {
   TextEditingController tempHousingOccupancy = TextEditingController();
   TextEditingController tempHousingKitchen =
       TextEditingController(text: 'Select');
-  TextEditingController prevH2aUse = TextEditingController(text: 'false');
-  TextEditingController selectedWorkers = TextEditingController(text: 'false');
-  TextEditingController willTrainWorkers = TextEditingController(text: 'false');
-  TextEditingController smokingOkay = TextEditingController(text: 'false');
-  TextEditingController familiesOkay = TextEditingController(text: 'false');
-  TextEditingController prevExpPref = TextEditingController(text: 'false');
+  TextEditingController meals = TextEditingController();
+  TextEditingController transpDaily = TextEditingController();
+  TextEditingController transpInAndOut = TextEditingController();
+  TextEditingController prevH2aUse = TextEditingController(text: 'Select');
+  TextEditingController selectedWorkers = TextEditingController(text: 'Select');
+  TextEditingController willTrainWorkers = TextEditingController(text: 'Select');
+  TextEditingController smokingOkay = TextEditingController(text: 'Select');
+  TextEditingController familiesOkay = TextEditingController(text: 'Select');
+  TextEditingController prevExpPref = TextEditingController(text: 'Select');
+  TextEditingController contactCount = TextEditingController(text: '0');
+  TextEditingController detailCount = TextEditingController(text: '0');
+  TextEditingController dutyCount = TextEditingController(text: '0');
+  TextEditingController requirementCount = TextEditingController(text: '0');
+  TextEditingController worksiteCount = TextEditingController(text: '0');
+  TextEditingController housingCount = TextEditingController(text: '0');
+  TextEditingController miscCount = TextEditingController(text: '0');
+  double progress = 0;
 
   @override
   void initState() {
     super.initState();
     taskList = List<bool>.filled(DutiesList().checklist.length, false);
+  }
+
+  double countProgress() {
+    double sum = double.parse(contactCount.text) +
+        double.parse(detailCount.text) +
+        double.parse(dutyCount.text) +
+        double.parse(requirementCount.text) +
+        double.parse(worksiteCount.text) +
+        double.parse(housingCount.text) +
+        double.parse(miscCount.text);
+    return sum;
   }
 
   @override
@@ -216,7 +240,7 @@ class _ApplicationViewerState extends State<ApplicationViewer> {
                           Icon(Icons.arrow_back, size: 30.0),
                           SizedBox(width: 10.0),
                           Text('Back to Applications',
-                              style: TextStyle(fontSize: 18.0)),
+                              style: TextStyle(fontSize: 20.0)),
                         ],
                       ),
                     ),
@@ -232,8 +256,8 @@ class _ApplicationViewerState extends State<ApplicationViewer> {
                           child: IconBoxButton(
                             icon: Icons.person,
                             text: 'Contact Info',
-                            progress: contactProgress,
-                            trailingIcon: contactProgress == 1
+                            progress: double.parse(contactCount.text),
+                            trailingIcon: double.parse(contactCount.text) == 1
                                 ? Icons.check_circle
                                 : null,
                             trailingColor: Theme.of(context).primaryColor,
@@ -261,7 +285,11 @@ class _ApplicationViewerState extends State<ApplicationViewer> {
                                           ext: ext,
                                           email: email,
                                           fein: fein,
-                                        ))));
+                                          contactCount: contactCount,
+                                        )))).then((value) =>
+                                setState(() {
+                                  progress = countProgress();
+                                }));
                           },
                         ),
                         const SizedBox(height: 10.0),
@@ -269,8 +297,8 @@ class _ApplicationViewerState extends State<ApplicationViewer> {
                           child: IconBoxButton(
                             icon: Icons.calendar_month,
                             text: 'Job Details',
-                            progress: jobProgress,
-                            trailingIcon: contactProgress == 1
+                            progress: double.parse(detailCount.text),
+                            trailingIcon: double.parse(detailCount.text) == 1
                                 ? Icons.check_circle
                                 : null,
                             trailingColor: Theme.of(context).primaryColor,
@@ -304,7 +332,12 @@ class _ApplicationViewerState extends State<ApplicationViewer> {
                                         minOut: minOut,
                                         phaseOut: phaseOut,
                                         paySchedule: paySchedule,
-                                        payDay: payDay))));
+                                        payDay: payDay,
+                                        detailCount: detailCount,
+                                    )))).then((value) =>
+                                setState(() {
+                                  progress = countProgress();
+                                }));
                           },
                         ),
                         const SizedBox(height: 10.0),
@@ -312,8 +345,8 @@ class _ApplicationViewerState extends State<ApplicationViewer> {
                           child: IconBoxButton(
                             icon: Icons.list,
                             text: 'Job Duties',
-                            progress: dutiesProgress,
-                            trailingIcon: contactProgress == 1
+                            progress: double.parse(dutyCount.text),
+                            trailingIcon: double.parse(dutyCount.text) == 1
                                 ? Icons.check_circle
                                 : null,
                             trailingColor: Theme.of(context).primaryColor,
@@ -333,7 +366,12 @@ class _ApplicationViewerState extends State<ApplicationViewer> {
                                             genTasks: genTasks,
                                             livTasks: livTasks,
                                             mecTasks: mecTasks,
-                                            winTasks: winTasks))));
+                                            winTasks: winTasks,
+                                          dutyCount: dutyCount,
+                                        )))).then((value) =>
+                                setState(() {
+                                  progress = countProgress();
+                                }));
                           },
                         ),
                         const SizedBox(height: 10.0),
@@ -341,8 +379,8 @@ class _ApplicationViewerState extends State<ApplicationViewer> {
                           child: IconBoxButton(
                             icon: Icons.checklist,
                             text: 'Requirements',
-                            progress: requirementProgress,
-                            trailingIcon: contactProgress == 1
+                            progress: double.parse(requirementCount.text),
+                            trailingIcon: double.parse(requirementCount.text) == 1
                                 ? Icons.check_circle
                                 : null,
                             trailingColor: Theme.of(context).primaryColor,
@@ -370,7 +408,12 @@ class _ApplicationViewerState extends State<ApplicationViewer> {
                                             superReq: superReq,
                                             pounds: pounds,
                                             supervised: supervised,
-                                            otherReq: otherReq))));
+                                            otherReq: otherReq,
+                                          requirementCount: requirementCount,
+                                        )))).then((value) =>
+                                setState(() {
+                                  progress = countProgress();
+                                }));
                           },
                         ),
                         const SizedBox(height: 10.0),
@@ -378,8 +421,8 @@ class _ApplicationViewerState extends State<ApplicationViewer> {
                           child: IconBoxButton(
                             icon: Icons.location_on,
                             text: 'Worksites',
-                            progress: worksiteProgress,
-                            trailingIcon: contactProgress == 1
+                            progress: double.parse(worksiteCount.text),
+                            trailingIcon: double.parse(worksiteCount.text) == 1
                                 ? Icons.check_circle
                                 : null,
                             trailingColor: Theme.of(context).primaryColor,
@@ -412,7 +455,12 @@ class _ApplicationViewerState extends State<ApplicationViewer> {
                                             tempStart: tempStart,
                                             tempEnd: tempEnd,
                                             tempWorkersReq: tempWorkersReq,
-                                            extraWorksites: extraWorksites))));
+                                            extraWorksites: extraWorksites,
+                                          worksiteCount: worksiteCount,
+                                        )))).then((value) =>
+                                setState(() {
+                                  progress = countProgress();
+                                }));
                           },
                         ),
                         const SizedBox(height: 10.0),
@@ -420,8 +468,8 @@ class _ApplicationViewerState extends State<ApplicationViewer> {
                           child: IconBoxButton(
                             icon: Icons.house,
                             text: 'Worker Housing',
-                            progress: housingProgress,
-                            trailingIcon: contactProgress == 1
+                            progress: double.parse(housingCount.text),
+                            trailingIcon: double.parse(housingCount.text) == 1
                                 ? Icons.check_circle
                                 : null,
                             trailingColor: Theme.of(context).primaryColor,
@@ -471,7 +519,12 @@ class _ApplicationViewerState extends State<ApplicationViewer> {
                                                 tempHousingOccupancy,
                                             tempHousingKitchen:
                                                 tempHousingKitchen,
-                                            extraHousing: extraHousing))));
+                                            extraHousing: extraHousing,
+                                          housingCount: housingCount,
+                                        )))).then((value) =>
+                                setState(() {
+                                  progress = countProgress();
+                                }));
                           },
                         ),
                         const SizedBox(height: 10.0),
@@ -479,8 +532,8 @@ class _ApplicationViewerState extends State<ApplicationViewer> {
                           child: IconBoxButton(
                             icon: Icons.question_mark,
                             text: 'Miscellaneous',
-                            progress: miscProgress,
-                            trailingIcon: contactProgress == 1
+                            progress: double.parse(miscCount.text),
+                            trailingIcon: double.parse(miscCount.text) == 1
                                 ? Icons.check_circle
                                 : null,
                             trailingColor: Theme.of(context).primaryColor,
@@ -490,12 +543,20 @@ class _ApplicationViewerState extends State<ApplicationViewer> {
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) => (ApplicationMiscInfo(
-                                        prevH2aUse: prevH2aUse,
-                                        selectedWorkers: selectedWorkers,
-                                        willTrainWorkers: willTrainWorkers,
-                                        smokingOkay: smokingOkay,
-                                        familiesOkay: familiesOkay,
-                                        prevExpPref: prevExpPref))));
+                                      meals: meals,
+                                      transpDaily: transpDaily,
+                                      transpInAndOut: transpInAndOut,
+                                      prevH2aUse: prevH2aUse,
+                                      selectedWorkers: selectedWorkers,
+                                      willTrainWorkers: willTrainWorkers,
+                                      smokingOkay: smokingOkay,
+                                      familiesOkay: familiesOkay,
+                                      prevExpPref: prevExpPref,
+                                      miscCount: miscCount,
+                                    )))).then((value) =>
+                                setState(() {
+                                  progress = countProgress();
+                                }));
                           },
                         ),
                       ],
@@ -505,30 +566,66 @@ class _ApplicationViewerState extends State<ApplicationViewer> {
                 Column(
                   children: <Widget>[
                     const SizedBox(height: 20.0),
-                    Container(
-                      height: 40.0,
-                      decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                          colors: <Color>[
-                            Theme.of(context).primaryColor.withOpacity(0.5),
-                            Colors.transparent
-                          ],
-                          stops: <double>[
-                            pageNum / pageTotal,
-                            pageNum / pageTotal
-                          ],
+                    GestureDetector(
+                      child: Container(
+                        height: 50.0,
+                        decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                            colors: <Color>[
+                              progress == 7 ? Theme.of(context).primaryColor : Theme.of(context).primaryColor.withOpacity(.5),
+                              Colors.transparent
+                            ],
+                            stops: <double>[
+                              progress / 7,
+                              progress / 7
+                            ],
+                          ),
+                          borderRadius:
+                              const BorderRadius.all(Radius.circular(10)),
+                          border: Border.all(
+                              color: Theme.of(context).primaryColor, width: 3),
                         ),
-                        borderRadius:
-                            const BorderRadius.all(Radius.circular(10)),
-                        border: Border.all(
-                            color: Theme.of(context).primaryColor, width: 3),
+                        child: Center(
+                          child: Text(progress == 7 ? 'SUBMIT' : 'PROGRESS (${((progress/7)*100).toStringAsFixed(2)}%)',
+                              style: TextStyle(
+                                  color: progress == 7 ? Colors.white : Theme.of(context).primaryColor,
+                                  fontSize: 20.0,
+                                  fontWeight: FontWeight.w700)),
+                        ),
                       ),
-                      child: Center(
-                        child: Text('SUBMIT',
-                            style: TextStyle(
-                                color: Theme.of(context).primaryColor,
-                                fontWeight: FontWeight.w700)),
-                      ),
+                      onTap: () {
+                        if(progress == 7) {
+                          Alert(
+                            context: context,
+                            title: 'Acknowledgement',
+                            desc: 'Ready to submit your application? This cannot be undone.',
+                            buttons: [
+                              DialogButton(
+                                color: usaflAccent,
+                                child: const Text(
+                                  'Go Back',
+                                  style:
+                                  TextStyle(color: Colors.white, fontSize: 20.0),
+                                ),
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                              ),
+                              DialogButton(
+                                color: usaflAccent,
+                                child: const Text(
+                                  'Confirm',
+                                  style:
+                                  TextStyle(color: Colors.white, fontSize: 20.0),
+                                ),
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                              ),
+                            ],
+                          ).show();
+                        }
+                      },
                     ),
                   ],
                 ),

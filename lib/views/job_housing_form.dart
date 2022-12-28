@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:usafl/constants.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
+//import 'package:usafl/views/application_viewer_screen.dart';
 import 'package:usafl/components/extra_housing_list.dart';
 import 'package:usafl/components/housing_picker.dart';
 
@@ -33,6 +34,7 @@ class ApplicationHousingInfo extends StatefulWidget {
     required this.tempHousingOccupancy,
     required this.tempHousingKitchen,
     required this.extraHousing,
+    required this.housingCount,
   });
 
   final TextEditingController state;
@@ -61,12 +63,30 @@ class ApplicationHousingInfo extends StatefulWidget {
   final TextEditingController tempHousingOccupancy;
   final TextEditingController tempHousingKitchen;
   final List<Housing> extraHousing;
+  final TextEditingController housingCount;
 
   @override
   State<ApplicationHousingInfo> createState() => _ApplicationHousingInfoState();
 }
 
 class _ApplicationHousingInfoState extends State<ApplicationHousingInfo> {
+
+  double countCompleted() {
+    int sum = (widget.primeHousingStatus.text != '' ? 1 : 0) +
+        (widget.primeHousingType.text != '' ? 1 : 0) +
+        (widget.primeHousingAddress.text != '' ? 1 : 0) +
+        (widget.primeHousingCity.text != '' ? 1 : 0) +
+        (widget.primeHousingState.text != 'State' ? 1 : 0) +
+        (widget.primeHousingZip.text != '' ? 1 : 0) +
+        (widget.primeHousingCounty.text != '' ? 1 : 0) +
+        (widget.primeHousingUnits.text != '' ? 1 : 0) +
+        (widget.primeHousingBedrooms.text != '' ? 1 : 0) +
+        (widget.primeHousingBeds.text != '' ? 1 : 0) +
+        (widget.primeHousingOccupancy.text != '' ? 1 : 0) +
+        (widget.primeHousingKitchen.text != 'Select' ? 1 : 0);
+    return sum/12;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -92,6 +112,9 @@ class _ApplicationHousingInfoState extends State<ApplicationHousingInfo> {
                 const SizedBox(height: 20.0),
                 TextButton(
                   onPressed: () {
+                    setState(() {
+                      widget.housingCount.text = countCompleted().toString();
+                    });
                     Navigator.pop(context);
                   },
                   child: Row(
@@ -486,6 +509,32 @@ class _ApplicationHousingInfoState extends State<ApplicationHousingInfo> {
                     },
                   ),
                 ),
+                // const SizedBox(height: 30.0),
+                // TextButton(
+                //   child: Container(
+                //     width: double.infinity,
+                //     height: 45.0,
+                //     decoration: BoxDecoration(
+                //       color: Theme.of(context).primaryColor,
+                //       borderRadius: BorderRadius.circular(10.0),
+                //     ),
+                //     child: const Center(
+                //       child: Text('Save & Continue',
+                //         style: TextStyle(
+                //           color: Colors.white,
+                //           fontSize: 24.0,
+                //           fontWeight: FontWeight.w700,
+                //         ),
+                //       ),
+                //     ),
+                //   ),
+                //   onPressed: () {
+                //     setState(() {
+                //       widget.housingCount.text = countCompleted().toString();
+                //     });
+                //     Navigator.pop(context);
+                //   },
+                // ),
                 const SizedBox(height: 500.0),
               ],
             ),
