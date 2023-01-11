@@ -14,6 +14,7 @@ import 'package:usafl/views/job_duties_form.dart';
 import 'package:usafl/views/job_requirements_form.dart';
 import 'package:usafl/views/job_worksite_form.dart';
 import 'package:usafl/views/job_housing_form.dart';
+import 'package:usafl/views/job_transportation_form.dart';
 import 'package:usafl/views/job_misc_form.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 
@@ -153,6 +154,28 @@ class _ApplicationViewerState extends State<ApplicationViewer> {
   TextEditingController tempHousingOccupancy = TextEditingController();
   TextEditingController tempHousingKitchen =
       TextEditingController(text: 'Select');
+  TextEditingController transpOption = TextEditingController(text: 'Select');
+  TextEditingController  separateVehicles = TextEditingController(text: 'Select');
+  TextEditingController  vehiclesProvided = TextEditingController(text: '0');
+  TextEditingController  vehicleList = TextEditingController();
+  TextEditingController  fuelExpenseHandling = TextEditingController();
+  TextEditingController  vehicleProvisionConfirmation = TextEditingController();
+  TextEditingController  provVehicleForErrands = TextEditingController();
+  TextEditingController  pickupTime = TextEditingController();
+  TextEditingController  pickupLocation = TextEditingController();
+  TextEditingController  pickupCustomLocation = TextEditingController();
+  TextEditingController  dropOffTime = TextEditingController();
+  TextEditingController  dropOffLocation = TextEditingController();
+  TextEditingController  dropOffCustomLocation = TextEditingController();
+  TextEditingController  vehicleOwner = TextEditingController();
+  TextEditingController  transpService = TextEditingController();
+  TextEditingController  errandHandling = TextEditingController();
+  TextEditingController  errandVehicles = TextEditingController();
+  TextEditingController  errandVehiclesList = TextEditingController();
+  TextEditingController  otherWorkers = TextEditingController();
+  TextEditingController  confirmOne = TextEditingController();
+  TextEditingController  confirmTwo = TextEditingController();
+  TextEditingController  confirmThree = TextEditingController();
   TextEditingController meals = TextEditingController();
   TextEditingController transpDaily = TextEditingController();
   TextEditingController transpInAndOut = TextEditingController();
@@ -168,6 +191,7 @@ class _ApplicationViewerState extends State<ApplicationViewer> {
   TextEditingController requirementCount = TextEditingController(text: '0');
   TextEditingController worksiteCount = TextEditingController(text: '0');
   TextEditingController housingCount = TextEditingController(text: '0');
+  TextEditingController transpCount = TextEditingController(text: '0');
   TextEditingController miscCount = TextEditingController(text: '0');
   double progress = 0;
 
@@ -476,52 +500,83 @@ class _ApplicationViewerState extends State<ApplicationViewer> {
                           ),
                           onTap: () {
                             Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                  (ApplicationHousingInfo(
+                                    state: state,
+                                    primeHousingStatus: primeHousingStatus,
+                                    primeHousingType: primeHousingType,
+                                    primeHousingAddress: primeHousingAddress,
+                                    primeHousingCity: primeHousingCity,
+                                    primeHousingState: primeHousingState,
+                                    primeHousingZip: primeHousingZip,
+                                    primeHousingCounty: primeHousingCounty,
+                                    primeHousingUnits: primeHousingUnits,
+                                    primeHousingBedrooms: primeHousingBedrooms,
+                                    primeHousingBeds: primeHousingBeds,
+                                    primeHousingOccupancy: primeHousingOccupancy,
+                                    primeHousingKitchen: primeHousingKitchen,
+                                    tempHousingStatus: tempHousingStatus,
+                                    tempHousingType: tempHousingType,
+                                    tempHousingAddress: tempHousingAddress,
+                                    tempHousingCity: tempHousingCity,
+                                    tempHousingState: tempHousingState,
+                                    tempHousingZip: tempHousingZip,
+                                    tempHousingCounty: tempHousingCounty,
+                                    tempHousingUnits: tempHousingUnits,
+                                    tempHousingBedrooms: tempHousingBedrooms,
+                                    tempHousingBeds: tempHousingBeds,
+                                    tempHousingOccupancy: tempHousingOccupancy,
+                                    tempHousingKitchen: tempHousingKitchen,
+                                    extraHousing: extraHousing,
+                                    housingCount: housingCount,
+                                  )))).then((value) =>
+                                setState(() {
+                                  progress = countProgress();
+                                }));
+                          },
+                        ),
+                        const SizedBox(height: 10.0),
+                        GestureDetector(
+                          child: IconBoxButton(
+                            icon: Icons.directions_bus_filled,
+                            text: 'Transportation',
+                            progress: double.parse(transpCount.text),
+                            trailingIcon: double.parse(transpCount.text) == 1
+                                ? Icons.check_circle
+                                : null,
+                            trailingColor: Theme.of(context).primaryColor,
+                          ),
+                          onTap: () {
+                            Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) =>
-                                        (ApplicationHousingInfo(
-                                            state: state,
-                                            primeHousingStatus:
-                                                primeHousingStatus,
-                                            primeHousingType: primeHousingType,
-                                            primeHousingAddress:
-                                                primeHousingAddress,
-                                            primeHousingCity: primeHousingCity,
-                                            primeHousingState:
-                                                primeHousingState,
-                                            primeHousingZip: primeHousingZip,
-                                            primeHousingCounty:
-                                                primeHousingCounty,
-                                            primeHousingUnits:
-                                                primeHousingUnits,
-                                            primeHousingBedrooms:
-                                                primeHousingBedrooms,
-                                            primeHousingBeds: primeHousingBeds,
-                                            primeHousingOccupancy:
-                                                primeHousingOccupancy,
-                                            primeHousingKitchen:
-                                                primeHousingKitchen,
-                                            tempHousingStatus:
-                                                tempHousingStatus,
-                                            tempHousingType: tempHousingType,
-                                            tempHousingAddress:
-                                                tempHousingAddress,
-                                            tempHousingCity: tempHousingCity,
-                                            tempHousingState: tempHousingState,
-                                            tempHousingZip: tempHousingZip,
-                                            tempHousingCounty:
-                                                tempHousingCounty,
-                                            tempHousingUnits: tempHousingUnits,
-                                            tempHousingBedrooms:
-                                                tempHousingBedrooms,
-                                            tempHousingBeds: tempHousingBeds,
-                                            tempHousingOccupancy:
-                                                tempHousingOccupancy,
-                                            tempHousingKitchen:
-                                                tempHousingKitchen,
-                                            extraHousing: extraHousing,
-                                          housingCount: housingCount,
-                                        )))).then((value) =>
+                                    builder: (context) => (ApplicationTransportInfo(
+                                      transpOption: transpOption,
+                                      separateVehicles: separateVehicles,
+                                      vehiclesProvided: vehiclesProvided,
+                                      vehicleList: vehicleList,
+                                      fuelExpenseHandling: fuelExpenseHandling,
+                                      vehicleProvisionConfirmation: vehicleProvisionConfirmation,
+                                      provVehicleForErrands: provVehicleForErrands,
+                                      pickupTime: pickupTime,
+                                      pickupLocation: pickupLocation,
+                                      pickupCustomLocation: pickupCustomLocation,
+                                      dropOffTime: dropOffTime,
+                                      dropOffLocation: dropOffLocation,
+                                      dropOffCustomLocation: dropOffCustomLocation,
+                                      vehicleOwner: vehicleOwner,
+                                      transpService: transpService,
+                                      errandHandling: errandHandling,
+                                      errandVehicles: errandVehicles,
+                                      errandVehiclesList: errandVehiclesList,
+                                      otherWorkers: otherWorkers,
+                                      confirmOne: confirmOne,
+                                      confirmTwo: confirmTwo,
+                                      confirmThree: confirmThree,
+                                      transpCount: transpCount,
+                                    )))).then((value) =>
                                 setState(() {
                                   progress = countProgress();
                                 }));
@@ -540,23 +595,23 @@ class _ApplicationViewerState extends State<ApplicationViewer> {
                           ),
                           onTap: () {
                             Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => (ApplicationMiscInfo(
-                                      meals: meals,
-                                      transpDaily: transpDaily,
-                                      transpInAndOut: transpInAndOut,
-                                      prevH2aUse: prevH2aUse,
-                                      selectedWorkers: selectedWorkers,
-                                      willTrainWorkers: willTrainWorkers,
-                                      smokingOkay: smokingOkay,
-                                      familiesOkay: familiesOkay,
-                                      prevExpPref: prevExpPref,
-                                      miscCount: miscCount,
-                                    )))).then((value) =>
-                                setState(() {
-                                  progress = countProgress();
-                                }));
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => (ApplicationMiscInfo(
+                                  meals: meals,
+                                  transpDaily: transpDaily,
+                                  transpInAndOut: transpInAndOut,
+                                  prevH2aUse: prevH2aUse,
+                                  selectedWorkers: selectedWorkers,
+                                  willTrainWorkers: willTrainWorkers,
+                                  smokingOkay: smokingOkay,
+                                  familiesOkay: familiesOkay,
+                                  prevExpPref: prevExpPref,
+                                  miscCount: miscCount,
+                                )))).then((value) =>
+                              setState(() {
+                                progress = countProgress();
+                              }));
                           },
                         ),
                       ],
