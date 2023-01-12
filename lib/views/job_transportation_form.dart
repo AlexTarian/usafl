@@ -63,6 +63,14 @@ class ApplicationTransportInfo extends StatefulWidget {
 
 class _ApplicationTransportInfoState extends State<ApplicationTransportInfo> {
   List<ProvidedVehicle> vehicleList = [];
+  bool confirm1 = false;
+  List<String> methods = [
+    'Select',
+    'Provide workers with vehicles and let them drive themselves.',
+    'Transport workers by bus, truck, etc.',
+    'Not Applicable. Housing is within walking distance of the worksite.',
+  ];
+  String transMethod = '';
 
   double countCompleted() {
     int sum = (widget.transpOption.text != '' ? 1 : 0) +
@@ -142,14 +150,10 @@ class _ApplicationTransportInfoState extends State<ApplicationTransportInfo> {
                     onChanged: (String? newValue) {
                       setState(() {
                         widget.transpOption.text = newValue!;
+
                       });
                     },
-                    items: [
-                      'Select',
-                      'Provide workers with vehicles and let them drive themselves.',
-                      'Transport workers by bus, truck, etc.',
-                      'Not Applicable. Housing is within walking distance of the worksite.',
-                    ]
+                    items: methods
                         .map<DropdownMenuItem<String>>((String value) {
                       return DropdownMenuItem<String>(
                         value: value,
@@ -267,11 +271,113 @@ class _ApplicationTransportInfoState extends State<ApplicationTransportInfo> {
                   ],
                 ),
                 const SizedBox(height: 15.0),
-                ApplicationTextField(
-                  label: 'Vehicles List',
-                  controller: widget.vehicleList,
-                  readOnly: true,
+                Text(
+                  'How will you reimburse workers for fuel expenses?',
+                  style: TextStyle(
+                    color: Theme.of(context).primaryColor,
+                    fontSize: 20.0,
+                    fontWeight: FontWeight.w700),
                 ),
+                const SizedBox(height: 10.0),
+                Container(
+                  padding: const EdgeInsets.all(5.0),
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                        width: 2, color: Theme.of(context).primaryColor),
+                  ),
+                  child: DropdownButton<String>(
+                    isExpanded: true,
+                    value: widget.fuelExpenseHandling.text,
+                    elevation: 16,
+                    style: TextStyle(
+                        fontSize: 20.0,
+                        color: Theme.of(context).primaryColor),
+                    underline: Container(
+                      width: double.infinity,
+                      height: 2,
+                      color: Colors.transparent,
+                    ),
+                    onChanged: (String? newValue) {
+                      setState(() {
+                        widget.fuelExpenseHandling.text = newValue!;
+                      });
+                    },
+                    items: [
+                      'Select',
+                      'I will reimburse workers for such expenses once they provide receipts.',
+                      'I will give workers a card to pay for such expenses.',
+                      'I will give workers fuel from a tank located at headquarters.',
+                    ]
+                        .map<DropdownMenuItem<String>>((String value) {
+                      return DropdownMenuItem<String>(
+                        value: value,
+                        child: Text(value),
+                      );
+                    }).toList(),
+                  ),
+                ),
+                const SizedBox(height: 15.0),
+                CheckboxListTile(
+                  title: Text('I confirm that the vehicles will be provided to workers at no cost to them.',
+                    style: TextStyle(color: Theme.of(context).primaryColor, fontSize: 20.0,),
+                  ),
+                    value: confirm1,
+                    controlAffinity: ListTileControlAffinity.leading,
+                    onChanged: (value) {
+                      setState(() {
+                        widget.confirmOne.text = value.toString();
+                        confirm1 = value!;
+                      });
+                    },
+                ),
+                const SizedBox(height: 15.0),
+                Text(
+                  'Will workers be able to use these vehicles for personal errands (e.g., trips to the grocery store)?',
+                  style: TextStyle(
+                      color: Theme.of(context).primaryColor,
+                      fontSize: 20.0,
+                      fontWeight: FontWeight.w700),
+                ),
+                const SizedBox(height: 10.0),
+                Container(
+                  padding: const EdgeInsets.all(5.0),
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                        width: 2, color: Theme.of(context).primaryColor),
+                  ),
+                  child: DropdownButton<String>(
+                    isExpanded: true,
+                    value: widget.provVehicleForErrands.text,
+                    elevation: 16,
+                    style: TextStyle(
+                        fontSize: 20.0,
+                        color: Theme.of(context).primaryColor),
+                    underline: Container(
+                      width: double.infinity,
+                      height: 2,
+                      color: Colors.transparent,
+                    ),
+                    onChanged: (String? newValue) {
+                      setState(() {
+                        widget.provVehicleForErrands.text = newValue!;
+                      });
+                    },
+                    items: [
+                      'Select',
+                      'Yes',
+                      'No',
+                    ]
+                        .map<DropdownMenuItem<String>>((String value) {
+                      return DropdownMenuItem<String>(
+                        value: value,
+                        child: Text(value),
+                      );
+                    }).toList(),
+                  ),
+                ),
+                const SizedBox(height: 15.0),
+
+
                 TextButton(
                   child: Container(
                     width: double.infinity,
