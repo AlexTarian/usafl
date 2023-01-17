@@ -162,12 +162,12 @@ class _ApplicationViewerState extends State<ApplicationViewer> {
   TextEditingController  vehicleProvisionConfirmation = TextEditingController();
   TextEditingController  provVehicleForErrands = TextEditingController(text: 'Select');
   TextEditingController  pickupTime = TextEditingController();
-  TextEditingController  pickupLocation = TextEditingController();
+  TextEditingController  pickupLocation = TextEditingController(text: 'Select');
   TextEditingController  pickupCustomLocation = TextEditingController();
   TextEditingController  dropOffTime = TextEditingController();
-  TextEditingController  dropOffLocation = TextEditingController();
+  TextEditingController  dropOffLocation = TextEditingController(text: 'Select');
   TextEditingController  dropOffCustomLocation = TextEditingController();
-  TextEditingController  vehicleOwner = TextEditingController();
+  TextEditingController  vehicleOwner = TextEditingController(text: 'Select');
   TextEditingController  transpService = TextEditingController();
   TextEditingController  errandHandling = TextEditingController();
   TextEditingController  errandVehicles = TextEditingController();
