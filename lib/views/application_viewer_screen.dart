@@ -155,27 +155,26 @@ class _ApplicationViewerState extends State<ApplicationViewer> {
   TextEditingController tempHousingKitchen =
       TextEditingController(text: 'Select');
   TextEditingController transpOption = TextEditingController(text: 'Select');
-  TextEditingController  separateVehicles = TextEditingController(text: 'Select');
-  TextEditingController  vehiclesProvided = TextEditingController(text: '0');
-  TextEditingController  vehicleList = TextEditingController();
-  TextEditingController  fuelExpenseHandling = TextEditingController(text: 'Select');
-  TextEditingController  vehicleProvisionConfirmation = TextEditingController();
-  TextEditingController  provVehicleForErrands = TextEditingController(text: 'Select');
-  TextEditingController  pickupTime = TextEditingController();
-  TextEditingController  pickupLocation = TextEditingController(text: 'Select');
-  TextEditingController  pickupCustomLocation = TextEditingController();
-  TextEditingController  dropOffTime = TextEditingController();
-  TextEditingController  dropOffLocation = TextEditingController(text: 'Select');
-  TextEditingController  dropOffCustomLocation = TextEditingController();
-  TextEditingController  vehicleOwner = TextEditingController(text: 'Select');
-  TextEditingController  transpService = TextEditingController();
-  TextEditingController  errandHandling = TextEditingController();
-  TextEditingController  errandVehicles = TextEditingController();
-  TextEditingController  errandVehiclesList = TextEditingController();
-  TextEditingController  otherWorkers = TextEditingController();
-  TextEditingController  confirmOne = TextEditingController();
-  TextEditingController  confirmTwo = TextEditingController();
-  TextEditingController  confirmThree = TextEditingController();
+  TextEditingController separateVehicles = TextEditingController(text: 'Select');
+  TextEditingController vehiclesProvided = TextEditingController(text: '0');
+  TextEditingController vehicleList = TextEditingController();
+  TextEditingController fuelExpenseHandling = TextEditingController(text: 'Select');
+  TextEditingController vehicleProvisionConfirmation = TextEditingController();
+  TextEditingController provVehicleForErrands = TextEditingController(text: 'Select');
+  TextEditingController pickupLocation = TextEditingController(text: 'Select');
+  TextEditingController pickupCustomLocation = TextEditingController();
+  TextEditingController dropOffLocation = TextEditingController(text: 'Select');
+  TextEditingController dropOffCustomLocation = TextEditingController();
+  TextEditingController vehicleOwner = TextEditingController(text: 'Select');
+  TextEditingController transpService = TextEditingController();
+  TextEditingController errandHandling = TextEditingController(text: 'Select');
+  TextEditingController errandVehicles = TextEditingController();
+  TextEditingController errandVehiclesList = TextEditingController();
+  TextEditingController errandExplain = TextEditingController();
+  TextEditingController otherWorkers = TextEditingController(text: 'Select');
+  TextEditingController confirmOne = TextEditingController();
+  TextEditingController confirmTwo = TextEditingController();
+  TextEditingController confirmThree = TextEditingController();
   TextEditingController meals = TextEditingController();
   TextEditingController transpDaily = TextEditingController();
   TextEditingController transpInAndOut = TextEditingController();
@@ -558,12 +557,9 @@ class _ApplicationViewerState extends State<ApplicationViewer> {
                                       vehiclesProvided: vehiclesProvided,
                                       vehicleList: vehicleList,
                                       fuelExpenseHandling: fuelExpenseHandling,
-                                      vehicleProvisionConfirmation: vehicleProvisionConfirmation,
                                       provVehicleForErrands: provVehicleForErrands,
-                                      pickupTime: pickupTime,
                                       pickupLocation: pickupLocation,
                                       pickupCustomLocation: pickupCustomLocation,
-                                      dropOffTime: dropOffTime,
                                       dropOffLocation: dropOffLocation,
                                       dropOffCustomLocation: dropOffCustomLocation,
                                       vehicleOwner: vehicleOwner,
@@ -571,6 +567,7 @@ class _ApplicationViewerState extends State<ApplicationViewer> {
                                       errandHandling: errandHandling,
                                       errandVehicles: errandVehicles,
                                       errandVehiclesList: errandVehiclesList,
+                                      errandExplain: errandExplain,
                                       otherWorkers: otherWorkers,
                                       confirmOne: confirmOne,
                                       confirmTwo: confirmTwo,
