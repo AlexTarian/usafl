@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:usafl/constants.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:usafl/components/vehicle_picker.dart';
-import 'package:usafl/components/application_list.dart';
+import 'package:usafl/components/application_text_field.dart';
 import 'package:usafl/components/vehicle_list.dart';
 
 class ApplicationTransportInfo extends StatefulWidget {
@@ -72,14 +72,38 @@ class _ApplicationTransportInfoState extends State<ApplicationTransportInfo> {
   ];
   String transMethod = '';
 
+  @override
+  void initState() {
+    transMethod = widget.transpOption.text;
+    confirm1 = widget.confirmOne.text == "true" ? true : false;
+    confirm2 = widget.confirmTwo.text == "true" ? true : false;
+    confirm3 = widget.confirmThree.text == "true" ? true : false;
+    super.initState();
+  }
+
   double countCompleted() {
-    int sum = (widget.transpOption.text != '' ? 1 : 0) +
-        (widget.errandHandling.text != '' ? 1 : 0) +
-        (widget.otherWorkers.text != '' ? 1 : 0) +
-        (widget.confirmOne.text != '' ? 1 : 0) +
-        (widget.confirmTwo.text != '' ? 1 : 0) +
-        (widget.confirmThree.text != '' ? 1 : 0);
-    return sum / 11;
+    int sum = (widget.transpOption.text != 'Select' ? 1 : 0) +
+        ((widget.transpOption.text != methods[1] || widget.separateVehicles.text != 'Select') ? 1 : 0) +
+        ((widget.transpOption.text != methods[1] || widget.vehiclesProvided.text != '0') ? 1 : 0) +
+        ((widget.transpOption.text != methods[1] || widget.fuelExpenseHandling.text != 'Select') ? 1 : 0) +
+        ((widget.transpOption.text != methods[1] || widget.provVehicleForErrands.text != 'Select') ? 1 : 0) +
+        ((widget.transpOption.text != methods[2] || widget.pickupLocation.text != 'Select') ? 1 : 0) +
+        ((widget.pickupLocation.text != 'A designated pickup location:' || widget.pickupCustomLocation.text != '') ? 1 : 0) +
+        ((widget.transpOption.text != methods[2] || widget.dropOffLocation.text != 'Select') ? 1 : 0) +
+        ((widget.dropOffLocation.text != 'A different, designated drop off location:' ||widget.dropOffCustomLocation.text != '') ? 1 : 0) +
+        ((widget.transpOption.text != methods[2] || widget.vehicleOwner.text != 'Select') ? 1 : 0) +
+        ((widget.vehicleOwner.text != "My business" || widget.vehiclesProvided.text != '0') ? 1 : 0) +
+        ((widget.vehicleOwner.text != "Third-party transportation service" || widget.transpService.text != '') ? 1 : 0) +
+        ((widget.provVehicleForErrands.text == 'Yes' || widget.errandHandling.text != 'Select') ? 1 : 0) +
+        ((widget.errandHandling.text != 'Provide workers with vehicles and let them drive themselves.' || widget.errandVehicles.text != '0') ? 1 : 0) +
+        ((widget.errandHandling.text != 'Provide workers with vehicles and let them drive themselves.' || widget.errandVehiclesList.text != '') ? 1 : 0) +
+        ((widget.errandHandling.text != 'Other:' || widget.errandExplain.text != '') ? 1 : 0) +
+        (widget.otherWorkers.text != 'Select' ? 1 : 0) +
+        (widget.confirmOne.text == 'true' ? 1 : 0) +
+        (widget.confirmTwo.text == 'true' ? 1 : 0) +
+        (widget.confirmThree.text == 'true' ? 1 : 0);
+
+    return sum / 20;
   }
 
   @override
@@ -166,7 +190,7 @@ class _ApplicationTransportInfoState extends State<ApplicationTransportInfo> {
                           widget.provVehicleForErrands.text = 'Select';
                         } else if(transMethod == methods[3]){
                           widget.separateVehicles.text = 'Select';
-                          widget.vehiclesProvided.text = '';
+                          widget.vehiclesProvided.text = '0';
                           widget.vehicleList.text = '';
                           widget.fuelExpenseHandling.text = 'Select';
                           widget.provVehicleForErrands.text = 'Select';
@@ -384,8 +408,8 @@ class _ApplicationTransportInfoState extends State<ApplicationTransportInfo> {
                               widget.provVehicleForErrands.text = newValue!;
                               if(widget.provVehicleForErrands.text == 'Yes'){
                                 widget.errandHandling.text = 'Select';
-                                widget.errandVehicles.text = '';
-                                widget.errandVehiclesList.text = '0';
+                                widget.errandVehicles.text = '0';
+                                widget.errandVehiclesList.text = '';
                               }
                             });
                           },
@@ -706,6 +730,7 @@ class _ApplicationTransportInfoState extends State<ApplicationTransportInfo> {
                             });
                           },
                           items: [
+                            //NOTE: If you change these values, you'll need to change CountCompleted().
                             'Select',
                             'Provide workers with vehicles and let them drive themselves.',
                             'Transport workers by bus, truck, etc.',

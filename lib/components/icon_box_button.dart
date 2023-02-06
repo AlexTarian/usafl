@@ -23,6 +23,7 @@ class IconBoxButton extends StatelessWidget {
           height: 65.0,
           width: double.infinity,
           decoration: BoxDecoration(
+             borderRadius: BorderRadius.all(Radius.circular(40)),
             gradient: LinearGradient(
               stops: <double>[progress, progress],
               begin: Alignment.centerLeft,
@@ -44,7 +45,7 @@ class IconBoxButton extends StatelessWidget {
           height: 65.0,
           width: double.infinity,
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.all(Radius.circular(10)),
+            borderRadius: BorderRadius.all(Radius.circular(40)),
             border: Border.all(color: Theme.of(context).primaryColor, width: 3),
           ),
           child: Row(
@@ -66,10 +67,13 @@ class IconBoxButton extends StatelessWidget {
                 flex: 1,
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                  child: Icon(
-                    trailingIcon,
-                    size: 30.0,
-                    color: trailingColor,
+                  child: Padding(
+                    padding: const EdgeInsets.only(right: 8.0),
+                    child: Icon(
+                      trailingIcon,
+                      size: 30.0,
+                      color: trailingColor,
+                    ),
                   ),
                 ),
               ),
@@ -82,9 +86,12 @@ class IconBoxButton extends StatelessWidget {
           decoration: BoxDecoration(
               color: Theme.of(context).primaryColor,
               borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(10),
-                  bottomLeft: Radius.circular(10))),
-          child: Icon(icon, size: 30.0, color: Colors.white),
+                  topLeft: Radius.circular(40),
+                  bottomLeft: Radius.circular(40))),
+          child: Padding(
+            padding: const EdgeInsets.only(left: 8.0),
+            child: Icon(icon, size: 30.0, color: Colors.white),
+          ),
         ),
       ],
     );

@@ -4,9 +4,7 @@ import 'package:usafl/components/nav_menu.dart';
 import 'package:usafl/views/application_viewer_screen.dart';
 
 class ApplicationScreen extends StatefulWidget {
-  ApplicationScreen({super.key, this.isLevelOne = true});
-
-  bool isLevelOne;
+  ApplicationScreen({super.key});
 
   @override
   State<ApplicationScreen> createState() => _ApplicationScreenState();

@@ -5,6 +5,8 @@ const Color usaflBlue = Color(0xFF233271);
 const Color usaflAccent = Color(0xFF5b9bd5);
 final Color themeColor = MyApp.themeNotifier.value == ThemeMode.light ? const Color(0xFF233271) : const Color(0xFF5b9bd5);
 final Color themeTextColor = MyApp.themeNotifier.value == ThemeMode.light ? Colors.black : Colors.white;
+final TextStyle bodyText = TextStyle(fontSize: 20.0, color: MyApp.themeNotifier.value == ThemeMode.light ? Colors.black : Colors.white);
+final TextStyle titleText = TextStyle(fontSize: 24.0, color: MyApp.themeNotifier.value == ThemeMode.light ? const Color(0xFF233271) : MyApp.aestheticMode == false ? const Color(0xFF5b9bd5) : const Color(0xFFfe75fe));
 
 final ThemeData lightTheme = ThemeData(
   scaffoldBackgroundColor: Colors.white,
@@ -16,30 +18,77 @@ final ThemeData lightTheme = ThemeData(
   splashColor: usaflAccent,
   dialogBackgroundColor: Colors.white,
   //fontFamily: 'Kodchasan',
+  primaryTextTheme: const TextTheme(
+    bodyText1: TextStyle(),
+    bodyText2: TextStyle(),
+  ).apply(
+    bodyColor: Colors.black,
+    displayColor: Color(0xFF233271),
+  ),
+  textTheme: const TextTheme(
+    bodyText1: TextStyle(),
+    bodyText2: TextStyle(),
+  ).apply(
+    bodyColor: Colors.black,
+    displayColor: Color(0xFF233271),
+  ),
 );
 
 final ThemeData darkTheme = ThemeData(
-  scaffoldBackgroundColor: Color(0xFF222222),
+  scaffoldBackgroundColor: const Color(0xFF222222),
   primarySwatch: customAccentColor,
   appBarTheme: const AppBarTheme(color: usaflAccent),
   primaryColor: usaflAccent,
   primaryColorLight: usaflBlue.withOpacity(0.5),
-  primaryColorDark: Color(0xFF222222),
+  primaryColorDark: const Color(0xFF222222),
   splashColor: usaflAccent,
   //fontFamily: 'Kodchasan',
   brightness: Brightness.dark,
+  primaryTextTheme: const TextTheme(
+    bodyText1: TextStyle(),
+    bodyText2: TextStyle(),
+  ).apply(
+    bodyColor: Colors.white,
+    displayColor: Color(0xFF5b9bd5),
+  ),
+  textTheme: const TextTheme(
+    bodyText1: TextStyle(),
+    bodyText2: TextStyle(),
+  ).apply(
+    bodyColor: Colors.white,
+    displayColor: Color(0xFF5b9bd5),
+  ),
 );
 
 final ThemeData aestheticTheme = ThemeData(
-  scaffoldBackgroundColor: Color(0xFF222222),
+  scaffoldBackgroundColor: const Color(0xFF222222),
   primarySwatch: customAccentColor,
   appBarTheme: const AppBarTheme(color: usaflBlue),
-  primaryColor: Color(0xFFfe75fe),
-  primaryColorLight: Color(0x757e00ff),
-  primaryColorDark: Color(0xFF120458),
-  splashColor: Color(0xFF7e00ff),
+  primaryColor: const Color(0xFFfe75fe),
+  primaryColorLight: const Color(0x757e00ff),
+  primaryColorDark: const Color(0xFF120458),
+  splashColor: const Color(0xFF7e00ff),
+  dialogTheme: const DialogTheme(
+    backgroundColor: Color(0xFF222222),
+    titleTextStyle: TextStyle(fontSize: 18.0, color: Color(0xFFfe75fe)),
+    contentTextStyle: TextStyle(color: Colors.white),
+  ),
   fontFamily: 'Kodchasan',
   brightness: Brightness.dark,
+  primaryTextTheme: const TextTheme(
+    bodyText1: TextStyle(),
+    bodyText2: TextStyle(),
+  ).apply(
+    bodyColor: Colors.white,
+    displayColor: Color(0xFFfe75fe),
+  ),
+  textTheme: const TextTheme(
+    bodyText1: TextStyle(),
+    bodyText2: TextStyle(),
+  ).apply(
+    bodyColor: Colors.white,
+    displayColor: Color(0xFFfe75fe),
+  ),
 );
 
 Map<int, Color> primaryColorCodes =

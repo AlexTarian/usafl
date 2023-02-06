@@ -33,6 +33,7 @@ class ApplicationHousingInfo extends StatefulWidget {
     required this.tempHousingBeds,
     required this.tempHousingOccupancy,
     required this.tempHousingKitchen,
+    required this.extraHousingList,
     required this.extraHousing,
     required this.housingCount,
   });
@@ -62,7 +63,8 @@ class ApplicationHousingInfo extends StatefulWidget {
   final TextEditingController tempHousingBeds;
   final TextEditingController tempHousingOccupancy;
   final TextEditingController tempHousingKitchen;
-  final List<Housing> extraHousing;
+  final List<Housing> extraHousingList;
+  final TextEditingController extraHousing;
   final TextEditingController housingCount;
 
   @override
@@ -85,6 +87,21 @@ class _ApplicationHousingInfoState extends State<ApplicationHousingInfo> {
         (widget.primeHousingOccupancy.text != '' ? 1 : 0) +
         (widget.primeHousingKitchen.text != 'Select' ? 1 : 0);
     return sum/12;
+  }
+
+  String compileHousingList(List<Housing> list){
+    String text = '';
+
+    for (var i = 0; i < list.length; i++){
+      text = text + '${list[i].housingStatus} ${list[i].housingType}\\n' +
+          '${list[i].housingStreet}\\n' +
+          '${list[i].housingCity}, ${list[i].housingState} ${list[i].housingZip}\\n' +
+          '${list[i].housingCounty.replaceAll(RegExp(' county',caseSensitive: false), '',)} County\\n' +
+          'Units: ${list[i].housingUnits}/ Bedrooms: ${list[i].housingBedrooms}/ Beds: ${list[i].housingBeds}\\n' +
+          'Occupancy: ${list[i].housingOccupancy}\\n' +
+          'Kitchen: ${list[i].housingKitchen}\\n\\n';
+    }
+    return text;
   }
 
   @override
@@ -113,8 +130,10 @@ class _ApplicationHousingInfoState extends State<ApplicationHousingInfo> {
                 TextButton(
                   onPressed: () {
                     setState(() {
+                      widget.extraHousing.text = compileHousingList(widget.extraHousingList);
                       widget.housingCount.text = countCompleted().toString();
                     });
+                    print(widget.extraHousing.text);
                     Navigator.pop(context);
                   },
                   child: Row(
@@ -354,7 +373,7 @@ class _ApplicationHousingInfoState extends State<ApplicationHousingInfo> {
                           ),
                           onPressed: () {
                             setState(() {
-                              widget.extraHousing.add(
+                              widget.extraHousingList.add(
                                 Housing(
                                   status: widget.tempHousingStatus.text,
                                   type: widget.tempHousingType.text,
@@ -383,7 +402,7 @@ class _ApplicationHousingInfoState extends State<ApplicationHousingInfo> {
                   width: MediaQuery.of(context).size.width,
                   height: 500.0,
                   child: ListView.builder(
-                    itemCount: widget.extraHousing.length,
+                    itemCount: widget.extraHousingList.length,
                     itemBuilder: (BuildContext context, int index) {
                       return Padding(
                         padding: const EdgeInsets.only(bottom: 10.0),
@@ -397,39 +416,39 @@ class _ApplicationHousingInfoState extends State<ApplicationHousingInfo> {
                           ),
                           child: ListTile(
                             title: Text(
-                              '${widget.extraHousing[index].housingStreet},\n${widget.extraHousing[index].housingCity}, ${widget.extraHousing[index].housingState} ${widget.extraHousing[index].housingZip}',
+                              '${widget.extraHousingList[index].housingStreet},\n${widget.extraHousingList[index].housingCity}, ${widget.extraHousingList[index].housingState} ${widget.extraHousingList[index].housingZip}',
                               style: const TextStyle(fontSize: 20.0),
                             ),
-                            leading: widget.extraHousing[index].housingStatus ==
+                            leading: widget.extraHousingList[index].housingStatus ==
                                     'Employer-owned Housing'
                                 ? const Icon(Icons.home)
                                 : const Icon(Icons.home_outlined),
                             onTap: () {
                               setState(() {
                                 widget.tempHousingStatus.text =
-                                    widget.extraHousing[index].housingStatus;
+                                    widget.extraHousingList[index].housingStatus;
                                 widget.tempHousingType.text =
-                                    widget.extraHousing[index].housingType;
+                                    widget.extraHousingList[index].housingType;
                                 widget.tempHousingAddress.text =
-                                    widget.extraHousing[index].housingStreet;
+                                    widget.extraHousingList[index].housingStreet;
                                 widget.tempHousingCity.text =
-                                    widget.extraHousing[index].housingCity;
+                                    widget.extraHousingList[index].housingCity;
                                 widget.tempHousingState.text =
-                                    widget.extraHousing[index].housingState;
+                                    widget.extraHousingList[index].housingState;
                                 widget.tempHousingZip.text =
-                                    widget.extraHousing[index].housingZip;
+                                    widget.extraHousingList[index].housingZip;
                                 widget.tempHousingCounty.text =
-                                    widget.extraHousing[index].housingCounty;
+                                    widget.extraHousingList[index].housingCounty;
                                 widget.tempHousingUnits.text =
-                                    widget.extraHousing[index].housingUnits;
+                                    widget.extraHousingList[index].housingUnits;
                                 widget.tempHousingBedrooms.text =
-                                    widget.extraHousing[index].housingBedrooms;
+                                    widget.extraHousingList[index].housingBedrooms;
                                 widget.tempHousingBeds.text =
-                                    widget.extraHousing[index].housingBeds;
+                                    widget.extraHousingList[index].housingBeds;
                                 widget.tempHousingOccupancy.text =
-                                    widget.extraHousing[index].housingOccupancy;
+                                    widget.extraHousingList[index].housingOccupancy;
                                 widget.tempHousingKitchen.text =
-                                    widget.extraHousing[index].housingKitchen;
+                                    widget.extraHousingList[index].housingKitchen;
                               });
                               Alert(
                                 context: context,
@@ -458,7 +477,7 @@ class _ApplicationHousingInfoState extends State<ApplicationHousingInfo> {
                                     ),
                                     onPressed: () {
                                       setState(() {
-                                        widget.extraHousing.removeAt(index);
+                                        widget.extraHousingList.removeAt(index);
                                       });
                                       Navigator.pop(context);
                                     },
@@ -472,8 +491,8 @@ class _ApplicationHousingInfoState extends State<ApplicationHousingInfo> {
                                     ),
                                     onPressed: () {
                                       setState(() {
-                                        widget.extraHousing.removeAt(index);
-                                        widget.extraHousing.insert(
+                                        widget.extraHousingList.removeAt(index);
+                                        widget.extraHousingList.insert(
                                           index,
                                           Housing(
                                             status:

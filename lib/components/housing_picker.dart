@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:usafl/components/custom_input_formatter.dart';
-import 'application_list.dart';
+// import 'package:usafl/components/custom_input_formatter.dart';
+import 'package:usafl/components/application_text_field.dart';
 import 'state_selector.dart';
 
 class HousingPicker extends StatefulWidget {
@@ -73,8 +73,8 @@ class _HousingPickerState extends State<HousingPicker> {
                 },
                 items: [
                   'Select Housing Status',
-                  'Employer-owned Housing',
-                  'Rental or public Housing'
+                  'Employer-owned',
+                  'Rental or public'
                 ].map<DropdownMenuItem<String>>((String value) {
                   return DropdownMenuItem<String>(
                     value: value,

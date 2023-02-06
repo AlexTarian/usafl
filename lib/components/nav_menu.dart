@@ -23,7 +23,7 @@ class NavDrawer extends StatelessWidget {
             height: 117.0,
             child: DrawerHeader(
               decoration: BoxDecoration(
-                color: themeColor,
+                color: Theme.of(context).primaryColor,
               ),
               child: const Center(
                 child: Text(

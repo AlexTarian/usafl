@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:usafl/components/application_list.dart';
+import 'package:usafl/components/application_text_field.dart';
 //import 'package:usafl/views/application_viewer_screen.dart';
 import 'package:usafl/constants.dart';
 //import 'package:intl/intl.dart';
@@ -12,8 +12,7 @@ class ApplicationMiscInfo extends StatefulWidget {
   const ApplicationMiscInfo({
     super.key,
     required this.meals,
-    required this.transpDaily,
-    required this.transpInAndOut,
+    required this.allowableMealCharge,
     required this.prevH2aUse,
     required this.selectedWorkers,
     required this.willTrainWorkers,
@@ -24,8 +23,7 @@ class ApplicationMiscInfo extends StatefulWidget {
   });
 
   final TextEditingController meals;
-  final TextEditingController transpDaily;
-  final TextEditingController transpInAndOut;
+  final TextEditingController allowableMealCharge;
   final TextEditingController prevH2aUse;
   final TextEditingController selectedWorkers;
   final TextEditingController willTrainWorkers;
@@ -40,13 +38,15 @@ class ApplicationMiscInfo extends StatefulWidget {
 
 class _ApplicationMiscInfoState extends State<ApplicationMiscInfo> {
   double countCompleted() {
-    int sum = (widget.prevH2aUse.text != 'Select' ? 1 : 0) +
+    int sum = (widget.meals.text != '' ? 1 : 0) +
+        ((widget.meals.text == 'Furnish free kitchen facilities' || widget.allowableMealCharge.text != 'Select') ? 1 : 0) +
+        (widget.prevH2aUse.text != 'Select' ? 1 : 0) +
         (widget.selectedWorkers.text != 'Select' ? 1 : 0) +
         (widget.willTrainWorkers.text != 'Select' ? 1 : 0) +
         (widget.smokingOkay.text != 'Select' ? 1 : 0) +
         (widget.familiesOkay.text != 'Select' ? 1 : 0) +
         (widget.prevExpPref.text != 'Select' ? 1 : 0);
-    return sum / 6;
+    return sum / 8;
   }
 
   @override
@@ -99,7 +99,7 @@ class _ApplicationMiscInfoState extends State<ApplicationMiscInfo> {
                     Alert(
                       context: context,
                       title: 'Which option would you like to choose?',
-                      image: const Text('In the H-2A Program, employers are partially responsible for meals. You have two options:\n\n1) Provide workers with free & convenient cooking facilities and weekly trips to a grocery store.\n\nor\n\n2) Provide 3 sanitary, calorically sufficient meals per day.'),
+                      image: const Text('In the H-2A Program, employers are partially responsible for meals. You have two options:\n\n1) Provide workers with free & convenient cooking facilities in their housing and weekly trips to a grocery store.\n\nor\n\n2) Provide 3 sanitary, calorically sufficient meals per day.'),
                       buttons: [
                         DialogButton(
                           color: usaflAccent,
@@ -133,97 +133,65 @@ class _ApplicationMiscInfoState extends State<ApplicationMiscInfo> {
                     ).show();
                   },
                 ),
-                const SizedBox(height: 20.0),
-                InkWell(
-                  child: IgnorePointer(
-                    child: ApplicationTextField(
-                      label: 'Daily Transportation',
-                      controller: widget.transpDaily,
-                    ),
-                  ),
-                  onTap: () {
-                    Alert(
-                      context: context,
-                      title: 'Which option would you like to choose?',
-                      image: const Text('In the H-2A Program, employers are partially responsible for meals. You have two options:\n\n1) Provide workers with free & convenient cooking facilities and weekly trips to a grocery store.\n\nor\n\n2) Provide 3 sanitary, calorically sufficient meals per day.'),
-                      buttons: [
-                        DialogButton(
-                          color: usaflAccent,
-                          child: const Text(
-                            'Option 1',
-                            style:
-                            TextStyle(color: Colors.white, fontSize: 20.0),
+                Visibility(
+                    visible: widget.meals.text == 'Provide three free meals per day',
+                    child: Column(
+                      children: <Widget>[
+                        const SizedBox(height: 20.0),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: <Widget>[
+                              const Flexible(
+                                flex: 3,
+                                child: Text(
+                                  'If you provide three meals per day, you may, optionally, deduct from each worker\'s pay, the Allowable Meal Charge (as set by the Department of Labor) every day. Would you like to make this deduction?',
+                                  style: TextStyle(fontSize: 20.0),
+                                ),
+                              ),
+                              const SizedBox(width: 15.0),
+                              Flexible(
+                                flex: 1,
+                                child: Container(
+                                  padding: const EdgeInsets.all(5.0),
+                                  decoration: BoxDecoration(
+                                    border: Border.all(
+                                        width: 2,
+                                        color: Theme.of(context).primaryColor),
+                                  ),
+                                  child: DropdownButton<String>(
+                                    isExpanded: true,
+                                    value: widget.allowableMealCharge.text,
+                                    elevation: 16,
+                                    style: TextStyle(
+                                        fontSize: 20.0,
+                                        color: Theme.of(context).primaryColor),
+                                    underline: Container(
+                                      width: double.infinity,
+                                      height: 2,
+                                      color: Colors.transparent,
+                                    ),
+                                    onChanged: (String? newValue) {
+                                      setState(() {
+                                        widget.allowableMealCharge.text = newValue!;
+                                      });
+                                    },
+                                    items: ['Select', 'Yes', 'No']
+                                        .map<DropdownMenuItem<String>>((String value) {
+                                      return DropdownMenuItem<String>(
+                                        value: value,
+                                        child: Text(value),
+                                      );
+                                    }).toList(),
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
-                          onPressed: () {
-                            setState(() {
-                              widget.transpDaily.text = 'Furnish free kitchen facilities';
-                            });
-                            Navigator.pop(context);
-                          },
-                        ),
-                        DialogButton(
-                          color: usaflAccent,
-                          child: const Text(
-                            'Option 2',
-                            style:
-                            TextStyle(color: Colors.white, fontSize: 20.0),
-                          ),
-                          onPressed: () {
-                            setState(() {
-                              widget.transpDaily.text = 'Provide three free meals per day';
-                            });
-                            Navigator.pop(context);
-                          },
-                        ),
-                      ],
-                    ).show();
-                  },
-                ),
-                const SizedBox(height: 20.0),
-                InkWell(
-                  child: IgnorePointer(
-                    child: ApplicationTextField(
-                      label: 'Inbound/Outbound Transportation',
-                      controller: widget.transpInAndOut,
-                    ),
-                  ),
-                  onTap: () {
-                    Alert(
-                      context: context,
-                      title: 'Which option would you like to choose?',
-                      image: const Text('In the H-2A Program, employers are partially responsible for meals. You have two options:\n\n1) Provide workers with free & convenient cooking facilities and weekly trips to a grocery store.\n\nor\n\n2) Provide 3 sanitary, calorically sufficient meals per day.'),
-                      buttons: [
-                        DialogButton(
-                          color: usaflAccent,
-                          child: const Text(
-                            'Option 1',
-                            style:
-                            TextStyle(color: Colors.white, fontSize: 20.0),
-                          ),
-                          onPressed: () {
-                            setState(() {
-                              widget.transpInAndOut.text = 'Furnish free kitchen facilities';
-                            });
-                            Navigator.pop(context);
-                          },
-                        ),
-                        DialogButton(
-                          color: usaflAccent,
-                          child: const Text(
-                            'Option 2',
-                            style:
-                            TextStyle(color: Colors.white, fontSize: 20.0),
-                          ),
-                          onPressed: () {
-                            setState(() {
-                              widget.transpInAndOut.text = 'Provide three free meals per day';
-                            });
-                            Navigator.pop(context);
-                          },
                         ),
                       ],
-                    ).show();
-                  },
+                    ),
                 ),
                 const SizedBox(height: 20.0),
                 Padding(

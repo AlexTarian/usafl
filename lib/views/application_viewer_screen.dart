@@ -3,7 +3,6 @@ import 'package:usafl/constants.dart';
 import 'package:usafl/views/application_selection_screen.dart';
 import 'package:usafl/components/custom_app_bar.dart';
 import 'package:usafl/components/nav_menu.dart';
-import 'package:usafl/components/application_list.dart';
 import 'package:usafl/components/icon_box_button.dart';
 import 'package:usafl/components/extra_worksite_list.dart';
 import 'package:usafl/components/extra_housing_list.dart';
@@ -18,7 +17,12 @@ import 'package:usafl/views/job_transportation_form.dart';
 import 'package:usafl/views/job_misc_form.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 
-ApplicationForm appEngine = const ApplicationForm();
+
+double aewr = 7.25;
+DateTime start = DateTime.now();
+DateTime end = DateTime.now().add(const Duration(days: 1));
+// ApplicationForm appEngine = const ApplicationForm();
+
 late DateTime selectedDate;
 
 class ApplicationViewer extends StatefulWidget {
@@ -121,8 +125,10 @@ class _ApplicationViewerState extends State<ApplicationViewer> {
   TextEditingController tempStart = TextEditingController();
   TextEditingController tempEnd = TextEditingController();
   TextEditingController tempWorkersReq = TextEditingController();
-  List<Worksite> extraWorksites = [];
-  List<Housing> extraHousing = [];
+  List<Worksite> extraWorksitesList = [];
+  List<Housing> extraHousingList = [];
+  TextEditingController extraWorksites =  TextEditingController();
+  TextEditingController extraHousing = TextEditingController();
   TextEditingController primeHousingStatus =
       TextEditingController(text: 'Select Housing Status');
   TextEditingController primeHousingType =
@@ -176,8 +182,7 @@ class _ApplicationViewerState extends State<ApplicationViewer> {
   TextEditingController confirmTwo = TextEditingController();
   TextEditingController confirmThree = TextEditingController();
   TextEditingController meals = TextEditingController();
-  TextEditingController transpDaily = TextEditingController();
-  TextEditingController transpInAndOut = TextEditingController();
+  TextEditingController allowableMealCharge = TextEditingController(text: 'Select');
   TextEditingController prevH2aUse = TextEditingController(text: 'Select');
   TextEditingController selectedWorkers = TextEditingController(text: 'Select');
   TextEditingController willTrainWorkers = TextEditingController(text: 'Select');
@@ -207,6 +212,7 @@ class _ApplicationViewerState extends State<ApplicationViewer> {
         double.parse(requirementCount.text) +
         double.parse(worksiteCount.text) +
         double.parse(housingCount.text) +
+        double.parse(transpCount.text) +
         double.parse(miscCount.text);
     return sum;
   }
@@ -478,7 +484,8 @@ class _ApplicationViewerState extends State<ApplicationViewer> {
                                             tempStart: tempStart,
                                             tempEnd: tempEnd,
                                             tempWorkersReq: tempWorkersReq,
-                                            extraWorksites: extraWorksites,
+                                            extraWorksitesList: extraWorksitesList,
+                                          extraWorksites: extraWorksites,
                                           worksiteCount: worksiteCount,
                                         )))).then((value) =>
                                 setState(() {
@@ -528,6 +535,7 @@ class _ApplicationViewerState extends State<ApplicationViewer> {
                                     tempHousingBeds: tempHousingBeds,
                                     tempHousingOccupancy: tempHousingOccupancy,
                                     tempHousingKitchen: tempHousingKitchen,
+                                    extraHousingList: extraHousingList,
                                     extraHousing: extraHousing,
                                     housingCount: housingCount,
                                   )))).then((value) =>
@@ -596,8 +604,7 @@ class _ApplicationViewerState extends State<ApplicationViewer> {
                               MaterialPageRoute(
                                 builder: (context) => (ApplicationMiscInfo(
                                   meals: meals,
-                                  transpDaily: transpDaily,
-                                  transpInAndOut: transpInAndOut,
+                                  allowableMealCharge: allowableMealCharge,
                                   prevH2aUse: prevH2aUse,
                                   selectedWorkers: selectedWorkers,
                                   willTrainWorkers: willTrainWorkers,
@@ -624,12 +631,12 @@ class _ApplicationViewerState extends State<ApplicationViewer> {
                         decoration: BoxDecoration(
                           gradient: LinearGradient(
                             colors: <Color>[
-                              progress == 7 ? Theme.of(context).primaryColor : Theme.of(context).primaryColor.withOpacity(.5),
+                              progress == 8 ? Theme.of(context).primaryColor : Theme.of(context).primaryColor.withOpacity(.5),
                               Colors.transparent
                             ],
                             stops: <double>[
-                              progress / 7,
-                              progress / 7
+                              progress / 8,
+                              progress / 8
                             ],
                           ),
                           borderRadius:
@@ -638,15 +645,15 @@ class _ApplicationViewerState extends State<ApplicationViewer> {
                               color: Theme.of(context).primaryColor, width: 3),
                         ),
                         child: Center(
-                          child: Text(progress == 7 ? 'SUBMIT' : 'PROGRESS (${((progress/7)*100).toStringAsFixed(2)}%)',
+                          child: Text(progress == 8 ? 'SUBMIT' : 'PROGRESS (${((progress/8)*100).toStringAsFixed(2)}%)',
                               style: TextStyle(
-                                  color: progress == 7 ? Colors.white : Theme.of(context).primaryColor,
+                                  color: progress == 8 ? Colors.white : Theme.of(context).primaryColor,
                                   fontSize: 20.0,
                                   fontWeight: FontWeight.w700)),
                         ),
                       ),
                       onTap: () {
-                        if(progress == 7) {
+                        if(progress == 8) {
                           Alert(
                             context: context,
                             title: 'Acknowledgement',

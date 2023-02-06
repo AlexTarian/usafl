@@ -3,7 +3,7 @@ import 'package:intl/intl.dart';
 import 'package:flutter/services.dart';
 import 'package:usafl/views/application_viewer_screen.dart';
 import 'package:usafl/components/custom_input_formatter.dart';
-import 'package:usafl/components/application_list.dart';
+import 'package:usafl/components/application_text_field.dart';
 
 class ApplicationJobInfo extends StatefulWidget {
   const ApplicationJobInfo({

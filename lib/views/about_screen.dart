@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:usafl/constants.dart';
 import 'package:usafl/components/custom_app_bar.dart';
 import 'package:usafl/components/nav_menu.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
+import 'package:usafl/main.dart';
 
 class AboutScreen extends StatelessWidget {
   const AboutScreen({super.key});
@@ -57,6 +59,11 @@ class AboutScreen extends StatelessWidget {
                               context: context,
                               title: 'Hello there!',
                               desc: 'My name is Alex! I\'m a Flutter App Developer! If you\'re looking for someone to develop a specialized app for your business, let me know! I\'d love to earn your business!\n\nYou can reach me at: atcracchiolo@gmail.com\n\nBy the way, I\'ve hidden a surprise in this app. To find it, press and hold the moon icon, then switch the app into dark mode. Enjoy!',
+                              style: AlertStyle(
+                                isCloseButton: false,
+                                titleStyle: TextStyle(fontSize: 24.0, color: Theme.of(context).primaryColor),
+                                descStyle: TextStyle(fontSize: 18.0, color: MyApp.themeNotifier.value == ThemeMode.light ? Colors.black : Colors.white),
+                              ),
                               buttons: [
                                 DialogButton(
                                   color: Theme.of(context).primaryColor,

@@ -31,6 +31,7 @@ class ApplicationWorksiteInfo extends StatefulWidget {
     required this.tempStart,
     required this.tempEnd,
     required this.tempWorkersReq,
+    required this.extraWorksitesList,
     required this.extraWorksites,
     required this.worksiteCount,
   });
@@ -56,7 +57,8 @@ class ApplicationWorksiteInfo extends StatefulWidget {
   final TextEditingController tempStart;
   final TextEditingController tempEnd;
   final TextEditingController tempWorkersReq;
-  final List<Worksite> extraWorksites;
+  final List<Worksite> extraWorksitesList;
+  final TextEditingController extraWorksites;
   final TextEditingController worksiteCount;
 
   @override
@@ -74,6 +76,20 @@ class _ApplicationWorksiteInfoState extends State<ApplicationWorksiteInfo> {
         (widget.primeWorkZip.text != '' ? 1 : 0) +
         (widget.primeWorkCounty.text != '' ? 1 : 0);
     return sum/5;
+  }
+
+  String compileWorksiteList(List<Worksite> list){
+    String text = '';
+
+    for (var i = 0; i < list.length; i++){
+      text = text + '${list[i].controllingBiz}\\n' +
+          '${list[i].siteStreet}\\n' +
+          '${list[i].siteCity}, ${list[i].siteState} ${list[i].siteZip}\\n' +
+          '${list[i].siteCounty.replaceAll(RegExp(' county',caseSensitive: false), '',)} County\\n' +
+          'Period: ${list[i].startDate} - ${list[i].endDate}\\n' +
+          'Workers: ${list[i].workersNeeded}\\n\\n';
+    }
+    return text;
   }
 
   @override
@@ -102,8 +118,10 @@ class _ApplicationWorksiteInfoState extends State<ApplicationWorksiteInfo> {
                 TextButton(
                   onPressed: () {
                     setState(() {
+                      widget.extraWorksites.text = compileWorksiteList(widget.extraWorksitesList);
                       widget.worksiteCount.text = countCompleted().toString();
                     });
+                    print(widget.extraWorksites.text);
                     Navigator.pop(context);
                   },
                   child: Row(
@@ -326,7 +344,7 @@ class _ApplicationWorksiteInfoState extends State<ApplicationWorksiteInfo> {
                           ),
                           onPressed: () {
                             setState(() {
-                              widget.extraWorksites.add(
+                              widget.extraWorksitesList.add(
                                 Worksite(
                                   employer: widget.tempControllingBiz.text,
                                   owned: widget.tempEmpOwned.text == 'Yes'
@@ -343,7 +361,7 @@ class _ApplicationWorksiteInfoState extends State<ApplicationWorksiteInfo> {
                                 ),
                               );
                             });
-                            if ((widget.extraWorksites.firstWhereOrNull(
+                            if ((widget.extraWorksitesList.firstWhereOrNull(
                                     (worksite) =>
                                         worksite?.isEmpOwned == false)) ==
                                 null) {
@@ -375,7 +393,7 @@ class _ApplicationWorksiteInfoState extends State<ApplicationWorksiteInfo> {
                   width: MediaQuery.of(context).size.width,
                   height: 500.0,
                   child: ListView.builder(
-                    itemCount: widget.extraWorksites.length,
+                    itemCount: widget.extraWorksitesList.length,
                     itemBuilder: (BuildContext context, int index) {
                       return Padding(
                         padding: const EdgeInsets.only(bottom: 10.0),
@@ -389,45 +407,45 @@ class _ApplicationWorksiteInfoState extends State<ApplicationWorksiteInfo> {
                           ),
                           child: ListTile(
                             title: Text(
-                              '${widget.extraWorksites[index].siteStreet},\n${widget.extraWorksites[index].siteCity}, ${widget.extraWorksites[index].siteState} ${widget.extraWorksites[index].siteZip}',
+                              '${widget.extraWorksitesList[index].siteStreet},\n${widget.extraWorksitesList[index].siteCity}, ${widget.extraWorksitesList[index].siteState} ${widget.extraWorksitesList[index].siteZip}',
                               style: const TextStyle(fontSize: 20.0),
                             ),
                             leading:
-                                widget.extraWorksites[index].isEmpOwned == true
+                                widget.extraWorksitesList[index].isEmpOwned == true
                                     ? const Icon(Icons.location_on)
                                     : const Icon(
                                         Icons.location_on,
                                         color: Colors.red,
                                       ),
                             trailing: Text(
-                              '${widget.extraWorksites[index].startDate}\n${widget.extraWorksites[index].endDate}',
+                              '${widget.extraWorksitesList[index].startDate}\n${widget.extraWorksitesList[index].endDate}',
                               style: const TextStyle(fontSize: 18.0),
                             ),
                             onTap: () {
                               setState(() {
                                 widget.tempEmpOwned.text =
-                                    widget.extraWorksites[index].isEmpOwned ==
+                                    widget.extraWorksitesList[index].isEmpOwned ==
                                             true
                                         ? 'Yes'
                                         : 'No';
                                 widget.tempControllingBiz.text =
-                                    widget.extraWorksites[index].controllingBiz;
+                                    widget.extraWorksitesList[index].controllingBiz;
                                 widget.tempWorkAddress.text =
-                                    widget.extraWorksites[index].siteStreet;
+                                    widget.extraWorksitesList[index].siteStreet;
                                 widget.tempWorkCity.text =
-                                    widget.extraWorksites[index].siteCity;
+                                    widget.extraWorksitesList[index].siteCity;
                                 widget.tempWorkState.text =
-                                    widget.extraWorksites[index].siteState;
+                                    widget.extraWorksitesList[index].siteState;
                                 widget.tempWorkZip.text =
-                                    widget.extraWorksites[index].siteZip;
+                                    widget.extraWorksitesList[index].siteZip;
                                 widget.tempWorkCounty.text =
-                                    widget.extraWorksites[index].siteCounty;
+                                    widget.extraWorksitesList[index].siteCounty;
                                 widget.tempStart.text =
-                                    widget.extraWorksites[index].startDate;
+                                    widget.extraWorksitesList[index].startDate;
                                 widget.tempEnd.text =
-                                    widget.extraWorksites[index].endDate;
+                                    widget.extraWorksitesList[index].endDate;
                                 widget.tempWorkersReq.text =
-                                    widget.extraWorksites[index].workersNeeded;
+                                    widget.extraWorksitesList[index].workersNeeded;
                               });
                               Alert(
                                 context: context,
@@ -458,7 +476,7 @@ class _ApplicationWorksiteInfoState extends State<ApplicationWorksiteInfo> {
                                     ),
                                     onPressed: () {
                                       setState(() {
-                                        widget.extraWorksites.removeAt(index);
+                                        widget.extraWorksitesList.removeAt(index);
                                       });
                                       Navigator.pop(context);
                                     },
@@ -472,8 +490,8 @@ class _ApplicationWorksiteInfoState extends State<ApplicationWorksiteInfo> {
                                     ),
                                     onPressed: () {
                                       setState(() {
-                                        widget.extraWorksites.removeAt(index);
-                                        widget.extraWorksites.insert(
+                                        widget.extraWorksitesList.removeAt(index);
+                                        widget.extraWorksitesList.insert(
                                           index,
                                           Worksite(
                                             employer:
@@ -493,7 +511,7 @@ class _ApplicationWorksiteInfoState extends State<ApplicationWorksiteInfo> {
                                           ),
                                         );
                                       });
-                                      if ((widget.extraWorksites
+                                      if ((widget.extraWorksitesList
                                               .firstWhereOrNull((worksite) =>
                                                   worksite?.isEmpOwned ==
                                                   false)) ==

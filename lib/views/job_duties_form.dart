@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:usafl/constants.dart';
-import 'package:usafl/views/application_viewer_screen.dart';
-import 'package:usafl/components/application_list.dart';
+// import 'package:usafl/views/application_viewer_screen.dart';
+import 'package:usafl/components/application_text_field.dart';
 import 'package:usafl/components/job_duties_picker.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 
